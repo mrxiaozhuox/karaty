@@ -1,0 +1,17 @@
+[site]
+
+title_suffix = "| Karaty Site"
+
+dark_mode = true
+
+[deploy.repository]
+
+service = "GitHub"
+
+url = "https://github.com/mrxiaozhuox/karaty"
+
+[deploy.source]
+
+mode = "independent-repository"
+
+url = "https://github.com/mrxiaozhuox/blog.mrxzx.info"
