@@ -1,11 +1,12 @@
 use dioxus::prelude::*;
 
-use crate::components::{footer::Footer, nav::Navbar};
+use crate::{components::{footer::Footer, nav::Navbar, content::ComplexComponent}, config::Config};
 
 pub mod _404;
 pub mod blog;
 
 pub fn Home(cx: Scope) -> Element {
+    let config = cx.consume_context::<Config>().unwrap();
     cx.render(rsx! {
         section {
             class: "h-screen bg-cover bg-white dark:bg-gray-600",
@@ -16,39 +17,20 @@ pub fn Home(cx: Scope) -> Element {
                     class: "max-w-2xl text-center",
                     img {
                         class: "rounded-lg w-32 mb-4 mx-auto",
-                        src: "https://avatars.githubusercontent.com/u/41265098?v=4"
+                        src: "{config.personal.avatar}"
                     }
                     h5 {
                         class: "text-2xl dark:text-white font-medium leading-tight mb-2",
-                        "YuKun Liu"
+                        "{config.personal.username}"
                     }
                     p {
                         class: "text-gray-500 dark:text-gray-300",
-                        "Computer Engineering | Keen on new technologies."
+                        "{config.personal.bio}"
                     }
-                    ul {
+                    div {
                         class: "mt-3 dark:text-gray-100",
-                        li {
-                            "Studying in "
-                            a {
-                                class: "underline",
-                                href: "https://sjsu.edu",
-                                "San Jose State Unversity"
-                            }
-                        }
-                        li {
-                            "Working at "
-                            a {
-                                class: "underline",
-                                href: "https://dioxuslabs.com",
-                                "Dioxus Labs"
-                            }
-                            " & "
-                            a {
-                                class: "underline",
-                                href: "https://dorea.mrxzx.info",
-                                "Dorea DB"
-                            }
+                        ComplexComponent {
+                            data: config.personal.introducation,
                         }
                     }
                     Footer {}

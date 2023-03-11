@@ -102,7 +102,7 @@ struct BlogInfo {
 }
 
 async fn get_blog_list() -> Option<Vec<BlogInfo>> {
-    let resp = reqwasm::http::Request::get(&format!(
+    let resp = gloo::net::http::Request::get(&format!(
         "https://api.github.com/repos/{BLOG_REPO}/contents"
     ))
     .send()
@@ -127,7 +127,7 @@ async fn get_blog_list() -> Option<Vec<BlogInfo>> {
 
                 let file_url = obj.get("download_url")?.as_str()?;
 
-                let meta_info = reqwasm::http::Request::get(file_url).send().await.ok()?;
+                let meta_info = gloo::net::http::Request::get(file_url).send().await.ok()?;
                 let meta_info = meta_info.text().await.ok()?;
 
                 let mut type_mark = HashMap::new();
@@ -285,7 +285,7 @@ pub fn BlogPage(cx: Scope) -> Element {
 }
 
 async fn get_info(name: &str) -> Option<(BlogInfo, String)> {
-    let resp = reqwasm::http::Request::get(&format!(
+    let resp = gloo::net::http::Request::get(&format!(
         "https://raw.githubusercontent.com/{BLOG_REPO}/main/{name}.md"
     ))
     .send()

@@ -1,17 +1,23 @@
 [site]
 
-title_suffix = "| Karaty Site"
+name = "Karaty Offical"
 
-dark_mode = true
+title-suffix = " | Karaty Site"
+
+dark-mode = true
 
 [deploy.repository]
 
 service = "GitHub"
 
-url = "https://github.com/mrxiaozhuox/karaty"
+name = "mrxiaozhuox/karaty"
 
-[deploy.source]
+[deploy.data-source]
 
-mode = "independent-repository"
+# mode = "independent-repository"
 
-url = "https://github.com/mrxiaozhuox/blog.mrxzx.info"
+# data = { service = "GitHub", name = "mrxiaozhuox/blog.mrxzx.info", branch = "master" }
+
+mode = "sub-path"
+
+data = "template"

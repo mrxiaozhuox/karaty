@@ -5,28 +5,59 @@ use dioxus_router::{Router, Route};
 use dioxus_toast::{ToastFrame, ToastManager};
 
 mod setup;
+mod config;
+mod utils;
 
 mod components;
 mod hooks;
 mod pages;
 
-use fermi::use_init_atom_root;
-use hooks::mode::init_mode_info;
-
 use pages::*;
+use setup::{setup_root_app, setup_config};
 
 static TOAST_MANAGER: fermi::AtomRef<ToastManager> = |_| ToastManager::default();
 
 fn main() {
     wasm_logger::init(wasm_logger::Config::default());
-    log::info!("Powered by Dioxus Starter: https://github.com/mrxiaozhuox/dioxus-starter");
     dioxus_web::launch(App)
 }
 
 fn App(cx: Scope) -> Element {
-    // init mode information
-    init_mode_info(&cx);
-    use_init_atom_root(&cx);
+
+    // init karaty root app
+    let setup_config = use_future(&cx, (), |_| async move {
+        setup_config().await
+    });
+
+    match setup_config.value() {
+        Some(Some(config)) => {
+            let _ = setup_root_app(&cx, config.clone());
+        },
+        Some(None) => {
+            return cx.render(rsx! {
+                div {
+                    class: "h-screen flex justify-center items-center",
+                    h1 {
+                        class: "text-gray-500 text-3xl font-semibold",
+                        "Configuration Load Faield"
+                    }
+                }
+            });
+        }
+        None => {
+            return cx.render(rsx! {
+                div {
+                    class: "h-screen flex justify-center items-center",
+                    h1 {
+                        class: "text-gray-500 text-3xl font-semibold",
+                        "Loading ..."
+                    }
+                }
+            });
+        },
+    }
+
+
     cx.render(rsx! {
         // dioxus toast manager init
         ToastFrame {

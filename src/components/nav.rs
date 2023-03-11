@@ -1,7 +1,10 @@
 pub use dioxus::prelude::*;
 use dioxus_router::Link;
 
+use crate::config::Config;
+
 pub fn Navbar(cx: Scope) -> Element {
+    let config = cx.consume_context::<Config>().unwrap();
     cx.render(rsx! {
         nav {
             class: "dark:bg-gray-600",
@@ -14,7 +17,7 @@ pub fn Navbar(cx: Scope) -> Element {
                         Link {
                             class: "flex-shrink-0 flex items-center font-bold text-2xl",
                             to: "/",
-                            "mrxzx.info"
+                            "{config.site.name}"
                         }
                         div {
                             class: "hidden sm:block sm:ml-6 absolute right-0",
