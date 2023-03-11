@@ -61,7 +61,6 @@ pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result
                 gloo::net::http::Request::get(&format!("{}/{}/{}", raw_url, sub_folder, sub_path))
                     .send()
                     .await?;
-            log::info!("Response: {:?}", response.text().await);
             return Ok(response.text().await?);
         }
         _ => {}
@@ -75,6 +74,8 @@ pub async fn load_personal_info(config: &mut Config) {
         let res = serde_json::from_str::<PersonalInfoConfig>(&data);
         if let Ok(data) = res {
             config.personal = data;
+        } else if let Err(e) = res {
+            log::error!("Load personal info failed: {}", e);
         }
     }
 }
