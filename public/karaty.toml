@@ -21,3 +21,10 @@ name = "mrxiaozhuox/karaty"
 mode = "sub-path"
 
 data = "template"
+
+[navigation]
+
+list = [
+    { display = "Home", target = "_blank", link = "/" },
+    { display = "Projects", target = "_blank", link = "/projects" }
+]

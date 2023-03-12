@@ -8,6 +8,7 @@ pub struct Config {
     pub deploy: DeployConfig,
     #[serde(default)]
     pub personal: PersonalInfoConfig,
+    pub navigation: NavigationConfig,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -50,4 +51,16 @@ pub struct PersonalInfoConfig {
     pub avatar: String,
     pub bio: String,
     pub introducation: Vec<ComplexContent>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct NavigationConfig {
+    pub list: Vec<NavigationInfo>
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct NavigationInfo {
+    pub display: String,
+    pub target: String,
+    pub link: String,
 }

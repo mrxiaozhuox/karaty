@@ -5,6 +5,7 @@ use crate::config::Config;
 
 pub fn Navbar(cx: Scope) -> Element {
     let config = cx.consume_context::<Config>().unwrap();
+    let nav = config.navigation.list.clone();
     cx.render(rsx! {
         nav {
             class: "dark:bg-gray-600",
@@ -23,26 +24,15 @@ pub fn Navbar(cx: Scope) -> Element {
                             class: "hidden sm:block sm:ml-6 absolute right-0",
                             div {
                                 class: "flex space-x-4",
-                                Link {
-                                    class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
-                                    to: "/",
-                                    "Home"
-                                }
-                                Link {
-                                    class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
-                                    to: "/projects",
-                                    "Projects"
-                                }
-                                Link {
-                                    class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
-                                    to: "/blog",
-                                    "Blog"
-                                }
-                                Link {
-                                    class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
-                                    to: "/about",
-                                    "About"
-                                }
+                                nav.iter().map(|v| {
+                                    rsx! {
+                                        Link {
+                                            class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
+                                            to: "{v.link}",
+                                            "{v.display}"
+                                        }
+                                    }
+                                })
                             }
                         }
                     }
