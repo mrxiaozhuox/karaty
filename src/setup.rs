@@ -1,16 +1,13 @@
 use dioxus::prelude::*;
 use fermi::use_init_atom_root;
 
-use crate::{config::Config, hooks::mode::init_mode_info, utils::data::load_personal_info};
+use crate::{config::Config, hooks::mode::init_mode_info};
 
 pub async fn setup_config() -> Option<Config> {
     let response = gloo::net::http::Request::get("/karaty.toml").send().await;
     if let Ok(r) = response {
         let content = r.text().await.unwrap_or_default();
-        let mut result = toml::from_str::<Config>(&content).ok()?;
-        
-        load_personal_info(&mut result).await;
-        
+        let result = toml::from_str::<Config>(&content).ok()?;        
         Some(result)
     } else {
         None

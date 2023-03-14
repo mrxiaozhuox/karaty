@@ -6,13 +6,13 @@ title-suffix = " | Karaty Site"
 
 dark-mode = true
 
-[deploy.repository]
+[repository]
 
 service = "GitHub"
 
 name = "mrxiaozhuox/karaty"
 
-[deploy.data-source]
+[data-source]
 
 # mode = "independent-repository"
 
@@ -25,6 +25,14 @@ data = "template"
 [navigation]
 
 list = [
-    { display = "Home", target = "_blank", link = "/" },
-    { display = "Projects", target = "_blank", link = "/projects" }
+    { display = "Home", page = "home" },
+    { display = "My Github", link = "https://github.com/mrxiaozhuox/" }
 ]
+
+[page]
+
+homepage = "home"
+
+[page.list]
+
+home = { template = "normal" }

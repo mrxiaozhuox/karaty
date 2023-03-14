@@ -1,12 +1,12 @@
 use dioxus::prelude::*;
 
-use crate::{components::{footer::Footer, nav::Navbar, content::ComplexComponent}, config::Config};
+use crate::{components::{footer::Footer, nav::Navbar}, config::Config};
 
 pub mod _404;
 pub mod blog;
 
 pub fn Home(cx: Scope) -> Element {
-    let config = cx.consume_context::<Config>().unwrap();
+    let _config = cx.consume_context::<Config>().unwrap();
     cx.render(rsx! {
         section {
             class: "h-screen bg-cover bg-white dark:bg-gray-600",
@@ -15,24 +15,6 @@ pub fn Home(cx: Scope) -> Element {
                 class: "flex h-4/6 w-full items-center justify-center container mx-auto px-8",
                 div {
                     class: "max-w-2xl text-center",
-                    img {
-                        class: "rounded-lg w-32 mb-4 mx-auto",
-                        src: "{config.personal.avatar}"
-                    }
-                    h5 {
-                        class: "text-2xl dark:text-white font-medium leading-tight mb-2",
-                        "{config.personal.username}"
-                    }
-                    p {
-                        class: "text-gray-500 dark:text-gray-300",
-                        "{config.personal.bio}"
-                    }
-                    div {
-                        class: "mt-3 dark:text-gray-100",
-                        ComplexComponent {
-                            data: config.personal.introducation,
-                        }
-                    }
                     Footer {}
                 }
             }
@@ -196,74 +178,6 @@ pub fn Projects(cx: Scope) -> Element {
                 div {
                     class: "max-w-5xl text-center",
                     displayer
-                    Footer {}
-                }
-            }
-        }
-    })
-}
-
-pub fn About(cx: Scope) -> Element {
-    cx.render(rsx! {
-        section {
-            class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
-            Navbar {}
-            div {
-                class: "flex h-full w-full items-center justify-center container mx-auto px-8",
-                div {
-                    class: "max-w-5xl text-center",
-                    img {
-                        class: "rounded-lg w-32 mb-4 mx-auto",
-                        src: "https://avatars.githubusercontent.com/u/41265098?v=4"
-                    }
-                    div {
-                        class: "space-y-4 text-gray-900 dark:text-gray-300",
-                        p {
-                            "Hi, My name is YuKun Liu, currently I'm a student in "
-                            strong {
-                                class: "underline",
-                                "San Jose State University"
-                            }
-                            "."
-                        }
-                        p {
-                            "My email - ",
-                            a {
-                                class: "underline font-bold",
-                                href: "mailto:mrxzx.info@gmail.com",
-                                "mrxzx.info@gmail.com"
-                            }
-                        }
-                        p {
-                            "My hometown - ",
-                            strong {
-                                "ChengDu, China 🐼"
-                            }
-                        }
-                        p {
-                            "My favorite tech stack - ",
-                            strong {
-                                "Rust, Typescript, Postgresql, Redis",
-                            }
-                        }
-                        p {
-                            "or you can use "
-                            a {
-                                class: "font-bold",
-                                href: "javascript:;",
-                                title: "mrxiaozhuox",
-                                "Wechat"
-                            }
-                            " & "
-                            a {
-                                class: "font-bold",
-                                href: "javascript:;",
-                                title: "3507952990",
-                                "QQ"
-                            }
-                            " to contact me."
-                        }
-                    }
                     Footer {}
                 }
             }

@@ -1,14 +1,18 @@
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
-
-use crate::utils::data::ComplexContent;
-
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Config {
     pub site: SiteConfig,
-    pub deploy: DeployConfig,
-    #[serde(default)]
-    pub personal: PersonalInfoConfig,
+
+    pub repository: DeployRepositoryConfig,
+    
+    #[serde(rename = "data-source")]
+    pub data_source: DeployDataSourceConfig,
+    
     pub navigation: NavigationConfig,
+    
+    pub page: PageConfig,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -18,13 +22,6 @@ pub struct SiteConfig {
     pub title_suffix: String,
     #[serde(rename = "dark-mode")]
     pub dark_mode: bool,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct DeployConfig {
-    pub repository: DeployRepositoryConfig,
-    #[serde(rename = "data-source")]
-    pub data_source: DeployDataSourceConfig,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -44,23 +41,27 @@ pub struct DeployDataSourceConfig {
     pub mode: String,
     pub data: toml::Value,
 }
-
-#[derive(Debug, Serialize, Deserialize, Clone, Default)]
-pub struct PersonalInfoConfig {
-    pub username: String,
-    pub avatar: String,
-    pub bio: String,
-    pub introducation: Vec<ComplexContent>,
-}
-
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct NavigationConfig {
     pub list: Vec<NavigationInfo>
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct NavigationInfo {
-    pub display: String,
-    pub target: String,
-    pub link: String,
+#[serde(untagged)]
+pub enum NavigationInfo {
+    Page { display: String, page: String },
+    Link { display: String, link: String },
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct PageConfig {
+    pub homepage: String,
+    pub list: HashMap<String, PageInfo>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct PageInfo {
+    pub template: String,
+    #[serde(rename = "file-suffix")]
+    pub file_suffix: Option<String>,
 }

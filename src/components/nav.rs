@@ -1,7 +1,7 @@
 pub use dioxus::prelude::*;
 use dioxus_router::Link;
 
-use crate::config::Config;
+use crate::config::{Config, NavigationInfo};
 
 pub fn Navbar(cx: Scope) -> Element {
     let config = cx.consume_context::<Config>().unwrap();
@@ -25,21 +25,29 @@ pub fn Navbar(cx: Scope) -> Element {
                             div {
                                 class: "flex space-x-4",
                                 nav.iter().map(|v| {
-                                    if v.target == "_self" {
-                                        rsx! {
-                                            a {
-                                                class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
-                                                href: "{v.link}",
-                                                target: "{v.target}",
-                                                "{v.display}"
+                                    match v.clone() {
+                                        NavigationInfo::Page { display, mut page } => {
+
+                                            // if page name equal homepage
+                                            if config.page.homepage == page {
+                                                page = "/".into();
                                             }
-                                        }
-                                    } else {
-                                        rsx! {
-                                            Link {
-                                                class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
-                                                to: "{v.link}",
-                                                "{v.display}"
+                                            
+                                            rsx! {
+                                                Link {
+                                                    class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
+                                                    to: "{page}",
+                                                    "{display}"
+                                                }
+                                            }
+                                        },
+                                        NavigationInfo::Link { display, link } => {
+                                            rsx! {
+                                                a {
+                                                    class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
+                                                    href: "{link}",
+                                                    "{display}"
+                                                }
                                             }
                                         }
                                     }

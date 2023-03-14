@@ -1,18 +1,8 @@
+use std::collections::HashMap;
+
 use anyhow::anyhow;
-use serde::{Deserialize, Serialize};
 
-use crate::config::{Config, PersonalInfoConfig};
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-#[serde(tag = "type")]
-pub enum ComplexContent {
-    #[serde(rename = "paragraph")]
-    Paragraph { value: Vec<ComplexContent> },
-    #[serde(rename = "text")]
-    Text { text: String },
-    #[serde(rename = "link")]
-    Link { url: String, text: String },
-}
+use crate::config::{Config, PageInfo};
 
 pub fn get_raw_data_url(service: &str, name: &str, branch: &str) -> Option<String> {
     match service.to_lowercase().as_str() {
@@ -26,8 +16,8 @@ pub fn get_raw_data_url(service: &str, name: &str, branch: &str) -> Option<Strin
 }
 
 pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result<String> {
-    let source_mode = &config.deploy.data_source.mode;
-    let source_data = &config.deploy.data_source.data;
+    let source_mode = &config.data_source.mode;
+    let source_data = &config.data_source.data;
 
     log::error!("{}", source_mode);
 
@@ -48,7 +38,7 @@ pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result
             return Ok(response.text().await?);
         }
         "sub-path" => {
-            let source = config.deploy.repository.clone();
+            let source = config.repository.clone();
             let service = source.service;
             let name = source.name;
             let branch = source.branch;
@@ -68,14 +58,14 @@ pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result
     return Err(anyhow!("Unknown load mode"));
 }
 
-pub async fn load_personal_info(config: &mut Config) {
-    let data = load_from_source(config, "/config/personal.json").await;
-    if let Ok(data) = data {
-        let res = serde_json::from_str::<PersonalInfoConfig>(&data);
+pub async fn load_pages(config: &Config) -> HashMap<String, (PageInfo, String)> {
+    let mut result = HashMap::new();
+    let page_list = config.page.list.clone();
+    for (name, info) in page_list {
+        let res = load_from_source(config, &format!("pages/{}", name)).await;
         if let Ok(data) = res {
-            config.personal = data;
-        } else if let Err(e) = res {
-            log::error!("Load personal info failed: {}", e);
+            result.insert(name, (info, data));
         }
     }
+    result
 }
