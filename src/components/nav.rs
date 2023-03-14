@@ -25,11 +25,22 @@ pub fn Navbar(cx: Scope) -> Element {
                             div {
                                 class: "flex space-x-4",
                                 nav.iter().map(|v| {
-                                    rsx! {
-                                        Link {
-                                            class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
-                                            to: "{v.link}",
-                                            "{v.display}"
+                                    if v.target == "_self" {
+                                        rsx! {
+                                            a {
+                                                class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
+                                                href: "{v.link}",
+                                                target: "{v.target}",
+                                                "{v.display}"
+                                            }
+                                        }
+                                    } else {
+                                        rsx! {
+                                            Link {
+                                                class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
+                                                to: "{v.link}",
+                                                "{v.display}"
+                                            }
                                         }
                                     }
                                 })
