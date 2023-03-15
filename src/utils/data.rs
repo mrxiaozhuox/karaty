@@ -2,7 +2,16 @@ use std::collections::HashMap;
 
 use anyhow::anyhow;
 
-use crate::config::{Config, PageInfo};
+use crate::{
+    config::{Config, PageInfo},
+    pages::loader::default_suffix,
+};
+
+#[derive(Debug, Clone)]
+pub struct GlobalData {
+    pub config: Config,
+    pub pages: HashMap<String, (PageInfo, String)>,
+}
 
 pub fn get_raw_data_url(service: &str, name: &str, branch: &str) -> Option<String> {
     match service.to_lowercase().as_str() {
@@ -18,8 +27,6 @@ pub fn get_raw_data_url(service: &str, name: &str, branch: &str) -> Option<Strin
 pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result<String> {
     let source_mode = &config.data_source.mode;
     let source_data = &config.data_source.data;
-
-    log::error!("{}", source_mode);
 
     match source_mode.to_lowercase().as_str() {
         "independent-repository" => {
@@ -62,7 +69,11 @@ pub async fn load_pages(config: &Config) -> HashMap<String, (PageInfo, String)> 
     let mut result = HashMap::new();
     let page_list = config.page.list.clone();
     for (name, info) in page_list {
-        let res = load_from_source(config, &format!("pages/{}", name)).await;
+        let suffix = info
+            .clone()
+            .file_suffix
+            .unwrap_or(default_suffix(&info.template));
+        let res = load_from_source(config, &format!("pages/{}.{}", name, suffix)).await;
         if let Ok(data) = res {
             result.insert(name, (info, data));
         }

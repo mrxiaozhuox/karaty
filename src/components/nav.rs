@@ -1,10 +1,11 @@
 pub use dioxus::prelude::*;
 use dioxus_router::Link;
 
-use crate::config::{Config, NavigationInfo};
+use crate::{config::NavigationInfo, utils::data::GlobalData};
 
 pub fn Navbar(cx: Scope) -> Element {
-    let config = cx.consume_context::<Config>().unwrap();
+    let data = cx.consume_context::<GlobalData>().unwrap();
+    let config = data.config;
     let nav = config.navigation.list.clone();
     cx.render(rsx! {
         nav {

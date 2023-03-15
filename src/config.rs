@@ -59,7 +59,7 @@ pub struct PageConfig {
     pub list: HashMap<String, PageInfo>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct PageInfo {
     pub template: String,
     #[serde(rename = "file-suffix")]

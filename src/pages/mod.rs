@@ -1,12 +1,23 @@
 use dioxus::prelude::*;
 
-use crate::{components::{footer::Footer, nav::Navbar}, config::Config};
+use crate::{components::{footer::Footer, nav::Navbar}, utils::data::GlobalData, config::PageInfo};
 
 pub mod _404;
 pub mod blog;
+pub mod loader;
 
-pub fn Home(cx: Scope) -> Element {
-    let _config = cx.consume_context::<Config>().unwrap();
+#[inline_props]
+pub fn Normal(cx: Scope, info: PageInfo, content: String) -> Element {
+    let data = cx.consume_context::<GlobalData>().unwrap();
+
+    let mut options = pulldown_cmark::Options::empty();
+    options.insert(pulldown_cmark::Options::ENABLE_STRIKETHROUGH);
+    let parser = pulldown_cmark::Parser::new_ext(content, options);
+
+    let mut html_output = String::new();
+    pulldown_cmark::html::push_html(&mut html_output, parser);
+
+    log::info!("{}", html_output);
     cx.render(rsx! {
         section {
             class: "h-screen bg-cover bg-white dark:bg-gray-600",
@@ -15,6 +26,10 @@ pub fn Home(cx: Scope) -> Element {
                 class: "flex h-4/6 w-full items-center justify-center container mx-auto px-8",
                 div {
                     class: "max-w-2xl text-center",
+                    div {
+                        class: "prose dark:prose-invert",
+                        dangerous_inner_html: "{html_output}",
+                    }
                     Footer {}
                 }
             }

@@ -1,11 +1,11 @@
 #![allow(non_snake_case)]
 
 use dioxus::prelude::*;
-use dioxus_router::{Router, Route};
+use dioxus_router::{Route, Router};
 use dioxus_toast::{ToastFrame, ToastManager};
 
-mod setup;
 mod config;
+mod setup;
 mod utils;
 
 mod components;
@@ -13,7 +13,8 @@ mod hooks;
 mod pages;
 
 use pages::*;
-use setup::{setup_root_app, setup_config};
+use setup::{setup_config, setup_root_app};
+use utils::data::{load_pages, GlobalData};
 
 static TOAST_MANAGER: fermi::AtomRef<ToastManager> = |_| ToastManager::default();
 
@@ -23,23 +24,66 @@ fn main() {
 }
 
 fn App(cx: Scope) -> Element {
-
     // init karaty root app
-    let setup_config = use_future(&cx, (), |_| async move {
-        setup_config().await
-    });
+    let setup_config: &UseFuture<anyhow::Result<GlobalData, anyhow::Error>> =
+        use_future(&cx, (), |_| async move {
+            let config = setup_config().await?;
+            Ok(GlobalData {
+                config: config.clone(),
+                pages: load_pages(&config).await,
+            })
+        });
 
     match setup_config.value() {
-        Some(Some(config)) => {
-            let _ = setup_root_app(&cx, config.clone());
-        },
-        Some(None) => {
+        Some(Ok(data)) => {
+            let _ = setup_root_app(&cx, data.clone());
+
+            cx.render(rsx! {
+                // dioxus toast manager init
+                ToastFrame {
+                    manager: fermi::use_atom_ref(&cx, TOAST_MANAGER),
+                }
+                // dioxus router info
+                Router {
+
+                    data.pages.iter().map(|(name, (info, content))| {
+
+                        let url = if name == &data.config.page.homepage {
+                            String::from("/")
+                        } else {
+                            format!("/{}", name)
+                        };
+
+                        match info.template.to_lowercase().as_str() {
+                            _ => {
+                                rsx! {
+                                    Route { to: "{url}", Normal {
+                                        info: info.clone(),
+                                        content: content.to_string(),
+                                    } }
+                                }
+                            }
+                        }
+                    })
+
+                    Route { to: "/blog", blog::BlogList {} }
+                    Route { to: "/blog/:path", blog::BlogPage {} }
+
+                    Route { to: "", _404::NotFound {} }
+                }
+            })
+        }
+        Some(Err(e)) => {
             return cx.render(rsx! {
                 div {
                     class: "h-screen flex justify-center items-center",
                     h1 {
                         class: "text-gray-500 text-3xl font-semibold",
                         "Configuration Load Faield"
+                    }
+                    h2 {
+                        class: "text-gray-400 text-xl font-semibold",
+                        "{e}"
                     }
                 }
             });
@@ -54,24 +98,6 @@ fn App(cx: Scope) -> Element {
                     }
                 }
             });
-        },
+        }
     }
-
-
-    cx.render(rsx! {
-        // dioxus toast manager init
-        ToastFrame {
-            manager: fermi::use_atom_ref(&cx, TOAST_MANAGER),
-        }
-        // dioxus router info
-        Router {
-            Route { to: "/", Home {} }
-            Route { to: "/projects", Projects {} }
-
-            Route { to: "/blog", blog::BlogList {} }
-            Route { to: "/blog/:path", blog::BlogPage {} }
-
-            Route { to: "", _404::NotFound {} }
-        }
-    })
 }
