@@ -1,13 +1,16 @@
 use dioxus::prelude::*;
 
-use crate::{components::{footer::Footer, nav::Navbar}, utils::data::GlobalData, config::PageInfo};
+use crate::{
+    components::{footer::Footer, nav::Navbar},
+    utils::data::GlobalData,
+};
 
 pub mod _404;
 pub mod blog;
 pub mod loader;
 
 #[inline_props]
-pub fn Normal(cx: Scope, info: PageInfo, content: String) -> Element {
+pub fn Normal(cx: Scope, content: String) -> Element {
     let data = cx.consume_context::<GlobalData>().unwrap();
 
     let mut options = pulldown_cmark::Options::empty();
@@ -100,8 +103,8 @@ pub fn Projects(cx: Scope) -> Element {
                     name: "Diogen",
                     desc: "A static site generator powered by dioxus [WIP]",
                     url: "https://github.com/mrxiaozhuox/diogen",
-                    job: "Author"
-                }
+                    job: "Author",
+                },
             ],
         },
         Category {
@@ -111,14 +114,14 @@ pub fn Projects(cx: Scope) -> Element {
                     name: "Dorea",
                     desc: "A Key-Value data storage system",
                     url: "https://github.com/mrxiaozhuox/dorea",
-                    job: "Author"
+                    job: "Author",
                 },
                 Project {
                     name: "Doson",
                     desc: "Doson structure parser - The extended format of json",
                     url: "https://github.com/doreadb/doson",
                     job: "Author",
-                }
+                },
             ],
         },
         Category {
@@ -128,27 +131,25 @@ pub fn Projects(cx: Scope) -> Element {
                     name: "Teacher Pod",
                     desc: "Podcast app for learning",
                     url: "https://github.com/commune-org/teacher-pod",
-                    job: "Full-Stack Developer"
+                    job: "Full-Stack Developer",
                 },
                 Project {
                     name: "Dioxus Hackernews",
                     desc: "Hackernews made with Dioxus",
                     url: "https://github.com/mrxiaozhuox/dioxus-hackernews",
-                    job: "Author"
-                }
+                    job: "Author",
+                },
             ],
         },
         Category {
             name: "Rust Dev Crates",
-            projects: vec![
-                Project {
-                    name: "Metadata Parser",
-                    desc: "parse & get markdown meta-data | Rust Library |",
-                    url: "https://github.com/mrxiaozhuox/markdown-meta-parser",
-                    job: "Author"
-                }
-            ]
-        }
+            projects: vec![Project {
+                name: "Metadata Parser",
+                desc: "parse & get markdown meta-data | Rust Library |",
+                url: "https://github.com/mrxiaozhuox/markdown-meta-parser",
+                job: "Author",
+            }],
+        },
     ];
 
     let displayer = data.iter().map(|v| {

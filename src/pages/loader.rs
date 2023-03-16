@@ -1,6 +1,10 @@
-pub fn default_suffix(template: &String) -> String {
-    match template.to_lowercase().as_str() {
-        "normal" => { String::from("md") }
-        _ => { String::from("md") }
-    }
+use dioxus::prelude::*;
+
+#[inline_props]
+pub fn HandleSuffix(cx: Scope, name: String, content: String) -> Element {
+    cx.render(rsx! {
+        div {
+            "{content}"
+        }
+    })
 }

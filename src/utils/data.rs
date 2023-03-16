@@ -2,15 +2,12 @@ use std::collections::HashMap;
 
 use anyhow::anyhow;
 
-use crate::{
-    config::{Config, PageInfo},
-    pages::loader::default_suffix,
-};
+use crate::config::Config;
 
 #[derive(Debug, Clone)]
 pub struct GlobalData {
     pub config: Config,
-    pub pages: HashMap<String, (PageInfo, String)>,
+    pub pages: HashMap<String, String>,
 }
 
 pub fn get_raw_data_url(service: &str, name: &str, branch: &str) -> Option<String> {
@@ -65,17 +62,61 @@ pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result
     return Err(anyhow!("Unknown load mode"));
 }
 
-pub async fn load_pages(config: &Config) -> HashMap<String, (PageInfo, String)> {
+pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<String> {
+    let mut result = Vec::new();
+
+    let source_mode = &config.data_source.mode;
+    let source_data = &config.data_source.data;
+
+    let target = match source_mode.to_lowercase().as_str() {
+        "independent-repository" => {
+            let source = source_data.as_table().unwrap();
+
+            let name = source.get("name").unwrap().as_str().unwrap().to_string();
+            let branch = source.get("branch").unwrap().as_str().unwrap().to_string();
+
+            (name, branch)
+        }
+        "sub-path" => {
+            let source = config.repository.clone();
+            let name = source.name;
+            let branch = source.branch;
+
+            (name, branch)
+        }
+        _ => {
+            panic!("Not Found");
+        }
+    };
+
+    let resp = gloo::net::http::Request::get(&format!(
+        "https://api.github.com/repos/{}/contents/{}?ref={}",
+        target.0, sub_path, target.1
+    ))
+    .send()
+    .await;
+
+    if let Ok(resp) = resp {
+        let res = resp.json::<Vec<serde_json::Value>>().await;
+        if let Ok(list) = res {
+            for data in list {
+                if data.get("type").unwrap().as_str().unwrap() == "file" {
+                    result.push(data.get("path").unwrap().as_str().unwrap().to_string());
+                }
+            }
+        }
+    }
+
+    result
+}
+
+pub async fn load_pages(config: &Config) -> HashMap<String, String> {
     let mut result = HashMap::new();
-    let page_list = config.page.list.clone();
-    for (name, info) in page_list {
-        let suffix = info
-            .clone()
-            .file_suffix
-            .unwrap_or(default_suffix(&info.template));
-        let res = load_from_source(config, &format!("pages/{}.{}", name, suffix)).await;
-        if let Ok(data) = res {
-            result.insert(name, (info, data));
+    let contents = load_content_list(config, "pages").await;
+    for name in contents {
+        let content = load_from_source(config, &name).await;
+        if let Ok(content) = content {
+            result.insert(name.to_string(), content);
         }
     }
     result

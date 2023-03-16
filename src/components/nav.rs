@@ -30,10 +30,10 @@ pub fn Navbar(cx: Scope) -> Element {
                                         NavigationInfo::Page { display, mut page } => {
 
                                             // if page name equal homepage
-                                            if config.page.homepage == page {
+                                            if config.site.homepage == page {
                                                 page = "/".into();
                                             }
-                                            
+
                                             rsx! {
                                                 Link {
                                                     class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",

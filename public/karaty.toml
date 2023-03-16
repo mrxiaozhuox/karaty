@@ -6,9 +6,11 @@ title-suffix = " | Karaty Site"
 
 dark-mode = true
 
+homepage = "home"
+
 [repository]
 
-service = "GitHub"
+service = "GitHub"s
 
 name = "mrxiaozhuox/karaty"
 
@@ -28,11 +30,3 @@ list = [
     { display = "Home", page = "home" },
     { display = "My Github", link = "https://github.com/mrxiaozhuox/" }
 ]
-
-[page]
-
-homepage = "home"
-
-[page.list]
-
-home = { template = "normal" }

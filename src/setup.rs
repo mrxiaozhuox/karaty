@@ -6,7 +6,7 @@ use crate::{config::Config, hooks::mode::init_mode_info, utils::data::GlobalData
 pub async fn setup_config() -> anyhow::Result<Config> {
     let response = gloo::net::http::Request::get("/karaty.toml").send().await?;
     let content = response.text().await.unwrap_or_default();
-    let result = toml::from_str::<Config>(&content)?;        
+    let result = toml::from_str::<Config>(&content)?;
     Ok(result)
 }
 

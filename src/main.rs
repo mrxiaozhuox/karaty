@@ -16,6 +16,8 @@ use pages::*;
 use setup::{setup_config, setup_root_app};
 use utils::data::{load_pages, GlobalData};
 
+use crate::pages::loader::HandleSuffix;
+
 static TOAST_MANAGER: fermi::AtomRef<ToastManager> = |_| ToastManager::default();
 
 fn main() {
@@ -46,23 +48,21 @@ fn App(cx: Scope) -> Element {
                 // dioxus router info
                 Router {
 
-                    data.pages.iter().map(|(name, (info, content))| {
+                    data.pages.iter().map(|(name, content)| {
 
-                        let url = if name == &data.config.page.homepage {
+                        let url = if name == &data.config.site.homepage {
                             String::from("/")
                         } else {
                             format!("/{}", name)
                         };
 
-                        match info.template.to_lowercase().as_str() {
-                            _ => {
-                                rsx! {
-                                    Route { to: "{url}", Normal {
-                                        info: info.clone(),
-                                        content: content.to_string(),
-                                    } }
-                                }
-                            }
+                        gloo::dialogs::alert("123");
+
+                        rsx! {
+                            Route { to: "{url}", HandleSuffix {
+                                name: name.to_string(),
+                                content: content.to_string(),
+                            } }
                         }
                     })
 
@@ -77,11 +77,11 @@ fn App(cx: Scope) -> Element {
             return cx.render(rsx! {
                 div {
                     class: "h-screen flex justify-center items-center",
-                    h1 {
-                        class: "text-gray-500 text-3xl font-semibold",
-                        "Configuration Load Faield"
-                    }
-                    h2 {
+                    // p {
+                    //     class: "text-gray-500 text-3xl font-semibold",
+                    //     "Configuration Load Faield"
+                    // }
+                    p {
                         class: "text-gray-400 text-xl font-semibold",
                         "{e}"
                     }
