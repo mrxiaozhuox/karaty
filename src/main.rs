@@ -16,7 +16,7 @@ use pages::*;
 use setup::{setup_config, setup_root_app};
 use utils::data::{load_pages, GlobalData};
 
-use crate::pages::loader::HandleSuffix;
+use crate::pages::template::DynamicTemplate;
 
 static TOAST_MANAGER: fermi::AtomRef<ToastManager> = |_| ToastManager::default();
 
@@ -56,10 +56,8 @@ fn App(cx: Scope) -> Element {
                             format!("/{}", name)
                         };
 
-                        gloo::dialogs::alert("123");
-
                         rsx! {
-                            Route { to: "{url}", HandleSuffix {
+                            Route { to: "{url}", DynamicTemplate {
                                 name: name.to_string(),
                                 content: content.to_string(),
                             } }

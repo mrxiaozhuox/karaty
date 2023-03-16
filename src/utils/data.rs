@@ -75,33 +75,37 @@ pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<String> {
             let name = source.get("name").unwrap().as_str().unwrap().to_string();
             let branch = source.get("branch").unwrap().as_str().unwrap().to_string();
 
-            (name, branch)
+            format!(
+                "https://api.github.com/repos/{}/contents/{}?ref={}",
+                name, sub_path, branch
+            )
         }
         "sub-path" => {
             let source = config.repository.clone();
             let name = source.name;
             let branch = source.branch;
 
-            (name, branch)
+            let sub_folder = source_data.as_str().unwrap();
+
+            format!(
+                "https://api.github.com/repos/{}/contents/{}/{}?ref={}",
+                name, sub_folder, sub_path, branch,
+            )
         }
         _ => {
             panic!("Not Found");
         }
     };
 
-    let resp = gloo::net::http::Request::get(&format!(
-        "https://api.github.com/repos/{}/contents/{}?ref={}",
-        target.0, sub_path, target.1
-    ))
-    .send()
-    .await;
+    let resp = gloo::net::http::Request::get(&target).send().await;
 
     if let Ok(resp) = resp {
         let res = resp.json::<Vec<serde_json::Value>>().await;
         if let Ok(list) = res {
             for data in list {
                 if data.get("type").unwrap().as_str().unwrap() == "file" {
-                    result.push(data.get("path").unwrap().as_str().unwrap().to_string());
+                    let file_name = data.get("name").unwrap().as_str().unwrap().to_string();
+                    result.push(file_name);
                 }
             }
         }
@@ -114,7 +118,8 @@ pub async fn load_pages(config: &Config) -> HashMap<String, String> {
     let mut result = HashMap::new();
     let contents = load_content_list(config, "pages").await;
     for name in contents {
-        let content = load_from_source(config, &name).await;
+        let path = format!("/pages/{name}");
+        let content = load_from_source(config, &path).await;
         if let Ok(content) = content {
             result.insert(name.to_string(), content);
         }

@@ -32,7 +32,7 @@ pub struct DeployRepositoryConfig {
 }
 
 fn default_master() -> String {
-    String::from("master")
+    String::from("main")
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

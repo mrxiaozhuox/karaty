@@ -6,11 +6,11 @@ title-suffix = " | Karaty Site"
 
 dark-mode = true
 
-homepage = "home"
+homepage = "home.md"
 
 [repository]
 
-service = "GitHub"s
+service = "GitHub"
 
 name = "mrxiaozhuox/karaty"
 
