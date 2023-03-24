@@ -30,3 +30,11 @@ list = [
     { display = "Home", page = "home" },
     { display = "My Github", link = "https://github.com/mrxiaozhuox/" }
 ]
+
+[footer]
+
+enable = true
+
+list = [
+
+]
