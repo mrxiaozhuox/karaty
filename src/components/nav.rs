@@ -1,12 +1,15 @@
 pub use dioxus::prelude::*;
 use dioxus_router::Link;
 
-use crate::{config::NavigationInfo, utils::data::GlobalData};
+use crate::{components::icon::Icon, config::NavigationInfo, utils::data::GlobalData};
 
 pub fn Navbar(cx: Scope) -> Element {
     let data = cx.consume_context::<GlobalData>().unwrap();
     let config = data.config;
-    let nav = config.navigation.list.clone();
+    let nav = config.navigation.links.clone();
+
+    let dark_mode = crate::hooks::mode::is_dark(&cx);
+
     cx.render(rsx! {
         nav {
             class: "dark:bg-gray-600",
@@ -57,12 +60,12 @@ pub fn Navbar(cx: Scope) -> Element {
                                             if config.site.homepage == page {
                                                 page = "/".into();
                                             }
-                                            
+
                                             rsx! {
                                                 Link {
                                                     class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
                                                     to: "{page}",
-                                                    "{icon}"
+                                                    Icon { name: icon }
                                                 }
                                             }
                                         },
@@ -71,10 +74,51 @@ pub fn Navbar(cx: Scope) -> Element {
                                                 a {
                                                     class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
                                                     href: "{link}",
-                                                    "{icon}"
+                                                    Icon { name: icon }
                                                 }
                                             }
                                         },
+                                        NavigationInfo::Feature { feature } => {
+                                            if feature.as_str() == "mode-switch" {
+                                                let icon = if crate::hooks::mode::is_dark(&cx) {
+                                                    rsx! {
+                                                        dioxus_free_icons::Icon {
+                                                            icon: dioxus_free_icons::icons::fa_solid_icons::FaSun
+                                                        }
+                                                    }
+                                                } else {
+                                                    rsx! {
+                                                        dioxus_free_icons::Icon {
+                                                            icon: dioxus_free_icons::icons::fa_solid_icons::FaMoon
+                                                        }
+                                                    }
+                                                };
+                                                rsx! {
+                                                    a {
+                                                        class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
+                                                        href: "javascript:;",
+                                                        onclick: move |_| {
+                                                            crate::hooks::mode::mode(&cx, !dark_mode);
+                                                            cx.needs_update();
+                                                        },
+                                                        icon
+                                                    }
+                                                }
+                                            } else {
+                                                rsx! {
+                                                    strong {
+                                                        "unknown feature"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        NavigationInfo::PlainText { text } => {
+                                            rsx! {
+                                                span {
+                                                    "{text}"
+                                                }
+                                            }
+                                        }
                                     }
                                 })
                             }

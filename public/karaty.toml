@@ -27,10 +27,28 @@ data = "template"
 [navigation]
 
 links = [
-    { text = "Home", page = "home" },
-    { text = "My Github", link = "https://github.com/mrxiaozhuox/" }
+    { text = "Home", page = "home.md" },
+    { text = "My Github", link = "https://github.com/mrxiaozhuox/" },
+    { feature = "mode-switch" },
 ]
 
 [footer]
 
-enable = false
+# enable = false
+
+content = [
+    [
+        { text = "Home", page = "home.md" },
+        { text = "Projects", page = "projects.json" },
+        { text = "Blog", page = "$blog" },
+        { text = "About", page = "about.md" },
+    ],
+    [
+        { feature = "mode-switch" },
+        { icon = "brand:github", link = "https://github.com/mrxiaozhuox/karaty" },
+        { icon = "brand:zhihu", link = "https://www.zhihu.com/people/mrxiao-zhuo-x" },
+    ],
+    [
+        { text = "@mrxiaozhuox - 2023" }
+    ]
+]

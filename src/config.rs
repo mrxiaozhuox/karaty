@@ -10,6 +10,8 @@ pub struct Config {
     pub data_source: DeployDataSourceConfig,
 
     pub navigation: NavigationConfig,
+
+    pub footer: FooterConfig,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -42,7 +44,12 @@ pub struct DeployDataSourceConfig {
 }
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct NavigationConfig {
-    pub list: Vec<NavigationInfo>,
+    pub links: Vec<NavigationInfo>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct FooterConfig {
+    pub content: Vec<Vec<NavigationInfo>>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -53,4 +60,8 @@ pub enum NavigationInfo {
 
     IconToPage { icon: String, page: String },
     IconToLink { icon: String, link: String },
+
+    Feature { feature: String },
+
+    PlainText { text: String },
 }
