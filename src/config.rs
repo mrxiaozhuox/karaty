@@ -48,6 +48,9 @@ pub struct NavigationConfig {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(untagged)]
 pub enum NavigationInfo {
-    Page { display: String, page: String },
-    Link { display: String, link: String },
+    TextToPage { text: String, page: String },
+    TextToLink { text: String, link: String },
+
+    IconToPage { icon: String, page: String },
+    IconToLink { icon: String, link: String },
 }

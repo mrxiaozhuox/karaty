@@ -27,7 +27,7 @@ pub fn Navbar(cx: Scope) -> Element {
                                 class: "flex space-x-4",
                                 nav.iter().map(|v| {
                                     match v.clone() {
-                                        NavigationInfo::Page { display, mut page } => {
+                                        NavigationInfo::TextToPage { text, mut page } => {
 
                                             // if page name equal homepage
                                             if config.site.homepage == page {
@@ -38,19 +38,43 @@ pub fn Navbar(cx: Scope) -> Element {
                                                 Link {
                                                     class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
                                                     to: "{page}",
-                                                    "{display}"
+                                                    "{text}"
                                                 }
                                             }
                                         },
-                                        NavigationInfo::Link { display, link } => {
+                                        NavigationInfo::TextToLink { text, link } => {
                                             rsx! {
                                                 a {
                                                     class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
                                                     href: "{link}",
-                                                    "{display}"
+                                                    "{text}"
                                                 }
                                             }
-                                        }
+                                        },
+                                        NavigationInfo::IconToPage { icon, mut page } => {
+
+                                            // if page name equal homepage
+                                            if config.site.homepage == page {
+                                                page = "/".into();
+                                            }
+                                            
+                                            rsx! {
+                                                Link {
+                                                    class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
+                                                    to: "{page}",
+                                                    "{icon}"
+                                                }
+                                            }
+                                        },
+                                        NavigationInfo::IconToLink { icon, link } => {
+                                            rsx! {
+                                                a {
+                                                    class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
+                                                    href: "{link}",
+                                                    "{icon}"
+                                                }
+                                            }
+                                        },
                                     }
                                 })
                             }
