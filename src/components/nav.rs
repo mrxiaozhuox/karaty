@@ -30,7 +30,7 @@ pub fn Navbar(cx: Scope) -> Element {
                                 class: "flex space-x-4",
                                 nav.iter().map(|v| {
                                     match v.clone() {
-                                        NavigationInfo::TextToPage { text, mut page } => {
+                                        NavigationInfo::TextToPage { text, page } => {
                                             rsx! {
                                                 Link {
                                                     class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
@@ -48,7 +48,7 @@ pub fn Navbar(cx: Scope) -> Element {
                                                 }
                                             }
                                         },
-                                        NavigationInfo::IconToPage { icon, mut page } => {
+                                        NavigationInfo::IconToPage { icon, page } => {
                                             rsx! {
                                                 Link {
                                                     class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",

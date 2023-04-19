@@ -25,6 +25,7 @@ watch_path = [
     "src", 
     "public", 
     "Dioxus.toml",
+    "template",
 ]
 
 index_on_404 = true
@@ -55,6 +56,6 @@ available = true
 
 loader = []
 
-[plugin.dioxus-binaryen]
+[plugin.karaty]
 
-optimize = true
+local-source = "template"

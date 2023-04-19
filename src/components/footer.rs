@@ -27,7 +27,7 @@ pub fn Footer(cx: Scope) -> Element {
                         class: "mt-{m} space-x-4 flex justify-center font-semibold",
                         data.iter().map(|info| {
                             match info.clone() {
-                                crate::config::NavigationInfo::TextToPage { text, mut page } => {
+                                crate::config::NavigationInfo::TextToPage { text, page } => {
                                     rsx! { 
                                         Link {
                                             class: "text-black dark:text-white hover:text-gray-800 dark:hover:text-gray-200",

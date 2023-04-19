@@ -22,8 +22,23 @@ pub fn get_raw_data_url(service: &str, name: &str, branch: &str) -> Option<Strin
 }
 
 pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result<String> {
-    let source_mode = &config.data_source.mode;
-    let source_data = &config.data_source.data;
+    let window = web_sys::window().unwrap();
+    let host = window.location().host().unwrap();
+    let host = host
+        .split(":")
+        .collect::<Vec<&str>>()
+        .first()
+        .unwrap()
+        .to_string();
+
+    let mut source_mode = config.data_source.mode.clone();
+    let mut source_data = config.data_source.data.clone();
+    if let Some(local) = config.data_source.local.clone() {
+        if host.as_str() == "localhost" || host.as_str() == "127.0.0.1" {
+            source_mode = local.mode;
+            source_data = local.data;
+        }
+    }
 
     match source_mode.to_lowercase().as_str() {
         "independent-repository" => {
@@ -41,7 +56,7 @@ pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result
 
             return Ok(response.text().await?);
         }
-        "sub-path" => {
+        "embedded-repository" => {
             let source = config.repository.clone();
             let service = source.service;
             let name = source.name;
@@ -57,6 +72,13 @@ pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result
                     .await?;
             return Ok(response.text().await?);
         }
+        "custom-url" => {
+            let source = source_data.as_table().unwrap();
+            let url = source.get("url").unwrap().as_str().unwrap();
+            let url = format!("{}/{}", url, sub_path);
+            let response = gloo::net::http::Request::get(&url).send().await?;
+            return Ok(response.text().await?);
+        }
         _ => {}
     }
     return Err(anyhow!("Unknown load mode"));
@@ -65,8 +87,23 @@ pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result
 pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<String> {
     let mut result = Vec::new();
 
-    let source_mode = &config.data_source.mode;
-    let source_data = &config.data_source.data;
+    let window = web_sys::window().unwrap();
+    let host = window.location().host().unwrap();
+    let host = host
+        .split(":")
+        .collect::<Vec<&str>>()
+        .first()
+        .unwrap()
+        .to_string();
+
+    let mut source_mode = config.data_source.mode.clone();
+    let mut source_data = config.data_source.data.clone();
+    if let Some(local) = config.data_source.local.clone() {
+        if host.as_str() == "localhost" || host.as_str() == "127.0.0.1" {
+            source_mode = local.mode;
+            source_data = local.data;
+        }
+    }
 
     let target = match source_mode.to_lowercase().as_str() {
         "independent-repository" => {
@@ -80,7 +117,7 @@ pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<String> {
                 name, sub_path, branch
             )
         }
-        "sub-path" => {
+        "embedded-repository" => {
             let source = config.repository.clone();
             let name = source.name;
             let branch = source.branch;
@@ -91,6 +128,12 @@ pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<String> {
                 "https://api.github.com/repos/{}/contents/{}/{}?ref={}",
                 name, sub_folder, sub_path, branch,
             )
+        }
+        "custom-url" => {
+            let source = source_data.as_table().unwrap();
+            let url = source.get("url").unwrap().as_str().unwrap();
+            let index = source.get("index-file").unwrap().as_str().unwrap();
+            format!("{}/{}/{}", url, sub_path, index)
         }
         _ => {
             panic!("Not Found");

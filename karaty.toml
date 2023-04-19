@@ -22,6 +22,12 @@ data = { service = "GitHub", name = "mrxiaozhuox/blog.mrxzx.info", branch = "mai
 
 # data = "template"
 
+[data-source.local]
+
+mode = "custom-url"
+
+data = { url = "/temp/", index-file = "index.json" }
+
 [[routing]]
 path = "/"
 file = "home.md"

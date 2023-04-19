@@ -41,7 +41,16 @@ fn default_master() -> String {
 pub struct DeployDataSourceConfig {
     pub mode: String,
     pub data: toml::Value,
+    #[serde(default)]
+    pub local: Option<DeployLocalDataSourceConfig>,
 }
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct DeployLocalDataSourceConfig {
+    pub mode: String,
+    pub data: toml::Value,
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct NavigationConfig {
     pub links: Vec<NavigationInfo>,
