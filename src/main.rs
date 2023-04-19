@@ -16,7 +16,7 @@ use pages::*;
 use setup::{setup_config, setup_root_app};
 use utils::data::{load_pages, GlobalData};
 
-use crate::pages::template::DynamicTemplate;
+use crate::{config::RoutingInfo, pages::template::DynamicTemplate};
 
 static TOAST_MANAGER: fermi::AtomRef<ToastManager> = |_| ToastManager::default();
 
@@ -48,21 +48,91 @@ fn App(cx: Scope) -> Element {
                 // dioxus router info
                 Router {
 
-                    data.pages.iter().map(|(name, content)| {
-
-                        let url = if name == &data.config.site.homepage {
-                            String::from("/")
-                        } else {
-                            format!("/{}", name)
-                        };
-
-                        rsx! {
-                            Route { to: "{url}", DynamicTemplate {
-                                name: name.to_string(),
-                                content: content.to_string(),
-                            } }
+                    data.config.routing.iter().map(|v| {
+                        match v {
+                            RoutingInfo::FileBind { path, file } => {
+                                let content = data.pages.get(file);
+                                if let Some(content) = content {
+                                    rsx! {
+                                        Route {
+                                            to: "{path}",
+                                            DynamicTemplate {
+                                                name: file.to_string(),
+                                                content: content.to_string(),
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    rsx! {
+                                        Route {
+                                            to: "{path}",
+                                            _404::NotFound {}
+                                        }
+                                    }
+                                }
+                            }
+                            RoutingInfo::PresetBind { path, preset } => {
+                                match preset.as_str() {
+                                    "blog-list" => {
+                                        rsx! {
+                                            Route {
+                                                to: "{path}",
+                                                blog::BlogList {}
+                                            }
+                                        }
+                                    }
+                                    "blog-content" => {
+                                        rsx! {
+                                            Route {
+                                                to: "{path}",
+                                                blog::BlogPage {}
+                                            }
+                                        }
+                                    }
+                                    _ => {
+                                        rsx! {
+                                            Route {
+                                                to: "{path}",
+                                                _404::NotFound {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            RoutingInfo::RedirectBind { path, redirect } => {
+                                rsx! {
+                                    Route {
+                                        to: "{path}",
+                                        div {
+                                            class: "h-screen flex justify-center items-center",
+                                            p {
+                                                class: "text-gray-500 text-3xl font-semibold",
+                                                "Redirect..."
+                                            }
+                                        }
+                                        dioxus_router::Redirect {
+                                            to: "{redirect}"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     })
+                    // data.pages.iter().map(|(name, content)| {
+
+                    //     let url = if name == &data.config.site.homepage {
+                    //         String::from("/")
+                    //     } else {
+                    //         format!("/{}", name)
+                    //     };
+
+                    //     rsx! {
+                    //         Route { to: "{url}", DynamicTemplate {
+                    //             name: name.to_string(),
+                    //             content: content.to_string(),
+                    //         } }
+                    //     }
+                    // })
 
                     Route { to: "/blog", blog::BlogList {} }
                     Route { to: "/blog/:path", blog::BlogPage {} }

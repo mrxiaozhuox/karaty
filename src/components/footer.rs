@@ -28,14 +28,6 @@ pub fn Footer(cx: Scope) -> Element {
                         data.iter().map(|info| {
                             match info.clone() {
                                 crate::config::NavigationInfo::TextToPage { text, mut page } => {
-
-                                    // if page name equal homepage
-                                    if config.site.homepage == page {
-                                        page = "/".into();
-                                    } else if page.as_str() == "$blog" {
-                                        page = "/blog".into();
-                                    }
-                                    
                                     rsx! { 
                                         Link {
                                             class: "text-black dark:text-white hover:text-gray-800 dark:hover:text-gray-200",
@@ -54,8 +46,13 @@ pub fn Footer(cx: Scope) -> Element {
                                     }
                                 },
                                 crate::config::NavigationInfo::IconToPage { icon, page } => {
-
-                                rsx! { p { "feature" } }
+                                    rsx! { 
+                                        Link {
+                                            class: "text-black dark:text-white hover:text-gray-800 dark:hover:text-gray-200",
+                                            to: "{page}",
+                                            Icon { name: icon }
+                                        }
+                                    }
                                 },
                                 crate::config::NavigationInfo::IconToLink { icon, link } => {
                                     rsx! { 

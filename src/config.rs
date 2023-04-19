@@ -6,6 +6,8 @@ pub struct Config {
 
     pub repository: DeployRepositoryConfig,
 
+    pub routing: Vec<RoutingInfo>,
+
     #[serde(rename = "data-source")]
     pub data_source: DeployDataSourceConfig,
 
@@ -21,8 +23,6 @@ pub struct SiteConfig {
     pub title_suffix: String,
     #[serde(rename = "dark-mode")]
     pub dark_mode: bool,
-
-    pub homepage: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -64,4 +64,12 @@ pub enum NavigationInfo {
     Feature { feature: String },
 
     PlainText { text: String },
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(untagged)]
+pub enum RoutingInfo {
+    FileBind { path: String, file: String },
+    PresetBind { path: String, preset: String },
+    RedirectBind { path: String, redirect: String },
 }

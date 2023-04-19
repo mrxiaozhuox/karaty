@@ -1,23 +1,30 @@
 use std::collections::HashMap;
 
 use dioxus::prelude::*;
-use dioxus_router::{Link, use_route};
-use serde_json::Value;
+use dioxus_router::{use_route, Link};
 
 use crate::{
     components::{footer::Footer, nav::Navbar},
+    config::Config,
     pages::_404,
+    utils::data::{load_content_list, load_from_source, GlobalData},
 };
 
 #[allow(dead_code)]
 const BLOG_REPO: &'static str = "mrxiaozhuox/blog.mrxzx.info";
 
 pub fn BlogList(cx: Scope) -> Element {
+    let global = cx.consume_context::<GlobalData>().unwrap();
+    let config = global.config;
+
+    let list_config = config.clone();
     let list = use_future(&cx, (), |_| async move {
-        let res = get_blog_list().await;
+        let res = get_blog_list(&list_config).await;
         let res = if let Some(v) = res { v } else { vec![] };
         res
     });
+
+    let site_title = config.site.name;
 
     match list.value() {
         Some(v) => {
@@ -63,7 +70,7 @@ pub fn BlogList(cx: Scope) -> Element {
                             class: "max-w-5xl text-center",
                             h1 {
                                 class: "text-xl font-bold",
-                                "\"YuKun's Blog\""
+                                "\" {site_title} \""
                             }
                             div {
                                 class: "mt-6",
@@ -101,102 +108,87 @@ struct BlogInfo {
     pub path: String,
 }
 
-async fn get_blog_list() -> Option<Vec<BlogInfo>> {
-    let resp = gloo::net::http::Request::get(&format!(
-        "https://api.github.com/repos/{BLOG_REPO}/contents"
-    ))
-    .send()
-    .await
-    .ok()?;
-    let data = resp.json::<Value>().await.ok()?;
+async fn get_blog_list(config: &Config) -> Option<Vec<BlogInfo>> {
+    let data = load_content_list(config, "posts").await;
 
     let mut result = vec![];
 
-    if let Value::Array(vec) = data {
-        for value in vec {
-            if let Value::Object(obj) = value {
-                if obj.get("type")?.as_str()? != "file" {
-                    continue;
-                }
-
-                let file_name = obj.get("name")?.as_str()?;
-                if file_name == "_template.md" {
-                    continue;
-                }
-                let file_path = obj.get("path")?.as_str()?;
-
-                let file_url = obj.get("download_url")?.as_str()?;
-
-                let meta_info = gloo::net::http::Request::get(file_url).send().await.ok()?;
-                let meta_info = meta_info.text().await.ok()?;
-
-                let mut type_mark = HashMap::new();
-
-                type_mark.insert("title".into(), "string");
-                type_mark.insert("tags".into(), "array");
-                type_mark.insert("category".into(), "string");
-                type_mark.insert("date".into(), "string");
-                type_mark.insert("released".into(), "bool");
-
-                let (meta_info, _) = markdown_meta_parser::MetaData {
-                    content: meta_info,
-                    required: vec!["title".to_string()],
-                    type_mark,
-                }
-                .parse()
-                .ok()?;
-
-                if meta_info.get("released").is_some()
-                    && meta_info
-                        .get("released")
-                        .unwrap()
-                        .clone()
-                        .as_bool()
-                        .unwrap()
-                        == false
-                {
-                    continue;
-                }
-
-                let title = meta_info.get("title").unwrap().clone();
-
-                let date = meta_info.get("date");
-                let date = if let Some(d) = date {
-                    d.clone().as_string().unwrap()
-                } else {
-                    "".to_string()
-                };
-
-                let tags = meta_info.get("tags");
-                let tags = if let Some(v) = tags {
-                    v.clone().as_array().unwrap()
-                } else {
-                    vec![]
-                };
-
-                let category = meta_info.get("category");
-                let category = if let Some(v) = category {
-                    v.clone().as_string()
-                } else {
-                    None
-                };
-
-                let title = title.as_string().unwrap();
-
-                let path = file_path.split(".").collect::<Vec<&str>>();
-                let path = path[0..path.len() - 1].to_vec();
-                let path = path.join(".");
-
-                let blog_info = BlogInfo {
-                    title,
-                    tags,
-                    category,
-                    date,
-                    path,
-                };
-                result.push(blog_info);
-            }
+    for file_name in data {
+        if file_name == "_template.md" {
+            continue;
         }
+
+        let meta_info = load_from_source(config, &format!("/posts/{file_name}")).await;
+        if meta_info.is_err() {
+            continue;
+        }
+        let meta_info = meta_info.unwrap();
+
+        let mut type_mark = HashMap::new();
+
+        type_mark.insert("title".into(), "string");
+        type_mark.insert("tags".into(), "array");
+        type_mark.insert("category".into(), "string");
+        type_mark.insert("date".into(), "string");
+        type_mark.insert("released".into(), "bool");
+
+        let (meta_info, _) = markdown_meta_parser::MetaData {
+            content: meta_info,
+            required: vec!["title".to_string()],
+            type_mark,
+        }
+        .parse()
+        .ok()?;
+
+        if meta_info.get("released").is_some()
+            && meta_info
+                .get("released")
+                .unwrap()
+                .clone()
+                .as_bool()
+                .unwrap()
+                == false
+        {
+            continue;
+        }
+
+        let title = meta_info.get("title").unwrap().clone();
+
+        let date = meta_info.get("date");
+        let date = if let Some(d) = date {
+            d.clone().as_string().unwrap()
+        } else {
+            "".to_string()
+        };
+
+        let tags = meta_info.get("tags");
+        let tags = if let Some(v) = tags {
+            v.clone().as_array().unwrap()
+        } else {
+            vec![]
+        };
+
+        let category = meta_info.get("category");
+        let category = if let Some(v) = category {
+            v.clone().as_string()
+        } else {
+            None
+        };
+
+        let title = title.as_string().unwrap();
+
+        let path = file_name.split(".").collect::<Vec<&str>>();
+        let path = path[0..path.len() - 1].to_vec();
+        let path = path.join(".");
+
+        let blog_info = BlogInfo {
+            title,
+            tags,
+            category,
+            date,
+            path,
+        };
+        result.push(blog_info);
     }
     Some(result)
 }
