@@ -14,13 +14,13 @@ name = "mrxiaozhuox/karaty"
 
 [data-source]
 
-# mode = "independent-repository"
+mode = "independent-repository"
 
-# data = { service = "GitHub", name = "mrxiaozhuox/blog.mrxzx.info", branch = "master" }
+data = { service = "GitHub", name = "mrxiaozhuox/blog.mrxzx.info", branch = "main" }
 
-mode = "sub-path"
+# mode = "sub-path"
 
-data = "template"
+# data = "template"
 
 [[routing]]
 path = "/"

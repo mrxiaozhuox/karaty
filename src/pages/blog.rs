@@ -114,6 +114,7 @@ async fn get_blog_list(config: &Config) -> Option<Vec<BlogInfo>> {
     let mut result = vec![];
 
     for file_name in data {
+        log::info!("{}", file_name);
         if file_name == "_template.md" {
             continue;
         }
@@ -197,8 +198,16 @@ pub fn BlogPage(cx: Scope) -> Element {
     let route = use_route(&cx);
     let path = route.segment("path").unwrap();
 
+    let global = cx.consume_context::<GlobalData>().unwrap();
+    let config = global.config;
+
     let name = path.to_string();
-    let info = use_future(&cx, (), |_| async move { get_info(&name).await });
+    let info_config = config.clone();
+    let info = use_future(
+        &cx,
+        (),
+        |_| async move { get_info(&info_config, &name).await },
+    );
 
     match info.value() {
         Some(Some((info, content))) => {
@@ -276,19 +285,13 @@ pub fn BlogPage(cx: Scope) -> Element {
     }
 }
 
-async fn get_info(name: &str) -> Option<(BlogInfo, String)> {
-    let resp = gloo::net::http::Request::get(&format!(
-        "https://raw.githubusercontent.com/{BLOG_REPO}/main/{name}.md"
-    ))
-    .send()
-    .await
-    .ok()?;
+async fn get_info(config: &Config, name: &str) -> Option<(BlogInfo, String)> {
+    let content = load_from_source(config, &format!("/posts/{name}.md")).await;
 
-    if resp.status() != 200 {
+    if content.is_err() {
         return None;
     }
-
-    let content = resp.text().await.ok()?;
+    let content = content.unwrap();
 
     let mut type_mark = HashMap::new();
     type_mark.insert("title".into(), "string");

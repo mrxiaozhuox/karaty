@@ -104,6 +104,7 @@ pub fn Footer(cx: Scope) -> Element {
                 }
             })
         }
+        br {}
     })
 
     // cx.render(rsx! {
