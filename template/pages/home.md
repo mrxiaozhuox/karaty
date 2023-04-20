@@ -1,5 +1,11 @@
-<p align="center">
-  <img src="https://github.com/DioxusLabs/dioxus/raw/master/notes/header.svg">
-</p>
+# 🌈 Karaty 🧸
 
-# Hello World
+> 一款使用 **Dioxus** 开发的 个人主页 & 博客 生成器
+
+
+
+1. 使用单个 `karaty.toml` 文件进行配置
+2. 通过不同文件类型及内置模板快速生成页面
+3. 无需本地 CLI 编译及转换，快速静态部署
+4. 独立数据源、博客内容和代码位于不同 Git 仓库
+5. 单页程序、且仅包含一个 WASM 文件包

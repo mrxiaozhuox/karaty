@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::components::{nav::Navbar, footer::Footer};
+use crate::components::{footer::Footer, nav::Navbar};
 
 #[inline_props]
 pub fn DynamicTemplate(cx: Scope, name: String, content: String) -> Element {
@@ -17,9 +17,9 @@ pub fn DynamicTemplate(cx: Scope, name: String, content: String) -> Element {
 
 #[inline_props]
 pub fn Markdown(cx: Scope, content: String) -> Element {
-
     let mut options = pulldown_cmark::Options::empty();
     options.insert(pulldown_cmark::Options::ENABLE_STRIKETHROUGH);
+    options.insert(pulldown_cmark::Options::ENABLE_TASKLISTS);
     let parser = pulldown_cmark::Parser::new_ext(content, options);
 
     let mut html_output = String::new();
@@ -27,7 +27,7 @@ pub fn Markdown(cx: Scope, content: String) -> Element {
 
     cx.render(rsx! {
         section {
-            class: "h-screen bg-cover bg-white dark:bg-gray-600",
+            class: "bg-cover bg-white dark:bg-gray-600",
             Navbar {}
             div {
                 class: "flex h-4/6 w-full items-center justify-center container mx-auto px-8",

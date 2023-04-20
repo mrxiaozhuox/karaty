@@ -33,6 +33,10 @@ path = "/"
 file = "home.md"
 
 [[routing]]
+path = "/about"
+file = "about.md"
+
+[[routing]]
 path = "/post"
 preset = "post-list"
 
@@ -63,8 +67,5 @@ content = [
         { icon = "brand:github", link = "https://github.com/mrxiaozhuox/karaty" },
         { icon = "brand:zhihu", link = "https://www.zhihu.com/people/mrxiao-zhuo-x" },
         { icon = "brand:instagram", link = "https://www.instagram.com/mrxiaozhuox/" },
-    ],
-    [
-        { text = "Powered by DioxusLabs" }
     ]
 ]

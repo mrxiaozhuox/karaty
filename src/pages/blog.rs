@@ -35,7 +35,7 @@ pub fn BlogList(cx: Scope) -> Element {
                 let tags = v.tags.iter().map(|tag| {
                     rsx! {
                         span {
-                            class: "text-xs inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-gray-700 text-white rounded",
+                            class: "text-xs mr-1 inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-gray-700 text-white rounded",
                             "{tag}"
                         }
                     }
@@ -223,7 +223,7 @@ pub fn BlogPage(cx: Scope) -> Element {
             let tags = info.tags.iter().map(|tag| {
                 rsx! {
                     span {
-                        class: "text-xs inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-gray-700 text-white rounded",
+                        class: "text-xs mr-1 inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-gray-700 text-white rounded",
                         "{tag}"
                     }
                 }

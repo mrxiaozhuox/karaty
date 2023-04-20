@@ -20,7 +20,7 @@ pub fn Navbar(cx: Scope) -> Element {
                     div {
                         class: "flex-1 flex items-center justify-center sm:items-stretch sm:justify-start",
                         Link {
-                            class: "flex-shrink-0 flex items-center font-bold text-2xl",
+                            class: "flex-shrink-0 flex items-center font-bold text-2xl dark:text-white",
                             to: "/",
                             "{config.site.name}"
                         }
