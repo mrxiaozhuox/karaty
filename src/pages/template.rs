@@ -1,4 +1,7 @@
+use std::collections::HashMap;
+
 use dioxus::prelude::*;
+use serde::{Deserialize, Serialize};
 
 use crate::components::{footer::Footer, nav::Navbar};
 
@@ -19,11 +22,11 @@ pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
         toml::Value::Table(res)
     });
     let template = template.as_table().unwrap();
+    let mut using = template.get("using").unwrap().as_str().unwrap();
     cx.render(rsx! {
         div {
             match suffix {
                 "md" => {
-                    let mut using = template.get("using").unwrap().as_str().unwrap();
                     if using.is_empty() {
                         using = "center";
                     }
@@ -33,6 +36,21 @@ pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
                                 content: cx.props.content.to_string(),
                                 config: template.clone(),
                             } }
+                        }
+                    }
+                },
+                "json" => {
+                    let content = cx.props.content.to_string();
+                    if using.is_empty() {
+                        using = "cards";
+                    }
+                    match using {
+                        "cards" | _ => {
+                            rsx! {
+                                JsonCardList {
+                                    content: content,
+                                }
+                            }
                         }
                     }
                 }
@@ -72,6 +90,77 @@ pub fn CenterMarkdown(
                         class: "{class}",
                         dangerous_inner_html: "{html_output}",
                     }
+                    Footer {}
+                }
+            }
+        }
+    })
+}
+
+#[derive(Clone, Deserialize)]
+pub struct CardInfo {
+    pub title: String,
+    pub url: String,
+    pub content: String,
+    pub footnote: String,
+}
+
+#[inline_props]
+pub fn JsonCardList(cx: Scope, content: String) -> Element {
+    let data = serde_json::from_str::<HashMap<String, Vec<CardInfo>>>(&content);
+
+    if let Err(e) = data {
+        return cx.render(rsx! {
+            crate::pages::error::Error {
+                title: "JSON Parse failed".into()
+                content: format!("{e}")
+            }
+        });
+    }
+    let data = data.unwrap();
+
+    let displayer = data.iter().map(|(group, value)| {
+        rsx! {
+            h2 {
+                class: "text-xl font-bold",
+                "# {group}"
+            }
+            div {
+                class: "mt-4 grid md:grid-cols-2 gap-2 mb-8",
+                value.iter().map(|p| {
+                    rsx! {
+                        a {
+                            class: "block p-4 rounded-lg shadow-lg bg-white w-64 dark:bg-gray-700 hover:bg-gray-200",
+                            href: "{p.url}",
+                            target: "_blank",
+                            h5 {
+                                class: "text-gray-900 dark:text-white text-xl leading-tight font-semibold mb-2",
+                                "{p.title}"
+                            }
+                            p {
+                                class: "text-gray-700 dark:text-gray-200 text-base mb-2",
+                                "{p.content}"
+                            }
+                            p {
+                                class: "text-gray-400 dark:text-gray-500 text-base",
+                                "{p.footnote}"
+                            }
+                        }
+                    }
+                })
+            }
+        }
+    });
+
+    cx.render(rsx! {
+        section {
+            class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+            Navbar {}
+            div {
+                class: "flex h-full w-full items-center justify-center container mx-auto px-8",
+                div {
+                    class: "max-w-5xl text-center",
+                    displayer
                     Footer {}
                 }
             }

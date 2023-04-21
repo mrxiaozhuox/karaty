@@ -49,6 +49,10 @@ file = "about.md"
 using = "center"
 
 [[routing]]
+path = "/projects"
+file = "projects.json"
+
+[[routing]]
 path = "/post"
 preset = "post-list"
 
