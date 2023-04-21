@@ -50,7 +50,7 @@ fn App(cx: Scope) -> Element {
 
                     data.config.routing.iter().map(|v| {
                         match v {
-                            RoutingInfo::FileBind { path, file } => {
+                            RoutingInfo::FileBind { path, file, template } => {
                                 let content = data.pages.get(file);
                                 if let Some(content) = content {
                                     rsx! {
@@ -58,6 +58,7 @@ fn App(cx: Scope) -> Element {
                                             to: "{path}",
                                             DynamicTemplate {
                                                 name: file.to_string(),
+                                                template: template.clone(),
                                                 content: content.to_string(),
                                             }
                                         }

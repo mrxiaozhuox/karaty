@@ -32,9 +32,21 @@ data = { url = "/temp/", index-file = "index.json" }
 path = "/"
 file = "home.md"
 
+[routing.template]
+
+using = "center"
+
+[routing.template.style]
+
+ul = "list-none"
+
 [[routing]]
 path = "/about"
 file = "about.md"
+
+[routing.template]
+
+using = "center"
 
 [[routing]]
 path = "/post"

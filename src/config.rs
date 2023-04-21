@@ -78,7 +78,18 @@ pub enum NavigationInfo {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(untagged)]
 pub enum RoutingInfo {
-    FileBind { path: String, file: String },
-    PresetBind { path: String, preset: String },
-    RedirectBind { path: String, redirect: String },
+    FileBind {
+        path: String,
+        file: String,
+        #[serde(default)]
+        template: Option<toml::Value>,
+    },
+    PresetBind {
+        path: String,
+        preset: String,
+    },
+    RedirectBind {
+        path: String,
+        redirect: String,
+    },
 }

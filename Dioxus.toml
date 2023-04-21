@@ -26,6 +26,7 @@ watch_path = [
     "public", 
     "Dioxus.toml",
     "template",
+    "karaty.toml",
 ]
 
 index_on_404 = true
