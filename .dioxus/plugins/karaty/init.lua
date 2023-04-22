@@ -24,7 +24,7 @@ end
 ---@param info BuildInfo
 manager.build.on_finish = function (info)
     local config = dioxus.plugin["karaty"]
-    CopyKartyConfig()
+    CopyKaratyConfig()
     if config ~= nil then
         if config["local-source"] ~= nil then
             if config["local-source"]["on-build"] == true then
@@ -36,16 +36,17 @@ end
 
 ---@param info ServeStartInfo
 manager.serve.on_start = function (info)
-    CopyKartyConfig()
+    CopyKaratyConfig()
     CopyLocalSource()
 end
 
 ---@param info ServeRebuildInfo
 manager.serve.on_rebuild_end = function (info)
-    CopyKartyConfig()
+    CopyKaratyConfig()
+    CopyLocalSource()
 end
 
-function CopyKartyConfig()
+function CopyKaratyConfig()
     local out_dir = dioxus.application.out_dir
     local crate_dir = dirs.crate_dir()
     local target = path.join(crate_dir, out_dir, "karaty.toml")
