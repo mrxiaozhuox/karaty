@@ -23,7 +23,15 @@ end
 
 ---@param info BuildInfo
 manager.build.on_finish = function (info)
+    local config = dioxus.plugin["karaty"]
     CopyKartyConfig()
+    if config ~= nil then
+        if config["local-source"] ~= nil then
+            if config["ocal-sourc"]["on-build"] == true then
+                CopyLocalSource()
+            end
+        end
+    end
 end
 
 ---@param info ServeStartInfo
@@ -51,15 +59,16 @@ function CopyLocalSource()
     local config = dioxus.plugin["karaty"]
     local out_dir = dioxus.application.out_dir
     local crate_dir = dirs.crate_dir()
-    local target = path.join(crate_dir, out_dir, "karaty")
     if config == nil then
         config = {}
     end
-    log.info(plugin.tool.object_to_string(config))
     if config["local-source"] ~= nil then
-        log.info(path.join(crate_dir, config["local-source"]))
-        log.info(path.join(crate_dir, out_dir, "temp"))
-        CopyFiles(path.join(crate_dir, config["local-source"]), path.join(crate_dir, out_dir, "source"))
+        if config["local-source"]["path"] ~= nil then
+            CopyFiles(
+                path.join(crate_dir, config["local-source"]["path"]),
+                path.join(crate_dir, out_dir, "source")
+            )
+        end
     end
 end
 
