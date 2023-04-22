@@ -1,1 +1,1 @@
-[{"type":"file","name":"dependencies.json"},{"type":"file","name":"about.md"},{"type":"file","name":"home.md"}]
+[{"name":"dependencies.json","type":"file"},{"name":"home.md","type":"file"},{"name":"author.md","type":"file"}]

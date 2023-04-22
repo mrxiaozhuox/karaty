@@ -1,15 +1,14 @@
 # 🌈 Karaty 🧸
 
-> 一款使用 **Dioxus** 开发的 个人主页 & 博客 生成器
+> A static website & blog generator made by **Dioxus**
 
 
+- **Use single config file `karaty.toml` to configure your website**
 
-- 使用单个 `karaty.toml` 文件进行配置
+- **Use different file suffix & different template config page & routing**
 
-- 通过不同文件类型及内置模板快速生成页面
+- **Deploy website without CLI, render pages from markdown**
 
-- 无需本地 CLI 编译及转换，快速静态部署
+- **Independent data-source, split content and code in different git repository**
 
-- 独立数据源、博客内容和代码位于不同 Git 仓库
-
-- 单页程序、且仅包含一个 WASM 文件包
+- **Single page application, powered by single `.wasm` file**

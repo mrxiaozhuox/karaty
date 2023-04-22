@@ -31,8 +31,8 @@ using = "center"
 ul = "list-none"
 
 [[routing]]
-path = "/about"
-file = "about.md"
+path = "/author"
+file = "author.md"
 
 [routing.template]
 
@@ -67,7 +67,7 @@ content = [
         { text = "Home", page = "/" },
         { text = "Dependencies", page = "/dependencies" },
         { text = "Blog", page = "/blog" },
-        { text = "About", page = "/about" },
+        { text = "Author", page = "/author" },
     ],
     [
         { icon = "brand:github", link = "https://github.com/mrxiaozhuox/karaty" },
