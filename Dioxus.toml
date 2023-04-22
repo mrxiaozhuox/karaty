@@ -59,4 +59,4 @@ loader = []
 
 [plugin.karaty]
 
-local-source = { name = "template", on-build = true }
+local-source = { dir = "template", on-build = true }

@@ -63,9 +63,9 @@ function CopyLocalSource()
         config = {}
     end
     if config["local-source"] ~= nil then
-        if config["local-source"]["path"] ~= nil then
+        if config["local-source"]["dir"] ~= nil then
             CopyFiles(
-                path.join(crate_dir, config["local-source"]["path"]),
+                path.join(crate_dir, config["local-source"]["dir"]),
                 path.join(crate_dir, out_dir, "source")
             )
         end
