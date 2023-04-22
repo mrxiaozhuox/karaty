@@ -65,6 +65,9 @@ function CopyLocalSource()
     end
     if config["local-source"] ~= nil then
         if config["local-source"]["dir"] ~= nil then
+            if path.is_dir(path.join(crate_dir, out_dir, "source")) then
+                fs.remove_dir(path.join(path.join(crate_dir, out_dir, "source")))
+            end
             CopyFiles(
                 path.join(crate_dir, config["local-source"]["dir"]),
                 path.join(crate_dir, out_dir, "source")
