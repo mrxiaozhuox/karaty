@@ -39,8 +39,8 @@ file = "about.md"
 using = "center"
 
 [[routing]]
-path = "/projects"
-file = "projects.json"
+path = "/dependencies"
+file = "dependencies.json"
 
 [[routing]]
 path = "/post"
@@ -65,7 +65,7 @@ links = [
 content = [
     [
         { text = "Home", page = "/" },
-        { text = "Projects", page = "/projects" },
+        { text = "Dependencies", page = "/dependencies" },
         { text = "Blog", page = "/blog" },
         { text = "About", page = "/about" },
     ],

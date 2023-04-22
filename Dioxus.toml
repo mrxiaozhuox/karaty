@@ -25,7 +25,7 @@ watch_path = [
     "src", 
     "public", 
     "Dioxus.toml",
-    "template",
+    "data",
     "karaty.toml",
 ]
 
@@ -41,8 +41,6 @@ style = []
 script = [
     "/assets/tailwind/tailwind.min.js",
     "/assets/tailwind/tailwind.config.js",
-
-    "/assets/markdown/markdown.js"
 ]
 
 [web.resource.dev]
@@ -59,4 +57,4 @@ loader = []
 
 [plugin.karaty]
 
-local-source = { dir = "template", on-build = true }
+local-source = { dir = "data", on-build = true }
