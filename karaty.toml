@@ -14,16 +14,6 @@ name = "mrxiaozhuox/karaty"
 
 [data-source]
 
-mode = "independent-repository"
-
-data = { service = "GitHub", name = "mrxiaozhuox/blog.mrxzx.info", branch = "main" }
-
-# mode = "sub-path"
-
-# data = "template"
-
-[data-source.local]
-
 mode = "custom-url"
 
 data = { url = "/source/", index-file = "index.json" }
