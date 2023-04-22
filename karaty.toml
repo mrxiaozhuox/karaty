@@ -26,7 +26,7 @@ data = { service = "GitHub", name = "mrxiaozhuox/blog.mrxzx.info", branch = "mai
 
 mode = "custom-url"
 
-data = { url = "/temp/", index-file = "index.json" }
+data = { url = "/source/", index-file = "index.json" }
 
 [[routing]]
 path = "/"

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+  "addonManager": {
+    "enable": false
+  },
+  "diagnostics": {
+    "gloabls": [
+      "plugin_lib",
+      "library_dir",
+      "config_info"
+    ]
+  }
+}
