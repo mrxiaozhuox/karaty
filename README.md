@@ -1,9 +1,9 @@
 <div align="center">
-  <h1>Dioxus Starter</h1>
+  <h1>Karaty</h1>
 </div>
 
 <div align="center">
-  <a href="http://dioxus-starter.mrxzx.info">Online Demo</a>
+  <a href="http://karaty.mrxzx.info">Online Demo</a>
 </div>
 
 <div align="center">
