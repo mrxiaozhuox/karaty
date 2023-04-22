@@ -27,7 +27,7 @@ manager.build.on_finish = function (info)
     CopyKartyConfig()
     if config ~= nil then
         if config["local-source"] ~= nil then
-            if config["ocal-sourc"]["on-build"] == true then
+            if config["ocal-source"]["on-build"] == true then
                 CopyLocalSource()
             end
         end
