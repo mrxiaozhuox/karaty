@@ -1,0 +1,87 @@
+[site]
+
+name = "Karaty Offical"
+
+title-suffix = " | Karaty Site"
+
+dark-mode = true
+
+[repository]
+
+service = "GitHub"
+
+name = "mrxiaozhuox/karaty"
+
+[data-source]
+
+mode = "independent-repository"
+
+data = { service = "GitHub", name = "mrxiaozhuox/blog.mrxzx.info", branch = "main" }
+
+# mode = "sub-path"
+
+# data = "template"
+
+[data-source.local]
+
+mode = "custom-url"
+
+data = { url = "/source/", index-file = "index.json" }
+
+[[routing]]
+path = "/"
+file = "home.md"
+
+[routing.template]
+
+using = "center"
+
+[routing.template.style]
+
+ul = "list-none"
+
+[[routing]]
+path = "/about"
+file = "about.md"
+
+[routing.template]
+
+using = "center"
+
+[[routing]]
+path = "/projects"
+file = "projects.json"
+
+[[routing]]
+path = "/post"
+preset = "post-list"
+
+[[routing]]
+path = "/post/:file"
+preset = "post-conent"
+
+[navigation]
+
+links = [
+    { text = "Home", page = "/" },
+    { text = "My Github", link = "https://github.com/mrxiaozhuox/" },
+    { feature = "mode-switch" },
+]
+
+[footer]
+
+# enable = false
+
+content = [
+    [
+        { text = "Home", page = "/" },
+        { text = "Projects", page = "/projects" },
+        { text = "Blog", page = "/blog" },
+        { text = "About", page = "/about" },
+    ],
+    [
+        { icon = "brand:github", link = "https://github.com/mrxiaozhuox/karaty" },
+        { icon = "brand:zhihu", link = "https://www.zhihu.com/people/mrxiao-zhuo-x" },
+        { icon = "brand:instagram", link = "https://www.instagram.com/mrxiaozhuox/" },
+    ]
+]
