@@ -74,7 +74,7 @@ fn App(cx: Scope) -> Element {
                             }
                             RoutingInfo::PresetBind { path, preset } => {
                                 match preset.as_str() {
-                                    "blog-list" => {
+                                    "post-list" => {
                                         rsx! {
                                             Route {
                                                 to: "{path}",
@@ -82,7 +82,7 @@ fn App(cx: Scope) -> Element {
                                             }
                                         }
                                     }
-                                    "blog-content" => {
+                                    "post-content" => {
                                         rsx! {
                                             Route {
                                                 to: "{path}",
@@ -119,24 +119,6 @@ fn App(cx: Scope) -> Element {
                             }
                         }
                     })
-                    // data.pages.iter().map(|(name, content)| {
-
-                    //     let url = if name == &data.config.site.homepage {
-                    //         String::from("/")
-                    //     } else {
-                    //         format!("/{}", name)
-                    //     };
-
-                    //     rsx! {
-                    //         Route { to: "{url}", DynamicTemplate {
-                    //             name: name.to_string(),
-                    //             content: content.to_string(),
-                    //         } }
-                    //     }
-                    // })
-
-                    Route { to: "/blog", blog::BlogList {} }
-                    Route { to: "/blog/:path", blog::BlogPage {} }
 
                     Route { to: "", _404::NotFound {} }
                 }

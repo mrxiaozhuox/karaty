@@ -4,7 +4,14 @@ use fermi::use_init_atom_root;
 use crate::{config::Config, hooks::mode::init_mode_info, utils::data::GlobalData};
 
 pub async fn setup_config() -> anyhow::Result<Config> {
-    let response = gloo::net::http::Request::get("/karaty.toml").send().await?;
+    let window = web_sys::window().unwrap();
+    let toml_path = if let Some(v) = window.get("karaty") {
+        v.as_string().unwrap_or("/karaty.toml".to_string())
+    } else {
+        "/karaty.toml".to_string()
+    };
+
+    let response = gloo::net::http::Request::get(&toml_path).send().await?;
     let content = response.text().await.unwrap_or_default();
     let result = toml::from_str::<Config>(&content)?;
     Ok(result)
