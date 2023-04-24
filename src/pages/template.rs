@@ -75,7 +75,7 @@ pub fn CenterMarkdown(
     let class = if let Some(toml::Value::Table(t)) = config.get("style") {
         generate_prose_class(t.clone())
     } else {
-        "prose dark:prose-invert".to_string()
+        "prose prose-sm sm:prose-base dark:prose-invert".to_string()
     };
 
     cx.render(rsx! {
@@ -198,7 +198,7 @@ const AVAILABLE_STYLE_SETTINGS: [&'static str; 26] = [
 ];
 
 pub fn generate_prose_class(config: toml::map::Map<String, toml::Value>) -> String {
-    let mut res = String::from("prose dark:prose-invert");
+    let mut res = String::from("prose prose-sm sm:prose-base dark:prose-invert");
     for i in AVAILABLE_STYLE_SETTINGS {
         if let Some(toml::Value::String(v)) = config.get(i) {
             let list = v.split(" ").collect::<Vec<&str>>();
