@@ -43,11 +43,11 @@ path = "/dependencies"
 file = "dependencies.json"
 
 [[routing]]
-path = "/post"
+path = "/blog"
 preset = "post-list"
 
 [[routing]]
-path = "/post/:file"
+path = "/blog/:path"
 preset = "post-conent"
 
 [navigation]
