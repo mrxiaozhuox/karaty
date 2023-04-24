@@ -83,9 +83,9 @@ pub fn CenterMarkdown(
             class: "bg-cover bg-white dark:bg-gray-600",
             Navbar {}
             div {
-                class: "flex h-4/6 w-full items-center justify-center container mx-auto px-8",
+                class: "flex w-full items-center justify-center container mx-auto px-8",
                 div {
-                    class: "max-w-2xl text-center",
+                    class: "text-center",
                     div {
                         class: "{class}",
                         dangerous_inner_html: "{html_output}",

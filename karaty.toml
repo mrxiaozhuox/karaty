@@ -38,6 +38,10 @@ file = "author.md"
 
 using = "center"
 
+[routing.template.style]
+
+img = "rounded-full"
+
 [[routing]]
 path = "/dependencies"
 file = "dependencies.json"
