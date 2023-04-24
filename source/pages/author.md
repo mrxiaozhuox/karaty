@@ -9,7 +9,7 @@ I'm living *San Jose, CA*, and I'm completing my undergraduate degree. My native
 
 ### Tech Stack
 
-<div align="center" class="flex flex-row flex-wrap gap-2">
+<div align="center" class="flex justify-center flex-row flex-wrap gap-2">
       <img src="https://img.shields.io/badge/Rust-5F4321?style=for-the-badge&logo=rust&logoColor=white" class="m-0" alt="rust"/>
       <img src="https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue" class="m-0" alt="python"/>
       <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" class="m-0" alt="typescript"/>
