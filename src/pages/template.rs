@@ -1,9 +1,12 @@
 use std::collections::HashMap;
 
 use dioxus::prelude::*;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
-use crate::components::{footer::Footer, nav::Navbar};
+use crate::{
+    components::{footer::Footer, nav::Navbar},
+    utils::markdown::parse_markdown,
+};
 
 #[derive(Props, PartialEq)]
 pub struct DynamicTemplateProps {
@@ -66,11 +69,7 @@ pub fn CenterMarkdown(
     content: String,
     config: toml::map::Map<String, toml::Value>,
 ) -> Element {
-    let options = pulldown_cmark::Options::all();
-    let parser = pulldown_cmark::Parser::new_ext(content, options);
-
-    let mut html_output = String::new();
-    pulldown_cmark::html::push_html(&mut html_output, parser);
+    let html_output = parse_markdown(&content).unwrap();
 
     let class = if let Some(toml::Value::Table(t)) = config.get("style") {
         generate_prose_class(t.clone())
@@ -78,19 +77,29 @@ pub fn CenterMarkdown(
         "prose dark:prose-invert".to_string()
     };
 
+    let hide_navbar = if let Some(toml::Value::Boolean(b)) = config.get("hide-navbar") {
+        *b
+    } else {
+        false
+    };
+
+    let hide_footer = if let Some(toml::Value::Boolean(b)) = config.get("hide-footer") {
+        *b
+    } else {
+        false
+    };
+
     cx.render(rsx! {
-        section {
-            class: "bg-cover bg-white dark:bg-gray-600",
-            Navbar {}
-            div {
-                class: "flex w-full items-center justify-center container mx-auto px-8",
-                div {
-                    class: "text-center",
-                    div {
-                        class: "{class}",
-                        dangerous_inner_html: "{html_output}",
+        section { class: "bg-cover bg-white dark:bg-gray-600",
+            if !hide_navbar {
+                rsx! { Navbar {} }
+            }
+            div { class: "flex w-full items-center justify-center container mx-auto px-8",
+                div { class: "text-center",
+                    div { class: "{class}", dangerous_inner_html: "{html_output}" }
+                    if !hide_footer {
+                        rsx! { Footer {} }
                     }
-                    Footer {}
                 }
             }
         }
@@ -110,23 +119,14 @@ pub fn JsonCardList(cx: Scope, content: String) -> Element {
     let data = serde_json::from_str::<HashMap<String, Vec<CardInfo>>>(&content);
 
     if let Err(e) = data {
-        return cx.render(rsx! {
-            crate::pages::error::Error {
-                title: "JSON Parse failed".into()
-                content: format!("{e}")
-            }
-        });
+        return cx.render(rsx! {crate::pages::error::Error { title: "JSON Parse failed".into(), content: format!("{e}") }});
     }
     let data = data.unwrap();
 
     let displayer = data.iter().map(|(group, value)| {
         rsx! {
-            h2 {
-                class: "text-xl font-bold",
-                "# {group}"
-            }
-            div {
-                class: "mt-4 grid md:grid-cols-2 gap-2 mb-8",
+            h2 { class: "text-xl font-bold", "# {group}" }
+            div { class: "mt-4 grid md:grid-cols-2 gap-2 mb-8",
                 value.iter().map(|p| {
                     rsx! {
                         a {
@@ -153,14 +153,11 @@ pub fn JsonCardList(cx: Scope, content: String) -> Element {
     });
 
     cx.render(rsx! {
-        section {
-            class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+        section { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
             Navbar {}
-            div {
-                class: "flex h-full w-full items-center justify-center container mx-auto px-8",
-                div {
-                    class: "max-w-5xl text-center",
-                    displayer
+            div { class: "flex h-full w-full items-center justify-center container mx-auto px-8",
+                div { class: "max-w-5xl text-center",
+                    displayer,
                     Footer {}
                 }
             }

@@ -42,11 +42,9 @@ fn App(cx: Scope) -> Element {
 
             cx.render(rsx! {
                 // dioxus toast manager init
-                ToastFrame {
-                    manager: fermi::use_atom_ref(&cx, TOAST_MANAGER),
-                }
+                ToastFrame { manager: fermi::use_atom_ref(&cx, TOAST_MANAGER) }
                 // dioxus router info
-                Router {
+                Router { 
 
                     data.config.routing.iter().map(|v| {
                         match v {
@@ -118,7 +116,7 @@ fn App(cx: Scope) -> Element {
                                 }
                             }
                         }
-                    })
+                    }),
 
                     Route { to: "", _404::NotFound {} }
                 }
@@ -126,27 +124,19 @@ fn App(cx: Scope) -> Element {
         }
         Some(Err(e)) => {
             return cx.render(rsx! {
-                div {
-                    class: "h-screen flex justify-center items-center",
+                div { class: "h-screen flex justify-center items-center",
                     // p {
                     //     class: "text-gray-500 text-3xl font-semibold",
                     //     "Configuration Load Faield"
                     // }
-                    p {
-                        class: "text-gray-400 text-xl font-semibold",
-                        "{e}"
-                    }
+                    p { class: "text-gray-400 text-xl font-semibold", "{e}" }
                 }
             });
         }
         None => {
             return cx.render(rsx! {
-                div {
-                    class: "h-screen flex justify-center items-center",
-                    h1 {
-                        class: "text-gray-500 text-3xl font-semibold",
-                        "Loading ..."
-                    }
+                div { class: "h-screen flex justify-center items-center",
+                    h1 { class: "text-gray-500 text-3xl font-semibold", "Loading ..." }
                 }
             });
         }

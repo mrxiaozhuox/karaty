@@ -7,7 +7,10 @@ use crate::{
     components::{footer::Footer, nav::Navbar},
     config::Config,
     pages::_404,
-    utils::data::{load_content_list, load_from_source, GlobalData},
+    utils::{
+        data::{load_content_list, load_from_source, GlobalData},
+        markdown::parse_markdown,
+    },
 };
 
 #[allow(dead_code)]
@@ -34,48 +37,30 @@ pub fn BlogList(cx: Scope) -> Element {
 
                 let tags = v.tags.iter().map(|tag| {
                     rsx! {
-                        span {
-                            class: "text-xs mr-1 inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-gray-700 text-white rounded",
+                        span { class: "text-xs mr-1 inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-gray-700 text-white rounded",
                             "{tag}"
                         }
                     }
                 });
 
                 rsx! {
-                    Link {
-                        to: "/blog/{v.path}",
-                        h1 {
-                            class: "text-3xl font-bold text-gray-500 hover:text-gray-600 dark:text-gray-200 dark:hover:text-white",
+                    Link { to: "/blog/{v.path}",
+                        h1 { class: "text-3xl font-bold text-gray-500 hover:text-gray-600 dark:text-gray-200 dark:hover:text-white",
                             "{v.title}"
                         }
-                        p {
-                            class: "text-gray-400 dark:text-gray-100",
-                            "{v.date} & {category}"
-                        }
-                        p {
-                            class: "mt-2",
-                            tags
-                        }
+                        p { class: "text-gray-400 dark:text-gray-100", "{v.date} & {category}" }
+                        p { class: "mt-2", tags }
                         hr { class: "mt-2" }
                     }
                 }
             });
             cx.render(rsx! {
-                section {
-                    class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+                section { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
                     Navbar {}
-                    div {
-                        class: "flex h-full w-full items-center justify-center container mx-auto px-8",
-                        div {
-                            class: "max-w-5xl text-center",
-                            h1 {
-                                class: "text-xl font-bold",
-                                "\" {site_title} \""
-                            }
-                            div {
-                                class: "mt-6",
-                                list
-                            }
+                    div { class: "flex h-full w-full items-center justify-center container mx-auto px-8",
+                        div { class: "max-w-5xl text-center",
+                            h1 { class: "text-xl font-bold", "" {site_title} "" }
+                            div { class: "mt-6", list }
                             Footer {}
                         }
                     }
@@ -83,13 +68,10 @@ pub fn BlogList(cx: Scope) -> Element {
             })
         }
         None => cx.render(rsx! {
-            section {
-                class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+            section { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
                 Navbar {}
-                div {
-                    class: "flex h-full w-full items-center justify-center container mx-auto px-8",
-                    div {
-                        class: "max-w-5xl text-center",
+                div { class: "flex h-full w-full items-center justify-center container mx-auto px-8",
+                    div { class: "max-w-5xl text-center",
                         "Loading..."
                         Footer {}
                     }
@@ -211,71 +193,46 @@ pub fn BlogPage(cx: Scope) -> Element {
 
     match info.value() {
         Some(Some((info, content))) => {
-            let mut options = pulldown_cmark::Options::empty();
-            options.insert(pulldown_cmark::Options::ENABLE_STRIKETHROUGH);
-            let parser = pulldown_cmark::Parser::new_ext(content, options);
-
-            let mut html_output = String::new();
-            pulldown_cmark::html::push_html(&mut html_output, parser);
+            let html_output = parse_markdown(&content).unwrap();
 
             let category = info.category.clone().unwrap_or("Default".to_string());
 
             let tags = info.tags.iter().map(|tag| {
                 rsx! {
-                    span {
-                        class: "text-xs mr-1 inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-gray-700 text-white rounded",
+                    span { class: "text-xs mr-1 inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-gray-700 text-white rounded",
                         "{tag}"
                     }
                 }
             });
 
             cx.render(rsx! {
-                section {
-                    class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+                section { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
                     Navbar {}
-                    div {
-                        class: "md:flex h-full w-full justify-center px-6",
-                        div {
-                            class: "max-w-5xl",
-                            h1 {
-                                class: "text-4xl font-bold text-gray-600 dark:text-gray-200",
+                    div { class: "md:flex h-full w-full justify-center px-6",
+                        div { class: "max-w-5xl",
+                            h1 { class: "text-4xl font-bold text-gray-600 dark:text-gray-200",
                                 "{info.title}"
                             }
-                            p {
-                                class: "mt-1 text-gray-400 dark:text-gray-300",
-                                "{info.date} & {category}"
-                            }
-                            hr {
-                                class: "mt-2 w-60",
-                            }
+                            p { class: "mt-1 text-gray-400 dark:text-gray-300", "{info.date} & {category}" }
+                            hr { class: "mt-2 w-60" }
                             div {
                                 class: "prose mt-4 dark:text-white dark:prose-invert",
                                 dangerous_inner_html: "{html_output}"
                             }
-                            hr {
-                                class: "mt-4",
-                            }
-                            p {
-                                class: "mt-4",
-                                tags
-                            }
+                            hr { class: "mt-4" }
+                            p { class: "mt-4", tags }
                             Footer {}
                         }
                     }
                 }
             })
         }
-        Some(None) => cx.render(rsx! {
-            _404::NotFound {}
-        }),
+        Some(None) => cx.render(rsx! { _404::NotFound {} }),
         None => cx.render(rsx! {
-            section {
-                class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+            section { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
                 Navbar {}
-                div {
-                    class: "flex h-full w-full items-center justify-center container mx-auto px-8",
-                    div {
-                        class: "max-w-5xl text-center",
+                div { class: "flex h-full w-full items-center justify-center container mx-auto px-8",
+                    div { class: "max-w-5xl text-center",
                         "Loading..."
                         Footer {}
                     }
