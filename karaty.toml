@@ -52,7 +52,7 @@ preset = "post-list"
 
 [[routing]]
 path = "/blog/:path"
-preset = "post-conent"
+preset = "post-content"
 
 [navigation]
 
