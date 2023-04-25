@@ -59,7 +59,7 @@ pub fn BlogList(cx: Scope) -> Element {
                     Navbar {}
                     div { class: "flex h-full w-full items-center justify-center container mx-auto px-8",
                         div { class: "max-w-5xl text-center",
-                            h1 { class: "text-xl font-bold", "" {site_title} "" }
+                            h1 { class: "text-xl font-bold", "", {site_title}, "" }
                             div { class: "mt-6", list }
                             Footer {}
                         }
