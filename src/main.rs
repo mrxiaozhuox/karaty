@@ -16,7 +16,13 @@ use pages::*;
 use setup::{setup_config, setup_root_app};
 use utils::data::{load_pages, GlobalData};
 
-use crate::{config::RoutingInfo, pages::template::DynamicTemplate};
+use crate::{
+    config::RoutingInfo,
+    pages::{
+        blog::{BlogList, DocsPreset},
+        template::DynamicTemplate,
+    },
+};
 
 static TOAST_MANAGER: fermi::AtomRef<ToastManager> = |_| ToastManager::default();
 
@@ -42,9 +48,11 @@ fn App(cx: Scope) -> Element {
 
             cx.render(rsx! {
                 // dioxus toast manager init
-                ToastFrame { manager: fermi::use_atom_ref(&cx, TOAST_MANAGER) }
+                ToastFrame {
+                    manager: fermi::use_atom_ref(&cx, TOAST_MANAGER),
+                }
                 // dioxus router info
-                Router { 
+                Router {
 
                     data.config.routing.iter().map(|v| {
                         match v {
@@ -70,21 +78,48 @@ fn App(cx: Scope) -> Element {
                                     }
                                 }
                             }
-                            RoutingInfo::PresetBind { path, preset } => {
+                            RoutingInfo::PresetBind { path, preset, setting, template } => {
                                 match preset.as_str() {
                                     "post-list" => {
                                         rsx! {
                                             Route {
                                                 to: "{path}",
-                                                blog::BlogList {}
+                                                blog::BlogList {
+                                                    path: path.to_string(),
+                                                    setting: setting.clone(),
+                                                }
                                             }
                                         }
                                     }
                                     "post-content" => {
-                                        rsx! {
-                                            Route {
-                                                to: "{path}",
-                                                blog::BlogPage {}
+                                        let mut using_template = "blog".to_string();
+                                        if let Some(toml::Value::Table(t)) = template {
+                                            if let Some(toml::Value::String(str)) = t.get("using") {
+                                                using_template = str.to_string();
+                                            }
+                                        }
+                                        match using_template.as_str() {
+                                            "docs" => {
+                                                rsx! {
+                                                    Route {
+                                                        to: "{path}",
+                                                        DocsPreset {
+                                                            path: path.to_string(),
+                                                            setting: setting.clone(),
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            "blog" | _ => {
+                                                rsx! {
+                                                    Route {
+                                                        to: "{path}",
+                                                        BlogList {
+                                                            path: path.to_string(),
+                                                            setting: setting.clone(),
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -116,7 +151,7 @@ fn App(cx: Scope) -> Element {
                                 }
                             }
                         }
-                    }),
+                    })
 
                     Route { to: "", _404::NotFound {} }
                 }
@@ -124,19 +159,23 @@ fn App(cx: Scope) -> Element {
         }
         Some(Err(e)) => {
             return cx.render(rsx! {
-                div { class: "h-screen flex justify-center items-center",
-                    // p {
-                    //     class: "text-gray-500 text-3xl font-semibold",
-                    //     "Configuration Load Faield"
-                    // }
-                    p { class: "text-gray-400 text-xl font-semibold", "{e}" }
+                div {
+                    class: "h-screen flex justify-center items-center",
+                    p {
+                        class: "text-gray-400 text-xl font-semibold",
+                        "{e}"
+                    }
                 }
             });
         }
         None => {
             return cx.render(rsx! {
-                div { class: "h-screen flex justify-center items-center",
-                    h1 { class: "text-gray-500 text-3xl font-semibold", "Loading ..." }
+                div {
+                    class: "h-screen flex justify-center items-center",
+                    h1 {
+                        class: "text-gray-500 text-3xl font-semibold",
+                        "Loading ..."
+                    }
                 }
             });
         }

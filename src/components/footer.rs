@@ -1,7 +1,5 @@
 use dioxus::prelude::*;
-use dioxus_free_icons::{
-    icons::{fa_brands_icons, fa_solid_icons},
-};
+use dioxus_free_icons::icons::fa_solid_icons;
 use crate::components::icon::Icon;
 use dioxus_router::Link;
 

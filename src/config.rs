@@ -87,6 +87,10 @@ pub enum RoutingInfo {
     PresetBind {
         path: String,
         preset: String,
+        #[serde(default)]
+        setting: Option<toml::Value>,
+        #[serde(default)]
+        template: Option<toml::Value>,
     },
     RedirectBind {
         path: String,

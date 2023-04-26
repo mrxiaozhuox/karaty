@@ -84,7 +84,7 @@ pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result
     return Err(anyhow!("Unknown load mode"));
 }
 
-pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<String> {
+pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<(String, String)> {
     let mut result = Vec::new();
 
     let window = web_sys::window().unwrap();
@@ -146,10 +146,11 @@ pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<String> {
         let res = resp.json::<Vec<serde_json::Value>>().await;
         if let Ok(list) = res {
             for data in list {
-                if data.get("type").unwrap().as_str().unwrap() == "file" {
-                    let file_name = data.get("name").unwrap().as_str().unwrap().to_string();
-                    result.push(file_name);
-                }
+                let file_name = data.get("name").unwrap().as_str().unwrap().to_string();
+                result.push((
+                    data.get("type").unwrap().as_str().unwrap().to_string(),
+                    file_name,
+                ));
             }
         }
     }
@@ -160,12 +161,20 @@ pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<String> {
 pub async fn load_pages(config: &Config) -> HashMap<String, String> {
     let mut result = HashMap::new();
     let contents = load_content_list(config, "pages").await;
-    for name in contents {
+    for (tp, name) in contents {
         let path = format!("/pages/{name}");
-        let content = load_from_source(config, &path).await;
+        let content = if tp == "file" {
+            load_from_source(config, &path).await
+        } else {
+            load_page_from_dir(load_content_list(config, &path).await).await
+        };
         if let Ok(content) = content {
             result.insert(name.to_string(), content);
         }
     }
     result
+}
+
+pub async fn load_page_from_dir(contents: Vec<(String, String)>) -> anyhow::Result<String> {
+    Ok(String::new())
 }
