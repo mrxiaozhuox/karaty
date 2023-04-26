@@ -49,10 +49,26 @@ file = "dependencies.json"
 [[routing]]
 path = "/blog"
 preset = "post-list"
+setting = { group = "blog" }
 
 [[routing]]
 path = "/blog/:path"
 preset = "post-content"
+setting = { group = "blog", file = ":path" }
+
+[[routing]]
+path = "/docs"
+redirect = "/docs/summary"
+# preset = "post-content"
+# setting = { group = "docs", file = "summary" }
+
+[[routing]]
+path = "/docs/:path"
+preset = "post-content"
+setting = { group = "docs", file = ":path" }
+
+[routing.template]
+using = "docs"
 
 [navigation]
 
