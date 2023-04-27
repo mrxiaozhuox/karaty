@@ -19,7 +19,7 @@ use utils::data::{load_pages, GlobalData};
 use crate::{
     config::RoutingInfo,
     pages::{
-        blog::{BlogList, DocsPreset},
+        preset::{BlogContentPreset, BlogListPreset, DocsPreset},
         template::DynamicTemplate,
     },
 };
@@ -84,7 +84,7 @@ fn App(cx: Scope) -> Element {
                                         rsx! {
                                             Route {
                                                 to: "{path}",
-                                                blog::BlogList {
+                                                BlogListPreset {
                                                     path: path.to_string(),
                                                     setting: setting.clone(),
                                                 }
@@ -114,7 +114,7 @@ fn App(cx: Scope) -> Element {
                                                 rsx! {
                                                     Route {
                                                         to: "{path}",
-                                                        BlogList {
+                                                        BlogContentPreset {
                                                             path: path.to_string(),
                                                             setting: setting.clone(),
                                                         }

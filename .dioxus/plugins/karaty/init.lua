@@ -105,7 +105,7 @@ function CopyFiles(dir, target)
             })
         end
     end
-    fs.file_set_content(path.join(target, "index.json"), plugin.json.encode(index))
+    fs.file_set_content(path.join(target, "_index.json"), plugin.json.encode(index))
 end
 
 return manager

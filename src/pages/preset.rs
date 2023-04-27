@@ -1,7 +1,9 @@
 use std::collections::HashMap;
-
+use async_recursion::async_recursion;
 use dioxus::prelude::*;
 use dioxus_router::{use_route, Link};
+use indexmap::IndexMap;
+use markdown::mdast;
 
 use crate::{
     components::{footer::Footer, nav::Navbar},
@@ -20,7 +22,7 @@ pub struct BlogProps {
     setting: Option<toml::Value>,
 }
 
-pub fn BlogList(cx: Scope<BlogProps>) -> Element {
+pub fn BlogListPreset(cx: Scope<BlogProps>) -> Element {
     let global = cx.consume_context::<GlobalData>().unwrap();
     let config = global.config;
 
@@ -37,8 +39,8 @@ pub fn BlogList(cx: Scope<BlogProps>) -> Element {
 
     let list_config = config.clone();
     let list = use_future(&cx, (), |_| async move {
-        let res = get_blog_list(&list_config, group).await;
-        let res = if let Some(v) = res { v } else { vec![] };
+        let res = get_post_list(&list_config, group).await;
+        let res = if let Some(v) = res { v } else { HashMap::new() };
         res
     });
 
@@ -46,6 +48,7 @@ pub fn BlogList(cx: Scope<BlogProps>) -> Element {
 
     match list.value() {
         Some(v) => {
+            let v = merge_post_list(v.clone());
             let list = v.iter().map(|v| {
 
                 let category = v.category.clone().unwrap_or("Default".to_string()); 
@@ -96,17 +99,34 @@ pub fn BlogList(cx: Scope<BlogProps>) -> Element {
     }
 }
 
-#[derive(Debug, Clone, Default)]
-struct BlogInfo {
+#[derive(Debug, Clone, Default, PartialEq)]
+pub struct PostInfo {
     pub title: String,
     pub tags: Vec<String>,
     pub category: Option<String>,
     pub date: String,
     pub path: String,
     pub content: String,
+    pub sub_group: Vec<String>,
 }
 
-async fn get_blog_list(config: &Config, group: String) -> Option<Vec<BlogInfo>> {
+#[derive(Debug, Clone, PartialEq)]
+pub enum PostListInfo {
+    Info(PostInfo),
+    List(HashMap<String, PostListInfo>),
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum IndexInfo {
+    Single,
+    List(IndexMap<String, IndexInfo>),
+}
+
+#[async_recursion(?Send)]
+async fn get_post_list(
+    config: &Config, 
+    group: String
+) -> Option<HashMap<String, PostListInfo>> {
     let sub_path = if group.is_empty() {
         "posts".to_string()
     } else {
@@ -114,18 +134,46 @@ async fn get_blog_list(config: &Config, group: String) -> Option<Vec<BlogInfo>> 
     };
     let data = load_content_list(config, &sub_path).await;
 
-    let mut result = vec![];
+    let mut result = HashMap::new();
 
     for (tp, file_name) in data {
-        if tp != "file" || file_name == "_template.md" {
+
+        log::info!("{}", format!("{group}/{file_name}"));
+
+        if tp == "dir" {
+            let list = get_post_list(
+                config, 
+                format!("{group}/{file_name}")
+            ).await;
+            if let Some(list) = list {
+                result.insert(file_name.clone(), PostListInfo::List(list));
+            }
             continue;
         }
-
+        
+        if file_name == "_template.md" {
+            continue;
+        }
+    
         let meta_info = load_from_source(config, &format!("{sub_path}/{file_name}")).await;
         if meta_info.is_err() {
             continue;
         }
         let meta_info = meta_info.unwrap();
+        
+        if file_name == "_index.md" {
+            // load index content
+            let lines = meta_info.split("\n").collect::<Vec<&str>>();
+            for i in lines {
+                if i.len() <= 1 {
+                    continue;
+                }
+                if &i[0..1] == "-" {
+                    let content = i[1..].trim().to_string();
+                }
+            }
+            continue;
+        }
 
         let mut type_mark = HashMap::new();
 
@@ -184,20 +232,21 @@ async fn get_blog_list(config: &Config, group: String) -> Option<Vec<BlogInfo>> 
         let path = path[0..path.len() - 1].to_vec();
         let path = path.join(".");
 
-        let blog_info = BlogInfo {
+        let blog_info = PostListInfo::Info(PostInfo {
             title,
             tags,
             category,
             date,
-            path,
+            path: path.clone(),
             content,
-        };
-        result.push(blog_info);
+            sub_group: Default::default(),
+        });
+        result.insert(path, blog_info);
     }
     Some(result)
 }
 
-pub fn BlogPage(cx: Scope<BlogProps>) -> Element {
+pub fn BlogContentPreset(cx: Scope<BlogProps>) -> Element {
     let route = use_route(&cx);
 
     let mut group = String::new();
@@ -222,7 +271,8 @@ pub fn BlogPage(cx: Scope<BlogProps>) -> Element {
     let name = path.to_string();
     let info_config = config.clone();
     let info = use_future(&cx, (), |_| async move {
-        get_info(&info_config, &name, group).await
+        let info = get_info(&info_config, &name, group).await;
+        info
     });
 
     match info.value() {
@@ -277,7 +327,7 @@ pub fn BlogPage(cx: Scope<BlogProps>) -> Element {
     }
 }
 
-async fn get_info(config: &Config, name: &str, group: String) -> Option<BlogInfo> {
+async fn get_info(config: &Config, name: &str, group: String) -> Option<PostInfo> {
     let sub_path = if group.is_empty() {
         format!("posts/{name}.md")
     } else {
@@ -342,13 +392,14 @@ async fn get_info(config: &Config, name: &str, group: String) -> Option<BlogInfo
 
     let title = title.as_string().unwrap();
 
-    let blog_info = BlogInfo {
+    let blog_info = PostInfo {
         title,
         tags,
         category,
         date,
         path: Default::default(),
         content,
+        sub_group: Default::default(),
     };
     Some(blog_info)
 }
@@ -387,38 +438,52 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
     } else {
         file.to_string()
     };
-
+    log::info!("{file_name}");
+    
     let list_config = config.clone();
-    let data = use_future(&cx, (), |_| async move {
-        let res = get_blog_list(&list_config, group).await;
-        let res = if let Some(v) = res { v } else { vec![] };
-        res
+    let group_query = route.query_param("group");
+    let content_group = if let Some(q) = group_query {
+        q.replace(".", "/")
+    } else {
+        String::new()
+    };
+    let data = use_future(&cx, (&file_name, ), |(file_name,)| async move {
+        let info_group = format!("{}/{}", group, content_group);
+        let data = get_info(&list_config, &file_name, info_group).await;
+        let sub_path = if group.is_empty() {
+            format!("posts/_index.md")
+        } else {
+            format!("posts/{group}/_index.md")
+        };
+        let index = load_from_source(&list_config, &sub_path).await;
+        let index = if index.is_err() {
+            String::new()
+        } else {
+            index.unwrap()    
+        };
+        let index = markdown::to_mdast(&index, &markdown::ParseOptions::default()).ok();
+        if index.is_none() {
+            (data, vec![])
+        } else {
+            let index = index.unwrap();
+            let mut index_nodes = vec![];
+            if let mdast::Node::Root(root) = index {
+                index_nodes = root.clone().children;
+            }
+            (data, index_nodes)
+        }
     });
 
-    let _site_title = config.site.name;
     match data.value() {
-        Some(data) => {
-            let mut current_content: BlogInfo = Default::default();
-            for i in data {
-                if i.path == file_name {
-                    current_content = i.clone();
-                }
+        Some((data, index)) => {
+            if data.is_none() {
+                return cx.render(rsx! {
+                    _404::NotFound {}
+                });
             }
-            let sidebar = data.iter().map(|content| {
-                let link = cx.props.path.replace(&file, &content.path);
-                rsx! {
-                    li {
-                        class: "",
-                        Link {
-                            class: "text-blue-500",
-                            to: "{link}",
-                            "{content.title}"
-                        }
-                    }
-                }
-            });
-
-            let html_output = parse_markdown(&current_content.content).unwrap();
+            let data = data.clone().unwrap();
+            
+            let html_output = parse_markdown(&data.content).unwrap();
             
             cx.render(rsx! {
                 div { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
@@ -427,20 +492,24 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
                         div { class: "grid grid-rows-3 grid-flow-col gap-6",
                             div {
                                 class: "row-span-3 bg-gray-100 rounded-lg",
-                                ul {
-                                    class: "px-9 py-3 list-disc",
-                                    sidebar
+                                div {
+                                    class: "px-3 py-2",
+                                    DocsSideBar {
+                                        index: index.clone(),
+                                        path: cx.props.path.clone(),
+                                        file_sign: file.clone(),
+                                    }
                                 }
                             }
                             div {
                                 class: "col-span-4",
                                 span {
                                     class: "font-bold text-4xl text-gray-600 dark:text-gray-200",
-                                    "{current_content.title}"
+                                    "{data.title}"
                                 }
                                 span {
                                     class: "float-right text-gray-400 dark:text-gray-500",
-                                    "Updated on {current_content.date}"
+                                    "Updated on {data.date}"
                                 }
                             }
                             div {
@@ -471,4 +540,111 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
             }
         }),
     }
+}
+
+#[derive(PartialEq, Props)]
+pub struct SideBarProps {
+    index: Vec<mdast::Node>,
+    path: String,
+    file_sign: String,
+}
+
+pub fn DocsSideBar(
+    cx: Scope<SideBarProps>
+) -> Element {
+    let node = cx.props.index.clone();
+
+    let display = node.iter().map(|node| {
+        let child = if let Some(v) = node.children() {
+            v.clone()
+        } else {
+            vec![]
+        };
+        let embedd = rsx! {
+            DocsSideBar {
+                index: child,
+                path: cx.props.path.clone(),
+                file_sign: cx.props.file_sign.clone(),
+            }
+        };
+        if let mdast::Node::ListItem(_) = node {
+            return rsx! {
+                 li {
+                    class: "",
+                    embedd
+                }   
+            }
+        } else if let mdast::Node::List(_) = node {
+            return rsx! {
+                ul {
+                    class: "px-5 py-1 list-disc",
+                    embedd
+                }
+            }
+        } else if let mdast::Node::Paragraph(_) = node {
+            return rsx! {
+                embedd
+            }
+        } else if let mdast::Node::Link(link) = node {
+            let class = "text-blue-600 hover:text-blue-800";
+            if &link.url[0..1] == "@" {
+                let mut groups = link.url[1..].split(".").collect::<Vec<&str>>();
+                let url = if groups.len() == 1 {
+                    cx.props.path.replace(&cx.props.file_sign, groups.get(0).unwrap())
+                } else {
+                    let url = cx.props.path.replace(&cx.props.file_sign, groups.get(groups.len() - 1).unwrap());
+                    groups.remove(groups.len() - 1);
+                    format!("{url}?group={0}", groups.join("."))
+                };
+                return rsx! {
+                    Link {
+                        class: "{class}",
+                        to: "{url}",
+                        embedd
+                    }
+                    // a {
+                    //     class: "{class}",
+                    //     href: "{url}",
+                    //     embedd
+                    // }
+                }
+            } else {
+                return rsx! {
+                    a {
+                        class: "{class}",
+                        href: "{link.url}",
+                        embedd
+                    }
+                }
+            }
+        } else if let mdast::Node::Text(text) = node {
+            return rsx! {
+                "{text.value}"
+            }
+        }
+        rsx! { div { "{node:?}" } }
+    });
+    
+    cx.render(rsx! {
+        display
+    })
+}
+
+fn merge_post_list(data: HashMap<String, PostListInfo>) -> Vec<PostInfo> {
+    let mut result = vec![];
+    for (name, i) in data {
+        match i {
+            PostListInfo::Info(i) => {
+                result.push(i);
+            },
+            PostListInfo::List(list) => {
+                let list = merge_post_list(list);
+                for mut i in list {
+                    i.sub_group.push(name.clone());
+                    result.push(i);
+                }
+            },
+        }
+    }
+    result
 }
