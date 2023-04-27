@@ -16,7 +16,7 @@ name = "mrxiaozhuox/karaty"
 
 mode = "custom-url"
 
-data = { url = "/source/", index-file = "index.json" }
+data = { url = "/source/", index-file = "_index.json" }
 
 [[routing]]
 path = "/"
@@ -25,10 +25,6 @@ file = "home.md"
 [routing.template]
 
 using = "center"
-
-[routing.template.style]
-
-ul = "list-none"
 
 [[routing]]
 path = "/author"
@@ -87,6 +83,7 @@ content = [
         { text = "Home", page = "/" },
         { text = "Dependencies", page = "/dependencies" },
         { text = "Blog", page = "/blog" },
+        { text = "Docs", page = "/docs" },
         { text = "Author", page = "/author" },
     ],
     [
