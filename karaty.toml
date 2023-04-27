@@ -13,10 +13,9 @@ service = "GitHub"
 name = "mrxiaozhuox/karaty"
 
 [data-source]
-
 mode = "embedded-repository"
 
-data = "source"
+data = "data"
 
 [data-source.local]
 mode = "custom-url"
