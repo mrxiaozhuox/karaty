@@ -54,11 +54,11 @@ dioxus serve
 
 
 
-![blog.png](/Users/mrxzx/Development/Rust/karaty/notes/blog.png)
+![blog.png](notes/blog.png)
 
-![docs.png](/Users/mrxzx/Development/Rust/karaty/notes/docs.png)
+![docs.png](notes/docs.png)
 
 #### Dark Mode
 
-![dark-mode.png](/Users/mrxzx/Development/Rust/karaty/notes/dark-mode.png)
+![dark-mode.png](notes/dark-mode.png)
 
