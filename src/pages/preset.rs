@@ -489,9 +489,9 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
                 div { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
                     Navbar {}
                     div { class: "container mx-auto px-8 max-w-7xl",
-                        div { class: "grid grid-rows-3 grid-flow-col gap-6",
+                        div { class: "grid grid-cols-12 gap-6",
                             div {
-                                class: "row-span-3 bg-gray-100 rounded-lg",
+                                class: "row-span-3 col-span-12 sm:col-span-3 bg-gray-100 rounded-lg",
                                 div {
                                     class: "px-3 py-2",
                                     DocsSideBar {
@@ -502,20 +502,24 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
                                 }
                             }
                             div {
-                                class: "col-span-4",
+                                class: "col-span-12 sm:col-span-8",
                                 span {
-                                    class: "font-bold text-4xl text-gray-600 dark:text-gray-200",
+                                    class: "font-bold text-3xl sm:text-4xl text-gray-600 dark:text-gray-200",
                                     "{data.title}"
                                 }
                                 span {
-                                    class: "float-right text-gray-400 dark:text-gray-500",
+                                    class: "hidden sm:block float-right text-gray-400 dark:text-gray-500",
+                                    "Updated on {data.date}"
+                                }
+                                p {
+                                    class: "sm:hidden text-gray-400 dark:text-gray-500",
                                     "Updated on {data.date}"
                                 }
                             }
                             div {
-                                class:"row-span-2 col-span-4",
+                                class:"row-span-2 col-span-12 sm:col-span-8",
                                 div {
-                                    class: "prose mt-4 dark:text-white dark:prose-invert",
+                                    class: "prose prose-sm sm:prose-base  mt-4 dark:text-white dark:prose-invert",
                                     dangerous_inner_html: "{html_output}",
                                 }
                             }
@@ -586,7 +590,7 @@ pub fn DocsSideBar(
                 embedd
             }
         } else if let mdast::Node::Link(link) = node {
-            let class = "text-blue-600 hover:text-blue-800";
+            let class = "text-blue-600 hover:text-blue-800 font-semibold";
             if &link.url[0..1] == "@" {
                 let mut groups = link.url[1..].split(".").collect::<Vec<&str>>();
                 let url = if groups.len() == 1 {
@@ -602,11 +606,6 @@ pub fn DocsSideBar(
                         to: "{url}",
                         embedd
                     }
-                    // a {
-                    //     class: "{class}",
-                    //     href: "{url}",
-                    //     embedd
-                    // }
                 }
             } else {
                 return rsx! {
