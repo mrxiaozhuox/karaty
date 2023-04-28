@@ -1,14 +1,34 @@
 ---
-title: 关于 Karaty 静态网站生成器
-tags: [note, zh]
+title: About Karaty
+tags: [note]
 date: 2022-09-09
 released: true
 ---
 
-大家好，我是一名 Rust 全栈开发者，本次正在尝试使用 Dioxus 框架开发一款个人网站（博客）生成器，这个项目最初是由我的个人博客项目演变而来。作为 Dioxus 项目组成员，我选择使用 Dioxus 开发了自己的个人网站与主页系统，后来发现在 GitHub 社区中有用户 Fork 并基于我的个人网站制作自己的网页，于是我便有了维护本项目的想法。
+Hello guys, I'm a Rust full-stack developer, I'm trying to use Dioxus create a website (blog & docs) generator, this project's idea is from my peronsal website which is made by Dioxus. 
+
+## Development Tools
+
+- [Tailwind CSS](https://tailwindcss.com/) - use for style design.
+- [Dioxus](https://dioxuslabs.com)
+  - Dioxus Web - use for WASM development
+  - Dioxus Router - embedded router in web
+  - Dioxus CLI - build & local-server
+  - Fermi - Global state management
+  - [Dioxus Free Icons](https://crates.io/crates/dioxus-free-icons) - generate icons for website
+- Rust WASM
+  - Web sys - use for manage web page & document
+  - JS sys - use for execute `javascript` code
+- [Serde](https://serde.rs/)
+  - JSON - parse `json` config content
+  - TOML - parse `toml` config content
 
 
 
-## 运行原理
+## Features
 
-我的目标是让站点可以运行在 GitHub Pages 之上，鉴于 Dioxus Web 会被编译为 WASM 文件，所以我并没有选择 hexo 那种需要通过 CLI 进行生成后再部署的方案，而是所有渲染和页面跳转都在 WASM 文件内被包含，我知道这会大大影响网页的运行效率和搜索引擎的检索功能，但这仅仅是一次细小的尝试，如果您非常注重这些方面，我的建议是选择其他项目。
+- Powered by single `.wasm` file.
+- Display **markdown** content without compile & build.
+- Use single config file `karaty.toml` to setup website.
+- Easy to deploy to **Github Pages** and **Static File Server**.
+- Support many differents *file-suffix* and *templates*.
