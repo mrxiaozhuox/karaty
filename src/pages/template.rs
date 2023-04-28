@@ -130,7 +130,7 @@ pub fn JsonCardList(cx: Scope, content: String) -> Element {
                 value.iter().map(|p| {
                     rsx! {
                         a {
-                            class: "block p-4 rounded-lg shadow-lg bg-white w-64 dark:bg-gray-700 hover:bg-gray-200",
+                            class: "block p-4 rounded-lg shadow-lg bg-white w-full sm:w-72 dark:bg-gray-700 hover:bg-gray-200",
                             href: "{p.url}",
                             target: "_blank",
                             h5 {
