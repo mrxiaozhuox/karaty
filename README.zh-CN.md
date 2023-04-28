@@ -47,3 +47,21 @@ git clone https://github.com/mrxiaozhuox/karaty
 dioxus serve
 ```
 
+### 通过已编译的文件部署
+
+> 暂时未支持（需要编写 GitHub Acions 进行支持）
+
+
+
+## 演示截图
+
+![author.png](notes/author.png)
+
+![blog.png](notes/blog.png)
+
+![docs.png](notes/docs.png)
+
+#### 暗黑模式
+
+![dark-mode.png](notes/dark-mode.png)
+

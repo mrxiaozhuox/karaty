@@ -12,7 +12,6 @@
     <a href="https://github.com/mrxiaozhuox/karaty/blob/master/README.zh-CN.md"> 简体中文 </a>
   </h3>
 </div>
-
 ## Features
 
 - Powered by single `.wasm` file.
@@ -44,3 +43,22 @@ Start Development server
 ```shell
 dioxus serve
 ```
+
+### Startup with compiled file
+
+>TODO!
+
+
+
+## ScreenShot
+
+
+
+![blog.png](/Users/mrxzx/Development/Rust/karaty/notes/blog.png)
+
+![docs.png](/Users/mrxzx/Development/Rust/karaty/notes/docs.png)
+
+#### Dark Mode
+
+![dark-mode.png](/Users/mrxzx/Development/Rust/karaty/notes/dark-mode.png)
+
