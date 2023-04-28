@@ -491,7 +491,7 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
                     div { class: "container mx-auto px-8 max-w-7xl",
                         div { class: "grid grid-cols-12 gap-6",
                             div {
-                                class: "row-span-3 col-span-12 sm:col-span-3 bg-gray-100 rounded-lg",
+                                class: "row-span-3 col-span-12 sm:col-span-3 bg-gray-100 dark:bg-gray-700 rounded-lg",
                                 div {
                                     class: "px-3 py-2",
                                     DocsSideBar {
@@ -508,11 +508,11 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
                                     "{data.title}"
                                 }
                                 span {
-                                    class: "hidden sm:block float-right text-gray-400 dark:text-gray-500",
+                                    class: "hidden sm:block float-right text-gray-400 dark:text-gray-300",
                                     "Updated on {data.date}"
                                 }
                                 p {
-                                    class: "sm:hidden text-gray-400 dark:text-gray-500",
+                                    class: "sm:hidden text-gray-400 dark:text-gray-300",
                                     "Updated on {data.date}"
                                 }
                             }
@@ -590,7 +590,7 @@ pub fn DocsSideBar(
                 embedd
             }
         } else if let mdast::Node::Link(link) = node {
-            let class = "text-blue-600 hover:text-blue-800 font-semibold";
+            let class = "text-blue-600 hover:text-blue-800 dark:text-blue-100 dark:hover:text-blue-300 font-semibold";
             if &link.url[0..1] == "@" {
                 let mut groups = link.url[1..].split(".").collect::<Vec<&str>>();
                 let url = if groups.len() == 1 {
