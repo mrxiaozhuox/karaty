@@ -19,6 +19,7 @@
 - Use single config file `karaty.toml` to setup website.
 - Easy to deploy to **Github Pages** and **Static File Server**.
 - Support many differents *file-suffix* and *templates*.
+- Support **Dark Mode** and compatible **Mobile** visitor
 
 
 
@@ -52,7 +53,7 @@ dioxus serve
 
 ## ScreenShot
 
-
+![author.png](notes/author.png)
 
 ![blog.png](notes/blog.png)
 
