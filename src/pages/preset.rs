@@ -477,7 +477,7 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
                     div { class: "container mx-auto px-8 max-w-7xl",
                         div { class: "grid grid-cols-12 gap-6",
                             div {
-                                class: "row-span-3 col-span-12 sm:col-span-3 bg-gray-50 dark:bg-gray-700 rounded-md",
+                                class: "row-span-3 max-h-[34rem] col-span-12 sm:col-span-3 bg-gray-50 dark:bg-gray-700 rounded-md",
                                 div {
                                     class: "px-3 py-2",
                                     DocsSideBar {
