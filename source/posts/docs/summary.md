@@ -8,7 +8,7 @@ released: true
 
 ## What is Karaty?
 
-**Karaty** is a static blog & docs generator system, **Karaty** support you use different file format and different template to setup your website.
+**Karaty** is a static blog & docs generator system, you can use different file format and different template to setup your website.
 
 
 
