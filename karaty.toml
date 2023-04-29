@@ -59,8 +59,6 @@ setting = { group = "blog", file = ":path" }
 [[routing]]
 path = "/docs"
 redirect = "/docs/summary"
-# preset = "post-content"
-# setting = { group = "docs", file = "summary" }
 
 [[routing]]
 path = "/docs/:path"
