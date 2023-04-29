@@ -154,20 +154,6 @@ async fn get_post_list(
             continue;
         }
         let meta_info = meta_info.unwrap();
-        
-        if file_name == "_index.md" {
-            // load index content
-            let lines = meta_info.split("\n").collect::<Vec<&str>>();
-            for i in lines {
-                if i.len() <= 1 {
-                    continue;
-                }
-                if &i[0..1] == "-" {
-                    let content = i[1..].trim().to_string();
-                }
-            }
-            continue;
-        }
 
         let mut type_mark = HashMap::new();
 
@@ -478,6 +464,12 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
             let data = data.clone().unwrap();
             
             let html_output = parse_markdown(&data.content).unwrap();
+
+            let date = if data.date.is_empty() {
+                "Unknown".to_string()
+            } else {
+                data.date
+            };
             
             cx.render(rsx! {
                 div { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
@@ -485,7 +477,7 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
                     div { class: "container mx-auto px-8 max-w-7xl",
                         div { class: "grid grid-cols-12 gap-6",
                             div {
-                                class: "row-span-3 col-span-12 sm:col-span-3 bg-gray-100 dark:bg-gray-700 rounded-lg",
+                                class: "row-span-3 col-span-12 sm:col-span-3 bg-gray-50 dark:bg-gray-700 rounded-md",
                                 div {
                                     class: "px-3 py-2",
                                     DocsSideBar {
@@ -503,11 +495,11 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
                                 }
                                 span {
                                     class: "hidden sm:block float-right text-gray-400 dark:text-gray-300",
-                                    "Updated on {data.date}"
+                                    "Updated on {date}"
                                 }
                                 p {
                                     class: "sm:hidden text-gray-400 dark:text-gray-300",
-                                    "Updated on {data.date}"
+                                    "Updated on {date}"
                                 }
                             }
                             div {
@@ -568,7 +560,7 @@ pub fn DocsSideBar(
         if let mdast::Node::ListItem(_) = node {
             return rsx! {
                  li {
-                    class: "",
+                    class: "text-sky-500 hover:text-blue-700 dark:text-sky-100 dark:hover:text-blue-300 font-semibold",
                     embedd
                 }   
             }
@@ -584,7 +576,7 @@ pub fn DocsSideBar(
                 embedd
             }
         } else if let mdast::Node::Link(link) = node {
-            let class = "text-blue-600 hover:text-blue-800 dark:text-blue-100 dark:hover:text-blue-300 font-semibold";
+            let class = "underline";
             if &link.url[0..1] == "@" {
                 let mut groups = link.url[1..].split(".").collect::<Vec<&str>>();
                 let url = if groups.len() == 1 {

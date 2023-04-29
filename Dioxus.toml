@@ -35,12 +35,15 @@ index_on_404 = true
 [web.resource]
 
 # CSS style file
-style = []
+style = [
+    "//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css",
+]
 
 # Javascript code file
 script = [
     "/assets/tailwind/tailwind.min.js",
     "/assets/tailwind/tailwind.config.js",
+    "//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js",
 ]
 
 [web.resource.dev]

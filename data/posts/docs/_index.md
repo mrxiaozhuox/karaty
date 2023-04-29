@@ -1,4 +1,2 @@
 - [Summary](@summary)
 - [Routing](@routing)
-- Configure
-  - [Test](@configure.test)
