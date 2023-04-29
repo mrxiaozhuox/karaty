@@ -2,7 +2,6 @@ use std::collections::HashMap;
 use async_recursion::async_recursion;
 use dioxus::prelude::*;
 use dioxus_router::{use_route, Link};
-use indexmap::IndexMap;
 use markdown::mdast;
 
 use crate::{
@@ -116,11 +115,6 @@ pub enum PostListInfo {
     List(HashMap<String, PostListInfo>),
 }
 
-#[derive(Debug, Clone, PartialEq)]
-pub enum IndexInfo {
-    Single,
-    List(IndexMap<String, IndexInfo>),
-}
 
 #[async_recursion(?Send)]
 async fn get_post_list(
