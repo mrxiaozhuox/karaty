@@ -44,3 +44,87 @@ redirect = "/"
 ```
 
 When you visit `http://127.0.0.1:8080/main`, the page will be auto-jump to `http://127.0.0.1:8080/`.
+
+
+
+## Template
+
+> You can custom `Template` in PresetBind & PageBind routing
+
+### PageBind
+
+| *Type*   | *Name* | *Introduction*                            |
+| :------- | ------ | ----------------------------------------- |
+| Markdown | center | display markdown content by center layout |
+| Json     | cards  | display a card list from json file        |
+
+#### Markdown - center
+
+```toml
+[[routing]]
+path = "/"
+file = "home.md"
+[routing.template]
+using = "center"
+```
+
+`center` template allow you custom template.style:
+
+```toml
+[routing.template.style]
+headings = "underline"
+a = "text-sky-500 dark:text-sky-200"
+```
+
+Style using Tailwind CSS framework, [here](https://tailwindcss.com/docs/typography-plugin#element-modifiers) is the supported elements list.
+
+
+
+#### JSON - cards
+
+```toml
+[[routing]]
+path = "/cards"
+file = "cards.json"
+[routing.template]
+using = "cards"
+```
+
+JSON format:
+
+```json
+
+  "Web Development": [
+    {
+      "title": "Dioxus Framework",
+      "url": "https://dioxuslabs.com",
+      "content": "Web & CLI & Router & Fermi",
+      "footnote": "DioxusLabs"
+    }
+  ],
+  "UI Design": [
+    {
+      "title": "Tailwind CSS",
+      "url": "https://tailwindcss.com/",
+      "content": "CSS Framework",
+      "footnote": "Tailwind"
+    }
+  ],
+  "Data Convert": [
+
+    {
+      "title": "Markdown Meta Parser",
+      "url": "https://github.com/mrxiaozhuox/markdown-meta-parser",
+      "content": "Parse Markdown meta table to Json",
+      "footnote": "YuKun Liu"
+    },
+    {
+      "title": "Serde",
+      "url": "https://serde.rs/",
+      "content": "Serialization framework for Rust",
+      "footnote": "Serde-RS"
+    }
+  ]
+}
+```
+
