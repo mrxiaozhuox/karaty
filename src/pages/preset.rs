@@ -48,6 +48,7 @@ pub fn BlogListPreset(cx: Scope<BlogProps>) -> Element {
     match list.value() {
         Some(v) => {
             let v = merge_post_list(v.clone());
+            let v = sort_by_date(v);
             let list = v.iter().map(|v| {
 
                 let category = v.category.clone().unwrap_or("Default".to_string()); 
@@ -472,7 +473,7 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
             };
             
             use_effect(&cx, (&file_name,), |(_file_name)| async { 
-                let _ = js_sys::eval("setTimeout(() => {hljs.highlightAll();}, 12);");
+                let _ = js_sys::eval("setTimeout(() => {hljs.highlightAll();}, 60);");
             });
             
             cx.render(rsx! {
@@ -636,4 +637,16 @@ fn merge_post_list(data: HashMap<String, PostListInfo>) -> Vec<PostInfo> {
         }
     }
     result
+}
+
+fn sort_by_date(mut data: Vec<PostInfo>) -> Vec<PostInfo> {
+    data.sort_by(|a, b| {
+        let a_date = chrono::NaiveDate::parse_from_str(&a.date, "%Y-%m-%d");
+        let b_date = chrono::NaiveDate::parse_from_str(&b.date, "%Y-%m-%d");
+        if a_date.is_ok() && b_date.is_ok() {
+            return b_date.unwrap().cmp(&a_date.unwrap());
+        }
+        std::cmp::Ordering::Equal
+    });
+    data
 }
