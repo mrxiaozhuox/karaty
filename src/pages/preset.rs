@@ -453,7 +453,7 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
             (data, index_nodes)
         }
     });
-
+  
     match data.value() {
         Some((data, index)) => {
             if data.is_none() {
@@ -470,6 +470,10 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
             } else {
                 data.date
             };
+            
+            use_effect(&cx, (&file_name,), |(_file_name)| async { 
+                js_sys::eval("setTimeout(() => {hljs.highlightAll();}, 12);");
+            });
             
             cx.render(rsx! {
                 div { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",

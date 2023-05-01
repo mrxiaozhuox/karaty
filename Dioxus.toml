@@ -36,14 +36,14 @@ index_on_404 = true
 
 # CSS style file
 style = [
-    "//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css",
+    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css",
 ]
 
 # Javascript code file
 script = [
     "/assets/tailwind/tailwind.min.js",
     "/assets/tailwind/tailwind.config.js",
-    "//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js",
+    "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/highlight.min.js",
 ]
 
 [web.resource.dev]
