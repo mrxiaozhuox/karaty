@@ -25,7 +25,13 @@ pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
         toml::Value::Table(res)
     });
     let template = template.as_table().unwrap();
-    let mut using = template.get("using").unwrap().as_str().unwrap();
+    let using = template.get("using");
+    let mut using = if using.is_none() {
+        ""
+    } else {
+        using.unwrap().as_str().unwrap_or_default()
+    };
+
     cx.render(rsx! {
         div {
             match suffix {

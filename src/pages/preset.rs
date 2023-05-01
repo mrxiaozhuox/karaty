@@ -472,7 +472,7 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
             };
             
             use_effect(&cx, (&file_name,), |(_file_name)| async { 
-                js_sys::eval("setTimeout(() => {hljs.highlightAll();}, 12);");
+                let _ = js_sys::eval("setTimeout(() => {hljs.highlightAll();}, 12);");
             });
             
             cx.render(rsx! {

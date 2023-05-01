@@ -26,17 +26,9 @@ data = { url = "/source/", index-file = "_index.json" }
 path = "/"
 file = "home.md"
 
-[routing.template]
-
-using = "center"
-
 [[routing]]
 path = "/author"
 file = "author.md"
-
-[routing.template]
-
-using = "center"
 
 [routing.template.style]
 
@@ -72,6 +64,7 @@ using = "docs"
 
 links = [
     { text = "Home", page = "/" },
+    { text = "Roadmap", page = "/blog/roadmap" },
     { feature = "mode-switch" },
 ]
 
