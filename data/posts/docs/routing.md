@@ -53,10 +53,10 @@ When you visit `http://127.0.0.1:8080/main`, the page will be auto-jump to `http
 
 ### PageBind
 
-| *Type*   | *Name* | *Introduction*                            |
-| :------- | ------ | ----------------------------------------- |
-| Markdown | center | display markdown content by center layout |
-| Json     | cards  | display a card list from json file        |
+| *Type*   | *Name* | *Introduction*                            | **Default** |
+| :------- | ------ | ----------------------------------------- | ----------- |
+| Markdown | center | display markdown content by center layout | True        |
+| Json     | cards  | display a card list from json file        | True        |
 
 #### Markdown - center
 
@@ -111,18 +111,11 @@ JSON format:
     }
   ],
   "Data Convert": [
-
     {
       "title": "Markdown Meta Parser",
       "url": "https://github.com/mrxiaozhuox/markdown-meta-parser",
       "content": "Parse Markdown meta table to Json",
       "footnote": "YuKun Liu"
-    },
-    {
-      "title": "Serde",
-      "url": "https://serde.rs/",
-      "content": "Serialization framework for Rust",
-      "footnote": "Serde-RS"
     }
   ]
 }

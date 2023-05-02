@@ -29,11 +29,11 @@ pub struct SiteConfig {
 pub struct DeployRepositoryConfig {
     pub service: String,
     pub name: String,
-    #[serde(default = "default_master")]
+    #[serde(default = "default_branch")]
     pub branch: String,
 }
 
-fn default_master() -> String {
+fn default_branch() -> String {
     String::from("main")
 }
 

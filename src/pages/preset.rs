@@ -271,6 +271,10 @@ pub fn BlogContentPreset(cx: Scope<BlogProps>) -> Element {
                 }
             });
 
+            use_effect(&cx, (), |_| async { 
+                let _ = js_sys::eval("setTimeout(() => {hljs.highlightAll();}, 60);");
+            });
+
             cx.render(rsx! {
                 section { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
                     Navbar {}
