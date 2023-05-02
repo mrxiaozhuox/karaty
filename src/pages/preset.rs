@@ -272,7 +272,7 @@ pub fn BlogContentPreset(cx: Scope<BlogProps>) -> Element {
             });
 
             use_effect(&cx, (), |_| async { 
-                let _ = js_sys::eval("setTimeout(() => {hljs.highlightAll();}, 60);");
+                let _ = js_sys::eval("setTimeout(() => {hljs.highlightAll();}, 300);");
             });
 
             cx.render(rsx! {
@@ -477,7 +477,7 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
             };
             
             use_effect(&cx, (&file_name,), |(_file_name)| async { 
-                let _ = js_sys::eval("setTimeout(() => {hljs.highlightAll();}, 60);");
+                let _ = js_sys::eval("setTimeout(() => {hljs.highlightAll();}, 300);");
             });
             
             cx.render(rsx! {
