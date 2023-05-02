@@ -62,7 +62,7 @@ using = "docs"
 
 [navigation]
 
-links = [
+content = [
     { text = "Home", page = "/" },
     { text = "Roadmap", page = "/blog/roadmap" },
     { feature = "mode-switch" },
