@@ -53,7 +53,7 @@ pub struct DeployLocalDataSourceConfig {
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct NavigationConfig {
-    pub links: Vec<NavigationInfo>,
+    pub content: Vec<NavigationInfo>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

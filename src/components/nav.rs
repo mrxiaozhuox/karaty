@@ -6,7 +6,7 @@ use crate::{components::icon::Icon, config::NavigationInfo, utils::data::GlobalD
 pub fn Navbar(cx: Scope) -> Element {
     let data = cx.consume_context::<GlobalData>().unwrap();
     let config = data.config;
-    let nav = config.navigation.links.clone();
+    let nav = config.navigation.content.clone();
 
     let dark_mode = crate::hooks::mode::is_dark(&cx);
 
