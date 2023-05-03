@@ -4,7 +4,7 @@ date: 2023-04-25
 released: true
 ---
 
-> Karaty - a SPA website generator.
+> Karaty - a SPA website generator. :brand.github: moon: :moon: wow!
 
 ## What is Karaty?
 

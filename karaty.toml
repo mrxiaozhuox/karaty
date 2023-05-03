@@ -81,8 +81,8 @@ content = [
         { text = "Author", page = "/author" },
     ],
     [
-        { icon = "brand:github", link = "https://github.com/mrxiaozhuox/karaty" },
-        { icon = "brand:zhihu", link = "https://www.zhihu.com/people/mrxiao-zhuo-x" },
-        { icon = "brand:instagram", link = "https://www.instagram.com/mrxiaozhuox/" },
+        { icon = "brand.github", link = "https://github.com/mrxiaozhuox/karaty" },
+        { icon = "brand.zhihu", link = "https://www.zhihu.com/people/mrxiao-zhuo-x" },
+        { icon = "brand.instagram", link = "https://www.instagram.com/mrxiaozhuox/" },
     ]
 ]
