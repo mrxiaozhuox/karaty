@@ -53,10 +53,10 @@ When you visit `http://127.0.0.1:8080/main`, the page will be auto-jump to `http
 
 ### PageBind
 
-| *Type*   | *Name* | *Introduction*                            | **Default** |
-| :------- | ------ | ----------------------------------------- | ----------- |
-| Markdown | center | display markdown content by center layout | True        |
-| Json     | cards  | display a card list from json file        | True        |
+| **Type** | **Name** | **Introduction**                          | **Default** |
+| -------- |  ------  | ----------------------------------------- | ----------- |
+| Markdown |  center  | display markdown content by center layout | True        |
+| Json     |  cards   | display a card list from json file        | True        |
 
 #### Markdown - center
 
