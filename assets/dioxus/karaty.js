@@ -1166,7 +1166,7 @@ imports.wbg.__wbg_textContent_dff59ad5e030bb86 = function() { return logError(fu
     getInt32Memory0()[arg0 / 4 + 1] = len0;
     getInt32Memory0()[arg0 / 4 + 0] = ptr0;
 }, arguments) };
-imports.wbg.__wbindgen_closure_wrapper1269 = function() { return logError(function (arg0, arg1, arg2) {
+imports.wbg.__wbindgen_closure_wrapper1273 = function() { return logError(function (arg0, arg1, arg2) {
     const ret = makeMutClosure(arg0, arg1, 139, __wbg_adapter_20);
     return addHeapObject(ret);
 }, arguments) };
