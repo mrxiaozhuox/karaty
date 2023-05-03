@@ -472,11 +472,7 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
             } else {
                 data.date
             };
-            
-            use_effect(&cx, (&file_name,), |(_file_name)| async { 
-                let _ = js_sys::eval("setTimeout(() => {hljs.highlightAll();}, 300);");
-            });
-            
+
             cx.render(rsx! {
                 div { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
                     Navbar {}

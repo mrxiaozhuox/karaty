@@ -98,6 +98,9 @@ pub fn MdastNode(cx: Scope, nodes: Vec<Node>) -> Element {
             } else {
                 "".to_string()
             };
+            use_effect(&cx, (value,), |(_)| async {
+                let _ = js_sys::eval("hljs.highlightAll();");
+            });
             rsx! {
                 div {
                     class: "not-prose",
