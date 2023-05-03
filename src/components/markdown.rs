@@ -233,7 +233,6 @@ pub fn Text(cx: Scope, value: String) -> Element {
         latest_split_index = last_index;
     }
     contents.push(TextFlag::Text(value[latest_split_index..].to_string()));
-    log::info!("{:?}", contents);
     let display = contents.iter().map(|v| match v.clone() {
         TextFlag::Text(t) => {
             rsx! { "{t}" }

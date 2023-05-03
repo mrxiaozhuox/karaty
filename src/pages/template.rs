@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 use serde::Deserialize;
 
 use crate::{
-    components::{footer::Footer, nav::Navbar},
+    components::{footer::Footer, markdown::Markdown, nav::Navbar},
     utils::markdown::parse_markdown,
 };
 
@@ -75,8 +75,6 @@ pub fn CenterMarkdown(
     content: String,
     config: toml::map::Map<String, toml::Value>,
 ) -> Element {
-    let html_output = parse_markdown(&content).unwrap();
-
     let class = if let Some(toml::Value::Table(t)) = config.get("style") {
         generate_prose_class(t.clone())
     } else {
@@ -102,7 +100,7 @@ pub fn CenterMarkdown(
             }
             div { class: "flex w-full items-center justify-center container mx-auto px-8",
                 div { class: "text-center",
-                    div { class: "{class}", dangerous_inner_html: "{html_output}" }
+                    div { class: "{class}", Markdown { content: content.clone() } }
                     if !hide_footer {
                         rsx! { Footer {} }
                     }

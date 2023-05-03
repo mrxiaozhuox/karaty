@@ -8,10 +8,7 @@ use crate::{
     components::{footer::Footer, nav::Navbar, markdown::Markdown},
     config::Config,
     pages::_404,
-    utils::{
-        data::{load_content_list, load_from_source, GlobalData},
-        markdown::parse_markdown,
-    },
+    utils::data::{load_content_list, load_from_source, GlobalData},
 };
 
 #[derive(PartialEq, Props)]
@@ -251,7 +248,7 @@ pub fn BlogContentPreset(cx: Scope<BlogProps>) -> Element {
 
     let name = path.to_string();
     let info_config = config.clone();
-    let info = use_future(&cx, (), |_| async move {
+    let info = use_future(&cx, (&name,), |(name,)| async move {
         let info = get_info(&info_config, &name, group).await;
         info
     });
@@ -259,7 +256,6 @@ pub fn BlogContentPreset(cx: Scope<BlogProps>) -> Element {
     match info.value() {
         Some(Some(info)) => {
             let content = info.content.clone();
-            let html_output = parse_markdown(&content).unwrap();
 
             let category = info.category.clone().unwrap_or("Default".to_string());
 
@@ -271,23 +267,21 @@ pub fn BlogContentPreset(cx: Scope<BlogProps>) -> Element {
                 }
             });
 
-            use_effect(&cx, (), |_| async { 
-                let _ = js_sys::eval("setTimeout(() => {hljs.highlightAll();}, 300);");
-            });
-
             cx.render(rsx! {
                 section { class: "bg-cover bg-white dark:bg-gray-900 dark:text-white",
                     Navbar {}
                     div { class: "md:flex h-full w-full justify-center px-6",
-                        div { class: "max-w-5xl",
+                        div { class: "max-w-5xl w-[60%]",
                             h1 { class: "text-4xl font-bold text-gray-600 dark:text-white",
                                 "{info.title}"
                             }
                             p { class: "mt-1 text-gray-400 dark:text-gray-200", "{info.date} & {category}" }
-                            hr { class: "mt-2 w-60" }
+                            hr { class: "mt-2" }
                             div {
                                 class: "prose mt-4 dark:text-white dark:prose-invert",
-                                dangerous_inner_html: "{html_output}"
+                                Markdown {
+                                    content: content.clone(),
+                                }
                             }
                             hr { class: "mt-4" }
                             p { class: "mt-4", tags }
