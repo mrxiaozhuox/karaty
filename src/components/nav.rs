@@ -127,7 +127,7 @@ pub fn Navbar(cx: Scope) -> Element {
                 if *mobile_navbar.get() {
                     rsx! {
                         div { class: "sm:hidden",
-                            div { class: "flex flex-col bg-gray-100 dark:bg-gray-700 rounded-lg",
+                            div { class: "flex flex-col bg-gray-100 dark:bg-purple-900 rounded-lg",
                                 nav.iter().map(|v| {
                                     let link_class = "m-2 font-semibold dark:text-gray-200 flex justify-center";
                                     match v {
