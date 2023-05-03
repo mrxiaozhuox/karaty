@@ -4,6 +4,8 @@ use markdown::{
     ParseOptions,
 };
 
+use crate::components::icon::Icon;
+
 #[inline_props]
 pub fn Markdown(cx: Scope, content: String) -> Element {
     let mdast = markdown::to_mdast(&content, &ParseOptions::gfm());
@@ -34,7 +36,9 @@ pub fn MdastNode(cx: Scope, nodes: Vec<Node>) -> Element {
         };
         if let Node::Text(text) = node {
             rsx! {
-                "{text.value}"
+                Text {
+                    value: text.value.clone(),
+                }
             }
         } else if let Node::Paragraph(_) = node {
             rsx! {
@@ -203,4 +207,41 @@ pub fn MdastNode(cx: Scope, nodes: Vec<Node>) -> Element {
     cx.render(rsx! {
         display
     })
+}
+
+#[derive(Debug, Clone)]
+pub enum TextFlag {
+    Text(String),
+    Icon(String),
+}
+
+#[inline_props]
+pub fn Text(cx: Scope, value: String) -> Element {
+    let re = js_sys::RegExp::new("\\:([a-zA-Z0-9.]+)\\:", "gi");
+    let mut contents: Vec<TextFlag> = vec![];
+    let mut latest_split_index = 0;
+    while let Some(v) = re.exec(value) {
+        let last_index = re.last_index() as usize;
+        let arr = v.to_vec();
+        let full = arr.get(0).unwrap();
+        let icon = arr.get(1).unwrap();
+        let start_index = last_index - full.as_string().unwrap().len();
+        contents.push(TextFlag::Text(
+            value[latest_split_index..start_index].to_string(),
+        ));
+        contents.push(TextFlag::Icon(icon.as_string().unwrap()));
+        latest_split_index = last_index;
+    }
+    contents.push(TextFlag::Text(value[latest_split_index..].to_string()));
+    log::info!("{:?}", contents);
+    let display = contents.iter().map(|v| match v.clone() {
+        TextFlag::Text(t) => {
+            rsx! { "{t}" }
+        }
+        TextFlag::Icon(t) => rsx! { Icon {
+            class: "inline-block".to_string(),
+            name: t
+        } },
+    });
+    cx.render(rsx! { display })
 }

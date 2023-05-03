@@ -13,7 +13,7 @@ pub fn Navbar(cx: Scope) -> Element {
     let mobile_navbar = use_state(&cx, || false);
 
     cx.render(rsx! {
-        nav { class: "dark:bg-gray-600",
+        nav { class: "dark:bg-purple-900",
             div { class: "max-w-7xl mx-auto px-2 sm:px-6 lg:px-8",
                 div { class: "sm:relative flex items-center justify-between h-16",
                     div { class: "flex-1 flex items-center justify-center sm:items-stretch sm:justify-start",
@@ -70,7 +70,10 @@ pub fn Navbar(cx: Scope) -> Element {
                                                 a {
                                                     class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
                                                     href: "{link}",
-                                                    Icon { name: icon }
+                                                    Icon {
+                                                        class: "dark:text-white text-dark".to_string(),
+                                                        name: icon
+                                                    }
                                                 }
                                             }
                                         },

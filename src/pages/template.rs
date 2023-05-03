@@ -96,7 +96,7 @@ pub fn CenterMarkdown(
     };
 
     cx.render(rsx! {
-        section { class: "bg-cover bg-white dark:bg-gray-600",
+        section { class: "bg-cover bg-white dark:bg-gray-900",
             if !hide_navbar {
                 rsx! { Navbar {} }
             }
@@ -159,7 +159,7 @@ pub fn JsonCardList(cx: Scope, content: String) -> Element {
     });
 
     cx.render(rsx! {
-        section { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+        section { class: "bg-cover bg-white dark:bg-gray-900 dark:text-white",
             Navbar {}
             div { class: "flex h-full w-full items-center justify-center container mx-auto px-8",
                 div { class: "max-w-5xl text-center",

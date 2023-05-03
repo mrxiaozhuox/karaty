@@ -4,9 +4,15 @@ use dioxus_free_icons::{
     Icon as FIcon,
 };
 
-#[inline_props]
-pub fn Icon(cx: Scope, name: String) -> Element {
-    let temp = name.split(":").collect::<Vec<&str>>();
+#[derive(Props, PartialEq)]
+pub struct IconProps {
+    name: String,
+    #[props(default)]
+    class: String,
+}
+
+pub fn Icon(cx: Scope<IconProps>) -> Element {
+    let temp = cx.props.name.split(".").collect::<Vec<&str>>();
     let mut suffix = "solid".to_string();
     let name;
     if temp.len() > 1 {
@@ -16,141 +22,143 @@ pub fn Icon(cx: Scope, name: String) -> Element {
         name = temp.get(0).unwrap().to_string();
     }
 
+    let class = &cx.props.class;
+
     let icon = match suffix.to_lowercase().as_str() {
         "brand" => match name.as_str() {
             "github" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaGithub } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaGithub } }
             }
             "gitlab" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaGitlab } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaGitlab } }
             }
             "apple" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaApple } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaApple } }
             }
             "android" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaAndroid } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaAndroid } }
             }
             "google" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaGoogle } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaGoogle } }
             }
             "paypal" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaPaypal } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaPaypal } }
             }
             "twitter" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaTwitter } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaTwitter } }
             }
             "instagram" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaInstagram } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaInstagram } }
             }
             "facebook" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaFacebook } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaFacebook } }
             }
             "linkedin" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaLinkedin } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaLinkedin } }
             }
             "twitch" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaTwitch } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaTwitch } }
             }
             "vimeo" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaVimeo } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaVimeo } }
             }
             "apple-pay" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaApplePay } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaApplePay } }
             }
             "google-pay" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaGooglePay } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaGooglePay } }
             }
             "zhihu" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaZhihu } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaZhihu } }
             }
             "rust" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaRust } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaRust } }
             }
             "python" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaPython } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaPython } }
             }
             "java" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaJava } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaJava } }
             }
             "golang" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaGolang } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaGolang } }
             }
             "php" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaPhp } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaPhp } }
             }
             "node-js" => {
-                rsx! { FIcon { icon: fa_brands_icons::FaNodeJs } }
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaNodeJs } }
             }
             _ => {
-                rsx! { FIcon { icon: fa_solid_icons::FaX } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaX } }
             }
         },
         _ => match name.as_str() {
             "house" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaHouse } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaHouse } }
             }
             "user" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaUser } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaUser } }
             }
             "music" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaMusic } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaMusic } }
             }
             "heart" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaHeart } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaHeart } }
             }
             "cloud" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaCloud } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaCloud } }
             }
             "bell" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaBell } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaBell } }
             }
             "globe" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaGlobe } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaGlobe } }
             }
             "bug" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaBug } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaBug } }
             }
             "sun" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaSun } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaSun } }
             }
             "moon" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaMoon } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaMoon } }
             }
             "shop" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaShop } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaShop } }
             }
             "car" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaCar } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaCar } }
             }
             "wallet" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaWallet } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaWallet } }
             }
             "book" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaBook } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaBook } }
             }
             "language" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaLanguage } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaLanguage } }
             }
             "tag" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaTag } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaTag } }
             }
             "tags" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaTags } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaTags } }
             }
             "play" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaPlay } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaPlay } }
             }
             "pause" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaPause } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaPause } }
             }
             "gear" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaGear } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaGear } }
             }
             "gears" => {
-                rsx! { FIcon { icon: fa_solid_icons::FaGears } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaGears } }
             }
             _ => {
-                rsx! { FIcon { icon: fa_solid_icons::FaX } }
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaX } }
             }
         },
     };

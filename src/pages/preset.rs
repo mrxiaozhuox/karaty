@@ -63,7 +63,7 @@ pub fn BlogListPreset(cx: Scope<BlogProps>) -> Element {
                 let link = link.replace(":name", &v.path);
                 rsx! {
                     Link { to: "{link}",
-                        h1 { class: "text-3xl font-bold text-gray-500 hover:text-gray-600 dark:text-gray-200 dark:hover:text-white",
+                        h1 { class: "text-3xl font-bold text-gray-500 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white",
                             "{v.title}"
                         }
                         p { class: "text-gray-400 dark:text-gray-100", "{v.date} & {category}" }
@@ -73,7 +73,7 @@ pub fn BlogListPreset(cx: Scope<BlogProps>) -> Element {
                 }
             });
             cx.render(rsx! {
-                section { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+                section { class: "bg-cover bg-white dark:bg-gray-900 dark:text-white",
                     Navbar {}
                     div { class: "flex h-full w-full items-center justify-center container mx-auto px-8",
                         div { class: "max-w-5xl text-center",
@@ -86,7 +86,7 @@ pub fn BlogListPreset(cx: Scope<BlogProps>) -> Element {
             })
         }
         None => cx.render(rsx! {
-            section { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+            section { class: "bg-cover bg-white dark:bg-gray-900 dark:text-white",
                 Navbar {}
                 div { class: "flex h-full w-full items-center justify-center container mx-auto px-8",
                     div { class: "max-w-5xl text-center",
@@ -276,14 +276,14 @@ pub fn BlogContentPreset(cx: Scope<BlogProps>) -> Element {
             });
 
             cx.render(rsx! {
-                section { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+                section { class: "bg-cover bg-white dark:bg-gray-900 dark:text-white",
                     Navbar {}
                     div { class: "md:flex h-full w-full justify-center px-6",
                         div { class: "max-w-5xl",
-                            h1 { class: "text-4xl font-bold text-gray-600 dark:text-gray-200",
+                            h1 { class: "text-4xl font-bold text-gray-600 dark:text-white",
                                 "{info.title}"
                             }
-                            p { class: "mt-1 text-gray-400 dark:text-gray-300", "{info.date} & {category}" }
+                            p { class: "mt-1 text-gray-400 dark:text-gray-200", "{info.date} & {category}" }
                             hr { class: "mt-2 w-60" }
                             div {
                                 class: "prose mt-4 dark:text-white dark:prose-invert",
@@ -299,7 +299,7 @@ pub fn BlogContentPreset(cx: Scope<BlogProps>) -> Element {
         }
         Some(None) => cx.render(rsx! { _404::NotFound {} }),
         None => cx.render(rsx! {
-            section { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+            section { class: "bg-cover bg-white dark:bg-gray-900 dark:text-white",
                 Navbar {}
                 div { class: "flex h-full w-full items-center justify-center container mx-auto px-8",
                     div { class: "max-w-5xl text-center",
@@ -474,12 +474,12 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
             };
 
             cx.render(rsx! {
-                div { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+                div { class: "bg-cover bg-white dark:bg-gray-900 dark:text-white",
                     Navbar {}
                     div { class: "container mx-auto px-8 max-w-7xl",
                         div { class: "grid grid-cols-12 gap-6",
                             div {
-                                class: "row-span-3 max-h-[34rem] col-span-12 sm:col-span-3 bg-gray-50 dark:bg-gray-700 rounded-md",
+                                class: "row-span-3 max-h-[34rem] col-span-12 sm:col-span-3 bg-gray-50 dark:bg-gray-800 rounded-md",
                                 div {
                                     class: "px-3 py-2",
                                     DocsSideBar {
@@ -523,7 +523,7 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
             })
         },
         None => cx.render(rsx! {
-            section { class: "bg-cover bg-white dark:bg-gray-600 dark:text-white",
+            section { class: "bg-cover bg-white dark:bg-gray-900 dark:text-white",
                 Navbar {}
                 div { class: "flex h-full w-full items-center justify-center container mx-auto px-8",
                     div { class: "max-w-5xl text-center",
