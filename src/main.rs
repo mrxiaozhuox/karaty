@@ -153,6 +153,15 @@ fn App(cx: Scope) -> Element {
                         }
                     })
 
+                    Route {
+                        to: "/_test",
+                        div {
+                            crate::components::markdown::Markdown {
+                                content: "hello **dioxus**!".to_string(),
+                            }
+                        }
+                    }
+
                     Route { to: "", _404::NotFound {} }
                 }
             })

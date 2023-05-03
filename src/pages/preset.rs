@@ -5,7 +5,7 @@ use dioxus_router::{use_route, Link};
 use markdown::mdast;
 
 use crate::{
-    components::{footer::Footer, nav::Navbar},
+    components::{footer::Footer, nav::Navbar, markdown::Markdown},
     config::Config,
     pages::_404,
     utils::{
@@ -423,7 +423,6 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
     } else {
         file.to_string()
     };
-    log::info!("{file_name}");
     
     let list_config = config.clone();
     let group_query = route.query_param("group");
@@ -468,8 +467,6 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
             }
             let data = data.clone().unwrap();
             
-            let html_output = parse_markdown(&data.content).unwrap();
-
             let date = if data.date.is_empty() {
                 "Unknown".to_string()
             } else {
@@ -515,7 +512,9 @@ pub fn DocsPreset(cx: Scope<DocsScope>) -> Element {
                                 class:"row-span-2 col-span-12 sm:col-span-8",
                                 div {
                                     class: "prose prose-sm sm:prose-base  mt-4 dark:text-white dark:prose-invert",
-                                    dangerous_inner_html: "{html_output}",
+                                    Markdown {
+                                        content: data.content.clone(),
+                                    }
                                 }
                             }
                         }
