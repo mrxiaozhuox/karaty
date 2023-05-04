@@ -181,7 +181,7 @@ pub fn NavItemDropdown(cx: Scope, text: String, list: Vec<NavigationInfo>) -> El
             if *dropdown.get() {
                 rsx! {
                     div {
-                        class: "absolute top-8 bg-white rounded-lg shadow w-60 dark:bg-purple-800",
+                        class: "absolute top-8 bg-white rounded-lg shadow dark:bg-purple-800",
                         div {
                             class: "p-2 flex flex-col",
                             li

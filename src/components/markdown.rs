@@ -77,12 +77,23 @@ pub fn MdastNode(cx: Scope, nodes: Vec<Node>) -> Element {
         } else if let Node::Link(link) = node {
             let url = link.url.clone();
             let title = link.title.clone().unwrap_or_default();
-            rsx! {
-                a {
-                    href: "{url}",
-                    title: "{title}",
-                    embedded
-                }
+            if &link.url[0..1] == "@" {
+                let groups = link.url[1..].split(".").collect::<Vec<&str>>();
+                let url = groups.join("/");
+                return rsx! {
+                    dioxus_router::Link {
+                        to: "{url}",
+                        embedded
+                    }
+                };
+            } else {
+                return rsx! {
+                    a {
+                        href: "{url}",
+                        title: "{title}",
+                        embedded
+                    }
+                };
             }
         } else if let Node::Heading(h) = node {
             let depth = h.depth;
