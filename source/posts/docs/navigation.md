@@ -55,3 +55,22 @@ Same with `Text to Page` part.
 ```toml
 { icon = "book", page = "/docs" }
 ```
+
+### Plain Text
+
+display a plain text.
+
+```toml
+{ text = "Powered by Dioxus" }
+```
+
+### Collection
+
+you can use a collection to create a **dropdown** list:
+
+```toml
+{ text = "Commnunity", list = [
+  { text = "GitHub", link = "https://github.com/" },
+  { text = "GitLab", link = "https://gitlab.com/" },
+] }
+```
