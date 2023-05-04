@@ -12,7 +12,7 @@ date: 2023-05-02
 content = [
   { text = "GitHub", link = "https://github.com/mrxiaozhuox" },
   { text = "Docs", page = "/docs" },
-  { icon = "brand:twitter", link = "https://twitter.com/" },
+  { icon = "brand.twitter", link = "https://twitter.com/" },
   { text = "copyright @karaty 2023" },
   { feature = "mode-switch" },
 ]
@@ -55,55 +55,3 @@ Same with `Text to Page` part.
 ```toml
 { icon = "book", page = "/docs" }
 ```
-
-## Avaiable Icon
-
-### Normal
-
-- house
-- user
-- music
-- heart
-- cloud
-- bell
-- globe
-- bug
-- sun
-- moon
-- shop
-- car
-- wallet
-- book
-- language
-- tag
-- tags
-- play
-- pause
-- gear
-- gears
-
-### Brand
-
-if you want use brand icon, you need add a prefix: `brand:{icon_name}`
-
-- github
-- gitlab
-- apple
-- android
-- google
-- paypal
-- twitter
-- instagram
-- facebook
-- linkedin
-- twitch
-- vimeo
-- apple-pay
-- google-pay
-- zhihu
-- rust
-- python
-- java
-- go
-- php
-- node-js
