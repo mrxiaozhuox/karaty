@@ -30,6 +30,7 @@ markdown-meta-parser = "0.1.3"
 markdown = "1.0.0-alpha.8"
 async-recursion = "1.0.4"
 chrono = { version = "0.4.24", default-features = false, features = ["wasmbind"] }
+indoc = "2.0.1"
 
 [profile.release]
 lto = true

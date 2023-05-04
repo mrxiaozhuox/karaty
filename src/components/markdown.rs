@@ -9,6 +9,29 @@ use crate::components::icon::Icon;
 #[inline_props]
 pub fn Markdown(cx: Scope, content: String) -> Element {
     let mdast = markdown::to_mdast(&content, &ParseOptions::gfm());
+    use_effect(&cx, (content,), |_| async {
+        let _ = js_sys::eval(&indoc::formatdoc! {"
+            var list = document.getElementsByClassName('code-raw');
+            for (var i = 0; i < list.length; i++) {{
+                let generated = list[i].parentElement.getElementsByTagName('pre');
+                for (var j = 0; j < generated.length; j++) {{
+                    generated[j].remove();
+                }}
+                var code = list[i].getElementsByTagName('code')[0].innerText;
+                var language = list[i].getElementsByTagName('span')[0].innerText;
+                console.log(code);
+                var pre_el = document.createElement('pre');
+                var code_el = document.createElement('code');
+                code_el.classList = 'language-' + language;
+                code_el.appendChild(document.createTextNode(
+                    code
+                ));
+                pre_el.appendChild(code_el);
+                list[i].parentElement.appendChild(pre_el);
+                hljs.highlightElement(code_el);
+            }}
+        "});
+    });
     if let Ok(Node::Root(root)) = mdast {
         let children = root.children;
         return cx.render(rsx! {
@@ -108,23 +131,10 @@ pub fn MdastNode(cx: Scope, nodes: Vec<Node>) -> Element {
         } else if let Node::Code(code) = node {
             let language = &code.lang;
             let value = &code.value;
-            let class = if let Some(language) = language {
-                format!("language-{}", language)
-            } else {
-                "".to_string()
-            };
-            use_effect(&cx, (value,), |(_)| async {
-                let _ = js_sys::eval("hljs.highlightAll();");
-            });
             rsx! {
-                div {
-                    class: "not-prose",
-                    pre {
-                        code {
-                            class: "{class}",
-                            "{value}"
-                        }
-                    }
+                Code {
+                    text: value.clone(),
+                    language: language.clone().unwrap_or_default(),
                 }
             }
         } else if let Node::BlockQuote(_) = node {
@@ -254,4 +264,32 @@ pub fn Text(cx: Scope, value: String) -> Element {
         } },
     });
     cx.render(rsx! { display })
+}
+
+#[inline_props]
+pub fn Code(cx: Scope, text: String, language: String) -> Element {
+    let class = if !language.is_empty() {
+        format!("language-{}", language)
+    } else {
+        "".to_string()
+    };
+    use_effect(&cx, (text, language), |(text, language)| {
+        let text = text.clone();
+        let language = language.clone();
+        log::info!("{language} | {text}");
+        async move {
+            let language = &language;
+        }
+    });
+    log::info!("{language} : {text}");
+    cx.render(rsx! {
+        div {
+            class: "not-prose",
+            div {
+                class: "hidden code-raw",
+                code { "{text}" }
+                span { "{language}" }
+            }
+        }
+    })
 }
