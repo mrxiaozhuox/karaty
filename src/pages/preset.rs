@@ -65,15 +65,15 @@ pub fn BlogListPreset(cx: Scope<BlogProps>) -> Element {
                         }
                         p { class: "text-gray-400 dark:text-gray-100", "{v.date} & {category}" }
                         p { class: "mt-2", tags }
-                        hr { class: "mt-2" }
+                        hr { class: "mt-2 mb-4" }
                     }
                 }
             });
             cx.render(rsx! {
                 section { class: "bg-cover bg-white dark:bg-gray-900 dark:text-white",
                     Navbar {}
-                    div { class: "flex h-full w-full items-center justify-center container mx-auto px-8",
-                        div { class: "max-w-5xl text-center",
+                    div { class: "flex h-full w-full items-center justify-center px-8",
+                        div { class: "max-w-5xl text-center w-[60%]",
                             h1 { class: "text-xl font-bold", "`{site_title}`" }
                             div { class: "mt-6", list }
                             Footer {}

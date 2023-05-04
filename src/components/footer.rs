@@ -96,6 +96,7 @@ pub fn Footer(cx: Scope) -> Element {
                                     class: "text-gray-500 dark:gray-100",
                                     "{text}" 
                                 } },
+                                _ => { rsx! { "unknown" } }
                             }
                         })
                     }

@@ -37,87 +37,8 @@ pub fn Navbar(cx: Scope) -> Element {
                         div { class: "hidden sm:block sm:ml-6 absolute right-0",
                             div { class: "flex space-x-4",
                                 nav.iter().map(|v| {
-                                    match v.clone() {
-                                        NavigationInfo::TextToPage { text, page } => {
-                                            rsx! {
-                                                Link {
-                                                    class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
-                                                    to: "{page}",
-                                                    "{text}"
-                                                }
-                                            }
-                                        },
-                                        NavigationInfo::TextToLink { text, link } => {
-                                            rsx! {
-                                                a {
-                                                    class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
-                                                    href: "{link}",
-                                                    "{text}"
-                                                }
-                                            }
-                                        },
-                                        NavigationInfo::IconToPage { icon, page } => {
-                                            rsx! {
-                                                Link {
-                                                    class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
-                                                    to: "{page}",
-                                                    Icon { name: icon }
-                                                }
-                                            }
-                                        },
-                                        NavigationInfo::IconToLink { icon, link } => {
-                                            rsx! {
-                                                a {
-                                                    class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
-                                                    href: "{link}",
-                                                    Icon {
-                                                        class: "dark:text-white text-dark".to_string(),
-                                                        name: icon
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        NavigationInfo::Feature { feature } => {
-                                            if feature.as_str() == "mode-switch" {
-                                                let icon = if crate::hooks::mode::is_dark(&cx) {
-                                                    rsx! {
-                                                        dioxus_free_icons::Icon {
-                                                            icon: dioxus_free_icons::icons::fa_solid_icons::FaSun
-                                                        }
-                                                    }
-                                                } else {
-                                                    rsx! {
-                                                        dioxus_free_icons::Icon {
-                                                            icon: dioxus_free_icons::icons::fa_solid_icons::FaMoon
-                                                        }
-                                                    }
-                                                };
-                                                rsx! {
-                                                    a {
-                                                        class: "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium",
-                                                        href: "javascript:;",
-                                                        onclick: move |_| {
-                                                            crate::hooks::mode::mode(&cx, !dark_mode);
-                                                            cx.needs_update();
-                                                        },
-                                                        icon
-                                                    }
-                                                }
-                                            } else {
-                                                rsx! {
-                                                    strong {
-                                                        "unknown feature"
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        NavigationInfo::PlainText { text } => {
-                                            rsx! {
-                                                span {
-                                                    "{text}"
-                                                }
-                                            }
-                                        }
+                                    rsx! {
+                                        NavItemMiddle { value: v.clone() }
                                     }
                                 })
                             }
@@ -129,87 +50,7 @@ pub fn Navbar(cx: Scope) -> Element {
                         div { class: "sm:hidden",
                             div { class: "flex flex-col bg-gray-100 dark:bg-purple-900 rounded-lg",
                                 nav.iter().map(|v| {
-                                    let link_class = "m-2 font-semibold dark:text-gray-200 flex justify-center";
-                                    match v {
-                                        NavigationInfo::TextToPage { text, page } => {
-                                            rsx! {
-                                                Link {
-                                                    class: "{link_class}",
-                                                    to: "{page}",
-                                                    "{text}"
-                                                }
-                                            }
-                                        }
-                                        NavigationInfo::TextToLink { text, link } => {
-                                            rsx! {
-                                                a {
-                                                    class: "{link_class}",
-                                                    href: "{link}",
-                                                    "{text}"
-                                                }
-                                            }
-                                        }
-                                        NavigationInfo::IconToPage { icon, page } => {
-                                            rsx! {
-                                                Link {
-                                                    class: "{link_class}",
-                                                    to: "{page}",
-                                                    Icon { name: icon.to_string() }
-                                                }
-                                            }
-                                        }
-                                        NavigationInfo::IconToLink { icon, link } => {
-                                            rsx! {
-                                                a {
-                                                    class: "{link_class}",
-                                                    href: "{link}",
-                                                    Icon { name: icon.to_string() }
-                                                }
-                                            }
-                                        }
-                                        NavigationInfo::Feature { feature } => {
-                                            if feature.as_str() == "mode-switch" {
-                                                let icon = if crate::hooks::mode::is_dark(&cx) {
-                                                    rsx! {
-                                                        dioxus_free_icons::Icon {
-                                                            icon: dioxus_free_icons::icons::fa_solid_icons::FaSun
-                                                        }
-                                                    }
-                                                } else {
-                                                    rsx! {
-                                                        dioxus_free_icons::Icon {
-                                                            icon: dioxus_free_icons::icons::fa_solid_icons::FaMoon
-                                                        }
-                                                    }
-                                                };
-                                                rsx! {
-                                                    a {
-                                                        class: "{link_class}",
-                                                        href: "javascript:;",
-                                                        onclick: move |_| {
-                                                            crate::hooks::mode::mode(&cx, !dark_mode);
-                                                            cx.needs_update();
-                                                        },
-                                                        icon
-                                                    }
-                                                }
-                                            } else {
-                                                rsx! {
-                                                    strong {
-                                                        "unknown feature"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        NavigationInfo::PlainText { text } => {
-                                            rsx! {
-                                                span {
-                                                    class: "{link_class}",
-                                                    "{text}"
-                                                }
-                                            }
-                                        }
-                                    }
+                                    rsx! { NavItemMobile { value: v.clone() } }
                                 })
                             }
                         }
@@ -218,5 +59,263 @@ pub fn Navbar(cx: Scope) -> Element {
             }
         }
         br {}
+    })
+}
+
+#[inline_props]
+pub fn NavItemMiddle(cx: Scope, value: NavigationInfo) -> Element {
+    let link_class = "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium";
+    let dark_mode = crate::hooks::mode::is_dark(&cx);
+    let display = match value {
+        NavigationInfo::TextToPage { text, page } => {
+            rsx! {
+                Link {
+                    class: "{link_class}",
+                    to: "{page}",
+                    "{text}"
+                }
+            }
+        }
+        NavigationInfo::TextToLink { text, link } => {
+            rsx! {
+                a {
+                    class: "{link_class}",
+                    href: "{link}",
+                    "{text}"
+                }
+            }
+        }
+        NavigationInfo::IconToPage { icon, page } => {
+            rsx! {
+                Link {
+                    class: "{link_class}",
+                    to: "{page}",
+                    Icon { name: icon.to_string() }
+                }
+            }
+        }
+        NavigationInfo::IconToLink { icon, link } => {
+            rsx! {
+                a {
+                    class: "{link_class}",
+                    href: "{link}",
+                    Icon { name: icon.to_string() }
+                }
+            }
+        }
+        NavigationInfo::Feature { feature } => {
+            if feature.as_str() == "mode-switch" {
+                let icon = if crate::hooks::mode::is_dark(&cx) {
+                    rsx! {
+                        dioxus_free_icons::Icon {
+                            icon: dioxus_free_icons::icons::fa_solid_icons::FaSun
+                        }
+                    }
+                } else {
+                    rsx! {
+                        dioxus_free_icons::Icon {
+                            icon: dioxus_free_icons::icons::fa_solid_icons::FaMoon
+                        }
+                    }
+                };
+                rsx! {
+                    a {
+                        class: "{link_class}",
+                        href: "javascript:;",
+                        onclick: move |_| {
+                            crate::hooks::mode::mode(&cx, !dark_mode);
+                            cx.needs_update();
+                        },
+                        icon
+                    }
+                }
+            } else {
+                rsx! {
+                    strong {
+                        "unknown feature"
+                    }
+                }
+            }
+        }
+        NavigationInfo::PlainText { text } => {
+            rsx! {
+                span {
+                    class: "{link_class}",
+                    "{text}"
+                }
+            }
+        }
+        NavigationInfo::Collection { text, list } => {
+            rsx! {
+                NavItemDropdown {
+                    text: text.clone(),
+                    list: list.clone(),
+                }
+            }
+        }
+        _ => {
+            rsx! { span { class: "hidden", "unknown" } }
+        }
+    };
+    cx.render(display)
+}
+
+#[inline_props]
+pub fn NavItemDropdown(cx: Scope, text: String, list: Vec<NavigationInfo>) -> Element {
+    let link_class = "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium";
+    let dropdown = use_state(&cx, || false);
+    let li = list
+        .iter()
+        .map(|v| rsx! { NavItemMiddle { value: v.clone() } });
+    cx.render(rsx! {
+        div {
+            class: "px-3 py-2 flex justify-center items-center",
+            a {
+                class: "text-gray-800 dark:text-gray-200 text-sm font-medium",
+                href: "javascript:;",
+                onclick: move |_| {
+                    dropdown.set(!dropdown.get());
+                },
+                "{text}"
+            }
+            if *dropdown.get() {
+                rsx! {
+                    div {
+                        class: "absolute top-8 bg-white rounded-lg shadow w-60 dark:bg-purple-800",
+                        div {
+                            class: "p-2 flex flex-col",
+                            li
+                        }
+                    }
+                }
+            }
+        }
+    })
+}
+
+#[inline_props]
+pub fn NavItemMobile(cx: Scope, value: NavigationInfo) -> Element {
+    let link_class = "m-2 font-semibold dark:text-gray-200 flex justify-center";
+    let dark_mode = crate::hooks::mode::is_dark(&cx);
+    let display = match value {
+        NavigationInfo::TextToPage { text, page } => {
+            rsx! {
+                Link {
+                    class: "{link_class}",
+                    to: "{page}",
+                    "{text}"
+                }
+            }
+        }
+        NavigationInfo::TextToLink { text, link } => {
+            rsx! {
+                a {
+                    class: "{link_class}",
+                    href: "{link}",
+                    "{text}"
+                }
+            }
+        }
+        NavigationInfo::IconToPage { icon, page } => {
+            rsx! {
+                Link {
+                    class: "{link_class}",
+                    to: "{page}",
+                    Icon { name: icon.to_string() }
+                }
+            }
+        }
+        NavigationInfo::IconToLink { icon, link } => {
+            rsx! {
+                a {
+                    class: "{link_class}",
+                    href: "{link}",
+                    Icon { name: icon.to_string() }
+                }
+            }
+        }
+        NavigationInfo::Feature { feature } => {
+            if feature.as_str() == "mode-switch" {
+                let icon = if crate::hooks::mode::is_dark(&cx) {
+                    rsx! {
+                        dioxus_free_icons::Icon {
+                            icon: dioxus_free_icons::icons::fa_solid_icons::FaSun
+                        }
+                    }
+                } else {
+                    rsx! {
+                        dioxus_free_icons::Icon {
+                            icon: dioxus_free_icons::icons::fa_solid_icons::FaMoon
+                        }
+                    }
+                };
+                rsx! {
+                    a {
+                        class: "{link_class}",
+                        href: "javascript:;",
+                        onclick: move |_| {
+                            crate::hooks::mode::mode(&cx, !dark_mode);
+                            cx.needs_update();
+                        },
+                        icon
+                    }
+                }
+            } else {
+                rsx! {
+                    strong {
+                        "unknown feature"
+                    }
+                }
+            }
+        }
+        NavigationInfo::PlainText { text } => {
+            rsx! {
+                span {
+                    class: "{link_class}",
+                    "{text}"
+                }
+            }
+        }
+        NavigationInfo::Collection { text, list } => {
+            rsx! {
+                NavItemDropdownMobile {
+                    text: text.clone(),
+                    list: list.clone(),
+                }
+            }
+        }
+        _ => {
+            rsx! { "unknown" }
+        }
+    };
+    cx.render(display)
+}
+
+#[inline_props]
+pub fn NavItemDropdownMobile(cx: Scope, text: String, list: Vec<NavigationInfo>) -> Element {
+    let dropdown = use_state(&cx, || false);
+    let ls = list.iter().map(|v| {
+        rsx! { NavItemMobile { value: v.clone() } }
+    });
+    cx.render(rsx! {
+        div {
+            class: "m-2 flex flex-col",
+            a {
+                class: "flex justify-center dark:text-gray-200 font-semibold",
+                href: "javascript:;",
+                onclick: move |_| {
+                    dropdown.set(!dropdown.get());
+                },
+                "{text}"
+            }
+            if *dropdown.get() {
+                rsx! {
+                    div {
+                        class: "mt-2 bg-gray-200 rounded-lg dark:bg-purple-800",
+                        ls
+                    }
+                }
+            }
+        }
     })
 }

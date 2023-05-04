@@ -64,11 +64,13 @@ using = "docs"
 
 content = [
     { text = "Home", page = "/" },
-    { text = "Dependencies", page = "/dependencies" },
     { text = "Blog", page = "/blog" },
     { text = "Docs", page = "/docs" },
     { text = "Roadmap", page = "/blog/roadmap" },
-    { text = "Author", page = "/author" },
+    { text = "About", list = [
+        { text = "Dependencies", page = "/dependencies" },
+        { text = "Author", page = "/author" },
+    ] },
     { feature = "mode-switch" },
 ]
 
@@ -81,5 +83,6 @@ content = [
         { icon = "brand.github", link = "https://github.com/mrxiaozhuox/karaty" },
         { icon = "brand.zhihu", link = "https://www.zhihu.com/people/mrxiao-zhuo-x" },
         { icon = "brand.instagram", link = "https://www.instagram.com/mrxiaozhuox/" },
-    ]
+    ],
+    [{ text = "Powered by Karaty" }],
 ]

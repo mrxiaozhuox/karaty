@@ -61,18 +61,39 @@ pub struct FooterConfig {
     pub content: Vec<Vec<NavigationInfo>>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(untagged)]
 pub enum NavigationInfo {
-    TextToPage { text: String, page: String },
-    TextToLink { text: String, link: String },
+    TextToPage {
+        text: String,
+        page: String,
+    },
+    TextToLink {
+        text: String,
+        link: String,
+    },
 
-    IconToPage { icon: String, page: String },
-    IconToLink { icon: String, link: String },
+    IconToPage {
+        icon: String,
+        page: String,
+    },
+    IconToLink {
+        icon: String,
+        link: String,
+    },
 
-    Feature { feature: String },
+    Feature {
+        feature: String,
+    },
 
-    PlainText { text: String },
+    Collection {
+        text: String,
+        list: Vec<NavigationInfo>,
+    },
+
+    PlainText {
+        text: String,
+    },
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
