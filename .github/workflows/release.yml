@@ -1,0 +1,26 @@
+name: Rust
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          target: wasm32-unknown-unknown
+          override: true
+      - run: cargo build --release --target wasm32-unknown-unknown
+      - uses: ncipollo/release-action@v1
+          with:
+            artifacts: "target/wasm32-unknown-unknown/release/karaty.wasm"
+            generateReleaseNotes: true
+            token: ${{ secrets.YOUR_GITHUB_TOKEN }}
