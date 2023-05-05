@@ -1,4 +1,4 @@
-<div align="center"><img class="rounded-lg" src="https://avatars.githubusercontent.com/u/41265098?s=150&v=4" class="m-1" /></div>
+<div class="m-2" align="center"><img class="rounded-lg" src="/assets/images/avatar.jpeg" /></div>
 
 # YuKun Liu
 
