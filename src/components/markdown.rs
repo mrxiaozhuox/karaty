@@ -268,20 +268,6 @@ pub fn Text(cx: Scope, value: String) -> Element {
 
 #[inline_props]
 pub fn Code(cx: Scope, text: String, language: String) -> Element {
-    let class = if !language.is_empty() {
-        format!("language-{}", language)
-    } else {
-        "".to_string()
-    };
-    use_effect(&cx, (text, language), |(text, language)| {
-        let text = text.clone();
-        let language = language.clone();
-        log::info!("{language} | {text}");
-        async move {
-            let language = &language;
-        }
-    });
-    log::info!("{language} : {text}");
     cx.render(rsx! {
         div {
             class: "not-prose",

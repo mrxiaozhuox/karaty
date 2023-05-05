@@ -12,6 +12,7 @@
     <a href="https://github.com/mrxiaozhuox/karaty/blob/master/README.zh-CN.md"> 简体中文 </a>
   </h3>
 </div>
+
 ## Features
 
 - Powered by single `.wasm` file.
@@ -47,12 +48,17 @@ dioxus serve
 
 ### Startup with compiled file
 
-> You can use compiled package deploy your website.
-
 You can download [karaty.zip](https://github.com/mrxiaozhuox/karaty/releases) file in Release list.
 
-#### Deploy
+#### Deploy by web server
 
 - Download **Karaty** compiled package.
 - Deploy a web server which support dynamic route.
 - Config your website in `karaty.toml` file.
+
+#### Deploy by GitHub pages
+
+- Create a new repository.
+- Copy `index.html` to `404.html` in root path.
+- Push compiled package.
+- Open GitHub pags in repository and bind domain.
