@@ -36,14 +36,14 @@ index_on_404 = true
 
 # CSS style file
 style = [
-    "/assets/styles/dracula.css",
+    "/assets/highlight/styles/dracula.css",
 ]
 
 # Javascript code file
 script = [
     "/assets/tailwind/tailwind.min.js",
     "/assets/tailwind/tailwind.config.js",
-    "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js",
+    "/assets/highlight/highlight.min.js",
 ]
 
 [web.resource.dev]
