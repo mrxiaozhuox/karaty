@@ -271,7 +271,7 @@ pub fn BlogContentPreset(cx: Scope<BlogProps>) -> Element {
                 section { class: "bg-cover bg-white dark:bg-gray-900 dark:text-white",
                     Navbar {}
                     div { class: "md:flex h-full w-full justify-center px-6",
-                        div { class: "max-w-5xl w-[60%]",
+                        div { class: "max-w-5xl w-[100%] sm:w-[60%]",
                             h1 { class: "text-4xl font-bold text-gray-600 dark:text-white",
                                 "{info.title}"
                             }
