@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Karaty</h1>
+  <h1>🔰 Karaty 🧸</h1>
 </div>
 <div align="center">
   <a href="https://karaty.mrxzx.info">Online Demo</a>
@@ -47,19 +47,12 @@ dioxus serve
 
 ### Startup with compiled file
 
->TODO!
+> You can use compiled package deploy your website.
 
+You can download [karaty.zip](https://github.com/mrxiaozhuox/karaty/releases) file in Release list.
 
+#### Deploy
 
-## ScreenShot
-
-![author.png](notes/author.png)
-
-![blog.png](notes/blog.png)
-
-![docs.png](notes/docs.png)
-
-#### Dark Mode
-
-![dark-mode.png](notes/dark-mode.png)
-
+- Download **Karaty** compiled package.
+- Deploy a web server which support dynamic route.
+- Config your website in `karaty.toml` file.
