@@ -18,8 +18,21 @@ jobs:
           profile: minimal
           target: wasm32-unknown-unknown
           override: true
-      - run: cargo build --release --target wasm32-unknown-unknown
+      - name: Install CLI
+        shell: bash
+        run: cargo install --git https://github.com/mrxiaozhuox/dioxus-cli
+      - name: Build Karaty
+        shell: bash
+        run: dioxus build --release
+      - name: Clean Data
+        shell: bash
+        run: cd dist && rm CNAME && rm -rf source
+      - uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r karaty.zip dist
+      - uses: montudor/action-zip@v1x
+      
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "target/wasm32-unknown-unknown/release/karaty.wasm"
+          artifacts: "dist/assets/dioxus/karaty_bg.wasm,karaty.zip"
           generateReleaseNotes: true
