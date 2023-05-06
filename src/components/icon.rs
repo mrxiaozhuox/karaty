@@ -59,6 +59,18 @@ pub fn Icon(cx: Scope<IconProps>) -> Element {
             "twitch" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaTwitch } }
             }
+            "discord" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaDiscord } }
+            }
+            "telegram" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaTelegram } }
+            }
+            "tiktok" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaTiktok } }
+            }
+            "steam" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaSteam } }
+            }
             "vimeo" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaVimeo } }
             }
@@ -68,9 +80,20 @@ pub fn Icon(cx: Scope<IconProps>) -> Element {
             "google-pay" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaGooglePay } }
             }
+            "amazon" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaAmazon } }
+            }
             "zhihu" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaZhihu } }
             }
+            "bilibili" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaBilibili } }
+            }
+            _ => {
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaX } }
+            }
+        },
+        "programming" => match name.as_str() {
             "rust" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaRust } }
             }
@@ -86,14 +109,38 @@ pub fn Icon(cx: Scope<IconProps>) -> Element {
             "php" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaPhp } }
             }
+            "swift" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaSwift } }
+            }
             "node-js" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaNodeJs } }
+            }
+            "css" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaCss3 } }
+            }
+            "bootstrap" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaBootstrap } }
+            }
+            "docker" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaDocker } }
+            }
+            "react" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaReact } }
+            }
+            "vue" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaVuejs } }
+            }
+            "angular" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaAngular } }
+            }
+            "html" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaHtml5 } }
             }
             _ => {
                 rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaX } }
             }
         },
-        _ => match name.as_str() {
+        "solid" | _ => match name.as_str() {
             "house" => {
                 rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaHouse } }
             }
@@ -156,6 +203,36 @@ pub fn Icon(cx: Scope<IconProps>) -> Element {
             }
             "gears" => {
                 rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaGears } }
+            }
+            "code" => {
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaCode } }
+            }
+            "comment" => {
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaComment } }
+            }
+            "comments" => {
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaComments } }
+            }
+            "spin" => {
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaArrowsSpin } }
+            }
+            "info" => {
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaInfo } }
+            }
+            "upload" => {
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaUpload } }
+            }
+            "square" => {
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaSquare } }
+            }
+            "table" => {
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaTable } }
+            }
+            "flag" => {
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaFlag } }
+            }
+            "shield" => {
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaShield } }
             }
             _ => {
                 rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaX } }
