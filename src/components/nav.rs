@@ -8,8 +8,6 @@ pub fn Navbar(cx: Scope) -> Element {
     let config = data.config;
     let nav = config.navigation.content.clone();
 
-    let dark_mode = crate::hooks::mode::is_dark(&cx);
-
     let mobile_navbar = use_state(&cx, || false);
 
     cx.render(rsx! {
@@ -162,14 +160,13 @@ pub fn NavItemMiddle(cx: Scope, value: NavigationInfo) -> Element {
 
 #[inline_props]
 pub fn NavItemDropdown(cx: Scope, text: String, list: Vec<NavigationInfo>) -> Element {
-    let link_class = "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium";
     let dropdown = use_state(&cx, || false);
     let li = list
         .iter()
         .map(|v| rsx! { NavItemMiddle { value: v.clone() } });
     cx.render(rsx! {
         div {
-            class: "px-3 py-2 flex justify-center items-center",
+            class: "px-3 py-2 hover:bg-gray-300 rounded-lg flex justify-center items-center",
             a {
                 class: "text-gray-800 dark:text-gray-200 text-sm font-medium",
                 href: "javascript:;",
