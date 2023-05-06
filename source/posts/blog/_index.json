@@ -1,1 +1,1 @@
-[{"type":"file","name":"hello.md"},{"type":"file","name":"roadmap.md"}]
+[{"name":"hello.md","type":"file"},{"name":"roadmap.md","type":"file"}]

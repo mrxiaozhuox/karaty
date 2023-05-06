@@ -41,6 +41,16 @@ there is some :bug: in **Karaty**.
 | pause      | :pause:         |
 | gear       | :gear:          |
 | gears      | :gears:         |
+| code       | :code:          |
+| comment    | :comment:       |
+| comments   | :comments:      |
+| spin       | :spin:          |
+| info       | :info:          |
+| upload     | :upload:        |
+| square     | :square:        |
+| table      | :table:         |
+| flag       | :flag:          |
+| shield     | :shield:        |
 
 ## Brand Icon
 
@@ -59,13 +69,34 @@ use brand icon: `brand.{icon_name}`
 | facebook     | :brand.facebook:      |
 | linkedin     | :brand.linkedin:      |
 | twitch       | :brand.twitch:        |
+| discord      | :brand.discord:       |
+| telegram     | :brand.telegram:      |
+| tiktok       | :brand.tiktok:        |
+| steam        | :brand.steam:         |
+| amazon       | :brand.amazon:        |
 | vimeo        | :brand.vimeo:         |
 | apple-pay    | :brand.apple-pay:     |
 | google-pay   | :brand.google-pay:    |
 | zhihu        | :brand.zhihu:         |
-| rust         | :brand.rust:          |
-| python       | :brand.python:        |
-| java         | :brand.java:          |
-| golang       | :brand.golang:        |
-| php          | :brand.php:           |
-| node-js      | :brand.node-js:       |
+| bilibili     | :brand.bilibili:      |
+
+## Programming Icon
+
+use programming icon: `programming.{icon_name}`
+
+|   **Name**   |        **Display**        |
+| ------------ | ------------------------- |
+| rust         | :programming.rust:        |
+| python       | :programming.python:      |
+| java         | :programming.java:        |
+| golang       | :programming.golang:      |
+| php          | :programming.php:         |
+| swift        | :programming.swift:       |
+| node-js      | :programming.node-js:     |
+| css          | :programming.css:         |
+| bootstrap    | :programming.bootstrap:   |
+| docker       | :programming.docker:      |
+| react        | :programming.react:       |
+| vue          | :programming.vue:         |
+| angular      | :programming.angular:     |
+| html         | :programming.html:        |
