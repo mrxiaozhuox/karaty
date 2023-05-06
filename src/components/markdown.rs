@@ -238,7 +238,7 @@ pub enum TextFlag {
 
 #[inline_props]
 pub fn Text(cx: Scope, value: String) -> Element {
-    let re = js_sys::RegExp::new("\\:([a-zA-Z0-9.]+)\\:", "gi");
+    let re = js_sys::RegExp::new("\\:([a-zA-Z0-9.-]+)\\:", "gi");
     let mut contents: Vec<TextFlag> = vec![];
     let mut latest_split_index = 0;
     while let Some(v) = re.exec(value) {

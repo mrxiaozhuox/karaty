@@ -41,3 +41,31 @@ there is some :bug: in **Karaty**.
 | pause      | :pause:         |
 | gear       | :gear:          |
 | gears      | :gears:         |
+
+## Brand Icon
+
+use brand icon: `brand.{icon_name}`
+
+|   **Name**   |      **Display**      |
+| ------------ | --------------------- |
+| github       | :brand.github:        |
+| gitlab       | :brand.gitlab:        |
+| apple        | :brand.apple:         |
+| android      | :brand.android:       |
+| google       | :brand.google:        |
+| paypal       | :brand.paypal:        |
+| twitter      | :brand.twitter:       |
+| instagram    | :brand.instagram:     |
+| facebook     | :brand.facebook:      |
+| linkedin     | :brand.linkedin:      |
+| twitch       | :brand.twitch:        |
+| vimeo        | :brand.vimeo:         |
+| apple-pay    | :brand.apple-pay:     |
+| google-pay   | :brand.google-pay:    |
+| zhihu        | :brand.zhihu:         |
+| rust         | :brand.rust:          |
+| python       | :brand.python:        |
+| java         | :brand.java:          |
+| golang       | :brand.golang:        |
+| php          | :brand.php:           |
+| node-js      | :brand.node-js:       |
