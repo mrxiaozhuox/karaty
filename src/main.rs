@@ -1,5 +1,6 @@
 #![allow(non_snake_case)]
 
+use config::RoutingType;
 use dioxus::prelude::*;
 use dioxus_router::{Route, Router};
 use dioxus_toast::{ToastFrame, ToastManager};
@@ -14,7 +15,7 @@ mod pages;
 
 use pages::*;
 use setup::{setup_config, setup_root_app};
-use utils::data::{load_pages, GlobalData};
+use utils::data::{load_pages, load_routing_file, GlobalData};
 
 use crate::{
     config::RoutingInfo,
@@ -36,9 +37,15 @@ fn App(cx: Scope) -> Element {
     let setup_config: &UseFuture<anyhow::Result<GlobalData, anyhow::Error>> =
         use_future(&cx, (), |_| async move {
             let config = setup_config().await?;
+            let routing = &config.routing;
+            let routing = match routing {
+                RoutingType::Remote { remote } => load_routing_file(remote.to_string()).await?,
+                RoutingType::Config(list) => list.to_vec(),
+            };
             Ok(GlobalData {
                 config: config.clone(),
                 pages: load_pages(&config).await,
+                routing,
             })
         });
 
@@ -54,7 +61,7 @@ fn App(cx: Scope) -> Element {
                 // dioxus router info
                 Router {
 
-                    data.config.routing.iter().map(|v| {
+                    data.routing.iter().map(|v| {
                         match v {
                             RoutingInfo::FileBind { path, file, template } => {
                                 let content = data.pages.get(file);

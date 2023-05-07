@@ -121,3 +121,14 @@ JSON format:
 }
 ```
 
+# Remote Routing Configure
+
+```toml
+# karaty.toml
+routing = { remote = "{routing-toml-file-url}" }
+```
+
+```toml
+# remote routing file
+routing = []
+```

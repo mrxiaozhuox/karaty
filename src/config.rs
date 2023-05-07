@@ -6,7 +6,7 @@ pub struct Config {
 
     pub repository: DeployRepositoryConfig,
 
-    pub routing: Vec<RoutingInfo>,
+    pub routing: RoutingType,
 
     #[serde(rename = "data-source")]
     pub data_source: DeployDataSourceConfig,
@@ -14,6 +14,13 @@ pub struct Config {
     pub navigation: NavigationConfig,
 
     pub footer: FooterConfig,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(untagged)]
+pub enum RoutingType {
+    Remote { remote: String },
+    Config(Vec<RoutingInfo>),
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
