@@ -100,3 +100,4 @@ use programming icon: `programming.{icon_name}`
 | vue          | :programming.vue:         |
 | angular      | :programming.angular:     |
 | html         | :programming.html:        |
+| javascript   | :programming.javascript:  |
