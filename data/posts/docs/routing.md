@@ -121,7 +121,7 @@ JSON format:
 }
 ```
 
-# Remote Routing Configure
+## Remote Routing Configure
 
 ```toml
 # karaty.toml
