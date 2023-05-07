@@ -136,6 +136,9 @@ pub fn Icon(cx: Scope<IconProps>) -> Element {
             "html" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaHtml5 } }
             }
+            "javascript" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaJs } }
+            }
             _ => {
                 rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaX } }
             }

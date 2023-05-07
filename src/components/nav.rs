@@ -174,6 +174,12 @@ pub fn NavItemDropdown(cx: Scope, text: String, list: Vec<NavigationInfo>) -> El
                     dropdown.set(!dropdown.get());
                 },
                 "{text}"
+                dioxus_free_icons::Icon {
+                    class: "inline-block ml-1",
+                    height: 14,
+                    width: 14,
+                    icon: dioxus_free_icons::icons::fa_solid_icons::FaAngleDown
+                }
             }
             if *dropdown.get() {
                 rsx! {
