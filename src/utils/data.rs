@@ -2,12 +2,13 @@ use std::collections::HashMap;
 
 use anyhow::anyhow;
 
-use crate::config::Config;
+use crate::config::{Config, RoutingInfo};
 
 #[derive(Debug, Clone)]
 pub struct GlobalData {
     pub config: Config,
     pub pages: HashMap<String, String>,
+    pub routing: Vec<RoutingInfo>,
 }
 
 pub fn get_raw_data_url(service: &str, name: &str, branch: &str) -> Option<String> {
@@ -175,6 +176,15 @@ pub async fn load_pages(config: &Config) -> HashMap<String, String> {
     result
 }
 
-pub async fn load_page_from_dir(contents: Vec<(String, String)>) -> anyhow::Result<String> {
+// TODO! This part should load data from a directory
+pub async fn load_page_from_dir(_contents: Vec<(String, String)>) -> anyhow::Result<String> {
     Ok(String::new())
+}
+
+pub async fn load_routing_file(url: String) -> anyhow::Result<Vec<RoutingInfo>> {
+    Ok(gloo::net::http::Request::get(&url)
+        .send()
+        .await?
+        .json::<Vec<RoutingInfo>>()
+        .await?)
 }

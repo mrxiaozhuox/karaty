@@ -1,8 +1,5 @@
 use dioxus::prelude::*;
-use markdown::{
-    mdast::{AlignKind, Node},
-    ParseOptions,
-};
+use markdown::{mdast::Node, ParseOptions};
 
 use crate::components::icon::Icon;
 
