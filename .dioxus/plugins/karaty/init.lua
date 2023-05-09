@@ -40,8 +40,7 @@ manager.serve.on_start = function (info)
     CopyLocalSource()
 end
 
----@param info ServeRebuildInfo
-manager.serve.on_rebuild_end = function (info)
+manager.serve.on_rebuild_end = function (_)
     CopyKaratyConfig()
     CopyLocalSource()
 end
