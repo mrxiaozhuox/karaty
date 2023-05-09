@@ -22,9 +22,43 @@ mode = "custom-url"
 
 data = { url = "/source/", index-file = "_index.json" }
 
-[routing]
+[[routing]]
+path = "/"
+file = "home.md"
 
-remote = "/routing.toml"
+[[routing]]
+path = "/author"
+file = "author.md"
+
+[routing.template.style]
+
+img = "rounded-full"
+
+[[routing]]
+path = "/dependencies"
+file = "dependencies.json"
+
+[[routing]]
+path = "/blog"
+preset = "post-list"
+setting = { group = "blog" }
+
+[[routing]]
+path = "/blog/:path"
+preset = "post-content"
+setting = { group = "blog", file = ":path" }
+
+[[routing]]
+path = "/docs"
+redirect = "/docs/summary"
+
+[[routing]]
+path = "/docs/:path"
+preset = "post-content"
+setting = { group = "docs", file = ":path" }
+
+[routing.template]
+using = "docs"
 
 [navigation]
 
@@ -41,6 +75,8 @@ content = [
 ]
 
 [footer]
+
+# enable = false
 
 content = [
     [
