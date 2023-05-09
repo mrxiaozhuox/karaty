@@ -1209,7 +1209,7 @@ imports.wbg.__wbindgen_closure_wrapper1647 = function() { return logError(functi
     const ret = makeMutClosure(arg0, arg1, 173, __wbg_adapter_20);
     return addHeapObject(ret);
 }, arguments) };
-imports.wbg.__wbindgen_closure_wrapper3584 = function() { return logError(function (arg0, arg1, arg2) {
+imports.wbg.__wbindgen_closure_wrapper3603 = function() { return logError(function (arg0, arg1, arg2) {
     const ret = makeMutClosure(arg0, arg1, 173, __wbg_adapter_30);
     return addHeapObject(ret);
 }, arguments) };
