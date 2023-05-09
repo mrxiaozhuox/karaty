@@ -46,6 +46,10 @@ manager.serve.on_rebuild_end = function (_)
 end
 
 function CopyKaratyConfig()
+    local config = dioxus.plugin["karaty"]
+    if config == nil then
+    	config = {}
+    end
     local out_dir = dioxus.application.out_dir
     local crate_dir = dirs.crate_dir()
     local target = path.join(crate_dir, out_dir, "karaty.toml")
@@ -53,6 +57,15 @@ function CopyKaratyConfig()
         fs.remove_file(target)
     end
     fs.copy_file(path.join(crate_dir, "karaty.toml"), target)
+    if config["config-files"] ~= nil then
+        for _, name  in pairs(config["config-files"]) do
+            local t = path.join(crate_dir, out_dir, name)
+            if path.is_file(t) then
+                fs.remove_file(t)
+            end
+            fs.copy_file(path.join(crate_dir, name), t)
+        end
+    end
 end
 
 function CopyLocalSource()

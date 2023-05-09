@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use anyhow::anyhow;
+use serde::{Deserialize, Serialize};
 
 use crate::config::{Config, RoutingInfo};
 
@@ -181,10 +182,16 @@ pub async fn load_page_from_dir(_contents: Vec<(String, String)>) -> anyhow::Res
     Ok(String::new())
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+struct RoutingFile {
+    routing: Vec<RoutingInfo>,
+}
+
 pub async fn load_routing_file(url: String) -> anyhow::Result<Vec<RoutingInfo>> {
-    Ok(gloo::net::http::Request::get(&url)
+    let v = gloo::net::http::Request::get(&url)
         .send()
         .await?
-        .json::<Vec<RoutingInfo>>()
-        .await?)
+        .text()
+        .await?;
+    Ok(toml::from_str::<RoutingFile>(&v)?.routing)
 }

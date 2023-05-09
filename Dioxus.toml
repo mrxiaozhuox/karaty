@@ -62,4 +62,8 @@ loader = []
 
 [plugin.karaty]
 
+# local-source can auto-copy source data to `out-dir`
 local-source = { dir = "data", on-build = true }
+
+# config-files will auto-copy to `out-dir` [default contains karaty.toml]
+config-files = ["routing.toml"]
