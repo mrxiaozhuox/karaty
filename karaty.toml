@@ -1,52 +1,43 @@
-[site]
-
-name = "Karaty Offical"
-
-title-suffix = " | Karaty Site"
-
-dark-mode = true
-
-[repository]
-
-service = "GitHub"
-
-name = "mrxiaozhuox/karaty"
-
 [data-source]
 mode = "embedded-repository"
-
 data = "data"
 
 [data-source.local]
 mode = "custom-url"
 
-data = { url = "/source/", index-file = "_index.json" }
+[data-source.local.data]
+index-file = "_index.json"
+url = "/data"
 
 [[routing]]
-path = "/"
 file = "home.md"
+path = "/"
 
 [[routing]]
-path = "/author"
 file = "author.md"
+path = "/author"
 
 [routing.template.style]
-
 img = "rounded-full"
 
 [[routing]]
-path = "/dependencies"
 file = "dependencies.json"
+path = "/dependencies"
 
 [[routing]]
 path = "/blog"
 preset = "post-list"
-setting = { group = "blog" }
+
+[routing.setting]
+group = "blog"
 
 [[routing]]
 path = "/blog/:path"
 preset = "post-content"
-setting = { group = "blog", file = ":path" }
+
+[routing.setting]
+file = ":path"
+group = "blog"
 
 [[routing]]
 path = "/docs"
@@ -55,34 +46,59 @@ redirect = "/docs/summary"
 [[routing]]
 path = "/docs/:path"
 preset = "post-content"
-setting = { group = "docs", file = ":path" }
+
+[routing.setting]
+file = ":path"
+group = "docs"
 
 [routing.template]
 using = "docs"
 
-[navigation]
+[repository]
+name = "mrxiaozhuox/karaty"
+service = "GitHub"
 
-content = [
-    { text = "Home", page = "/" },
-    { text = "Blog", page = "/blog" },
-    { text = "Docs", page = "/docs" },
-    { text = "Roadmap", page = "/blog/roadmap" },
-    { text = "About", list = [
-        { text = "Dependencies", page = "/dependencies" },
-        { text = "Author", page = "/author" },
-    ] },
-    { feature = "mode-switch" },
-]
+[site]
+dark-mode = true
+name = "Karaty Offical"
+title-suffix = " | Karaty Site"
+
+[[navigation.content]]
+page = "/"
+text = "Home"
+
+[[navigation.content]]
+page = "/blog"
+text = "Blog"
+
+[[navigation.content]]
+page = "/docs"
+text = "Docs"
+
+[[navigation.content]]
+page = "/blog/roadmap"
+text = "Roadmap"
+
+[[navigation.content]]
+text = "About"
+
+[[navigation.content.list]]
+page = "/dependencies"
+text = "Dependencies"
+
+[[navigation.content.list]]
+page = "/author"
+text = "Author"
+
+[[navigation.content]]
+feature = "mode-switch"
 
 [footer]
-
-# enable = false
-
 content = [
     [
-        { icon = "brand.github", link = "https://github.com/mrxiaozhuox/karaty" },
-        { icon = "brand.zhihu", link = "https://www.zhihu.com/people/mrxiao-zhuo-x" },
-        { icon = "brand.instagram", link = "https://www.instagram.com/mrxiaozhuox/" },
-    ],
+    { icon = "brand.github", link = "https://github.com/mrxiaozhuox/karaty" },
+    { icon = "brand.zhihu", link = "https://www.zhihu.com/people/mrxiao-zhuo-x" },
+    { icon = "brand.instagram", link = "https://www.instagram.com/mrxiaozhuox/" },
+],
     [{ text = "Powered by Karaty" }],
 ]
