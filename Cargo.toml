@@ -32,6 +32,11 @@ async-recursion = "1.0.4"
 chrono = { version = "0.4.24", default-features = false, features = ["wasmbind"] }
 indoc = "2.0.1"
 
+[build-dependencies]
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.7.2"
+serde_json = "1.0"
+
 [profile.release]
 lto = true
 opt-level = 's'

@@ -1,0 +1,104 @@
+[data-source]
+mode = "embedded-repository"
+data = "data"
+
+[data-source.local]
+mode = "custom-url"
+
+[data-source.local.data]
+index-file = "_index.json"
+url = "/data"
+
+[[navigation.content]]
+page = "/"
+text = "Home"
+
+[[navigation.content]]
+page = "/blog"
+text = "Blog"
+
+[[navigation.content]]
+page = "/docs"
+text = "Docs"
+
+[[navigation.content]]
+page = "/blog/roadmap"
+text = "Roadmap"
+
+[[navigation.content]]
+text = "About"
+
+[[navigation.content.list]]
+page = "/dependencies"
+text = "Dependencies"
+
+[[navigation.content.list]]
+page = "/author"
+text = "Author"
+
+[[navigation.content]]
+feature = "mode-switch"
+
+[site]
+dark-mode = true
+name = "Karaty Offical"
+title-suffix = " | Karaty Site"
+
+[[routing]]
+file = "home.md"
+path = "/"
+
+[[routing]]
+file = "author.md"
+path = "/author"
+
+[routing.template.style]
+img = "rounded-full"
+
+[[routing]]
+file = "dependencies.json"
+path = "/dependencies"
+
+[[routing]]
+path = "/blog"
+preset = "post-list"
+
+[routing.setting]
+group = "blog"
+
+[[routing]]
+path = "/blog/:path"
+preset = "post-content"
+
+[routing.setting]
+file = ":path"
+group = "blog"
+
+[[routing]]
+path = "/docs"
+redirect = "/docs/summary"
+
+[[routing]]
+path = "/docs/:path"
+preset = "post-content"
+
+[routing.setting]
+file = ":path"
+group = "docs"
+
+[routing.template]
+using = "docs"
+
+[repository]
+name = "mrxiaozhuox/karaty"
+service = "GitHub"
+
+[footer]
+content = [
+    [
+    { icon = "brand.github", link = "https://github.com/mrxiaozhuox/karaty" },
+    { icon = "brand.zhihu", link = "https://www.zhihu.com/people/mrxiao-zhuo-x" },
+    { icon = "brand.instagram", link = "https://www.instagram.com/mrxiaozhuox/" },
+],
+    [{ text = "Powered by Karaty" }],
+]
