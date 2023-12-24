@@ -9,6 +9,36 @@ mode = "custom-url"
 index-file = "_index.json"
 url = "/data"
 
+[[navigation.content]]
+page = "/"
+text = "Home"
+
+[[navigation.content]]
+page = "/blog"
+text = "Blog"
+
+[[navigation.content]]
+page = "/docs"
+text = "Docs"
+
+[[navigation.content]]
+page = "/blog/roadmap"
+text = "Roadmap"
+
+[[navigation.content]]
+text = "About"
+
+[[navigation.content.list]]
+page = "/dependencies"
+text = "Dependencies"
+
+[[navigation.content.list]]
+page = "/author"
+text = "Author"
+
+[[navigation.content]]
+feature = "mode-switch"
+
 [[routing]]
 file = "home.md"
 path = "/"
@@ -58,41 +88,6 @@ using = "docs"
 name = "mrxiaozhuox/karaty"
 service = "GitHub"
 
-[site]
-dark-mode = true
-name = "Karaty Offical"
-title-suffix = " | Karaty Site"
-
-[[navigation.content]]
-page = "/"
-text = "Home"
-
-[[navigation.content]]
-page = "/blog"
-text = "Blog"
-
-[[navigation.content]]
-page = "/docs"
-text = "Docs"
-
-[[navigation.content]]
-page = "/blog/roadmap"
-text = "Roadmap"
-
-[[navigation.content]]
-text = "About"
-
-[[navigation.content.list]]
-page = "/dependencies"
-text = "Dependencies"
-
-[[navigation.content.list]]
-page = "/author"
-text = "Author"
-
-[[navigation.content]]
-feature = "mode-switch"
-
 [footer]
 content = [
     [
@@ -102,3 +97,8 @@ content = [
 ],
     [{ text = "Powered by Karaty" }],
 ]
+
+[site]
+dark-mode = true
+name = "Karaty Offical"
+title-suffix = " | Karaty Site"
