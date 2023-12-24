@@ -1,5 +1,5 @@
 pub use dioxus::prelude::*;
-use dioxus_router::Link;
+use dioxus_retrouter::Link;
 
 use crate::{components::icon::Icon, config::NavigationInfo, utils::data::GlobalData};
 

@@ -3,7 +3,7 @@ use markdown::{mdast::Node, ParseOptions};
 
 use crate::components::icon::Icon;
 
-#[inline_props]
+#[component]
 pub fn Markdown(cx: Scope, content: String) -> Element {
     let mdast = markdown::to_mdast(&content, &ParseOptions::gfm());
     use_effect(&cx, (content,), |_| async {
@@ -40,7 +40,7 @@ pub fn Markdown(cx: Scope, content: String) -> Element {
     None
 }
 
-#[inline_props]
+#[component]
 pub fn MdastNode(cx: Scope, nodes: Vec<Node>) -> Element {
     let display = nodes.iter().map(|node| {
         let children = node.children();
@@ -101,7 +101,7 @@ pub fn MdastNode(cx: Scope, nodes: Vec<Node>) -> Element {
                 let groups = link.url[1..].split(".").collect::<Vec<&str>>();
                 let url = groups.join("/");
                 return rsx! {
-                    dioxus_router::Link {
+                    dioxus_retrouter::Link {
                         to: "{url}",
                         embedded
                     }
@@ -233,7 +233,7 @@ pub enum TextFlag {
     Icon(String),
 }
 
-#[inline_props]
+#[component]
 pub fn Text(cx: Scope, value: String) -> Element {
     let re = js_sys::RegExp::new("\\:([a-zA-Z0-9.-]+)\\:", "gi");
     let mut contents: Vec<TextFlag> = vec![];
@@ -263,7 +263,7 @@ pub fn Text(cx: Scope, value: String) -> Element {
     cx.render(rsx! { display })
 }
 
-#[inline_props]
+#[component]
 pub fn Code(cx: Scope, text: String, language: String) -> Element {
     cx.render(rsx! {
         div {

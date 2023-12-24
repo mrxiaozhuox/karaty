@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use async_recursion::async_recursion;
 use dioxus::prelude::*;
-use dioxus_router::{use_route, Link};
+use dioxus_retrouter::{use_route, Link};
 use markdown::mdast;
 
 use crate::{

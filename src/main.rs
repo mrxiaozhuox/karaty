@@ -2,7 +2,7 @@
 
 use config::RoutingType;
 use dioxus::prelude::*;
-use dioxus_router::{Route, Router};
+use dioxus_retrouter::{Route, Router};
 use dioxus_toast::{ToastFrame, ToastManager};
 
 mod config;
@@ -25,7 +25,7 @@ use crate::{
     },
 };
 
-static TOAST_MANAGER: fermi::AtomRef<ToastManager> = |_| ToastManager::default();
+static TOAST_MANAGER: fermi::AtomRef<ToastManager> = fermi::AtomRef(|_| ToastManager::default());
 
 fn main() {
     wasm_logger::init(wasm_logger::Config::default());
@@ -56,7 +56,7 @@ fn App(cx: Scope) -> Element {
             cx.render(rsx! {
                 // dioxus toast manager init
                 ToastFrame {
-                    manager: fermi::use_atom_ref(&cx, TOAST_MANAGER),
+                    manager: fermi::use_atom_ref(&cx, &TOAST_MANAGER),
                 }
                 // dioxus router info
                 Router {
@@ -151,7 +151,7 @@ fn App(cx: Scope) -> Element {
                                                 "Redirect..."
                                             }
                                         }
-                                        dioxus_router::Redirect {
+                                        dioxus_retrouter::Redirect {
                                             to: "{redirect}"
                                         }
                                     }

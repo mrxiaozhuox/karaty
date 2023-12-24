@@ -1,5 +1,5 @@
 use dioxus::core::ScopeState;
-use dioxus_use_storage::use_local_storage;
+use dioxus_local_storage::use_local_storage;
 
 pub fn is_dark(cx: &ScopeState) -> bool {
     let storage = use_local_storage(cx);

@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use dioxus_free_icons::icons::fa_solid_icons;
 use crate::components::icon::Icon;
-use dioxus_router::Link;
+use dioxus_retrouter::Link;
 
 use crate::{
     hooks::mode::{is_dark, mode},
