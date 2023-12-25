@@ -3,58 +3,43 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 struct Config {
-    #[serde(rename = "data-source")]
-    pub data_source: DataSourceConfig,
+    #[serde(default)]
+    pub build: Option<BuildConfig>,
     #[serde(flatten)]
-    other: HashMap<String, toml::Value>,
+    pub other: HashMap<String, toml::Value>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
-struct DataSourceConfig {
+struct BuildConfig {
     #[serde(default)]
-    pub local: Option<DeployLocalDataSourceConfig>,
-    #[serde(flatten)]
-    other: HashMap<String, toml::Value>,
+    #[serde(rename = "static-generator")]
+    pub static_gen: Option<StaticGenInfo>,
 }
 
-#[derive(Deserialize, Serialize, Clone, Debug)]
-pub struct DeployLocalDataSourceConfig {
-    pub mode: String,
-    pub data: toml::Value,
+#[derive(Deserialize, Serialize, Debug, Clone)]
+struct StaticGenInfo {
+    pub source: String,
+    pub target: String,
 }
 
 fn main() {
     let config_file = PathBuf::from("karaty.toml");
-    let mut file = File::open(config_file).expect("`karaty.toml` file not found.");
+    let mut file = File::open(&config_file).expect("`karaty.toml` file not found.");
     let mut config_text = String::new();
     file.read_to_string(&mut config_text).unwrap();
-    let mut config = toml::from_str::<Config>(&config_text).unwrap();
-    if config.data_source.local.is_some() {
-        let local_source = config.data_source.local.clone().unwrap();
-        if &local_source.mode == "embedded-public" {
-            let data_map = local_source.data.as_table().unwrap();
-            let source = data_map.get("source").unwrap().as_str().unwrap();
-            let source_path = PathBuf::from(source);
-            if source_path.is_dir() {
-                let public_data = PathBuf::from("public").join("data");
-                if public_data.exists() {
-                    fs::remove_dir_all(&public_data).unwrap();
-                }
-
-                copy_dir(&source_path, &public_data);
-
-                let mut data_map = toml::map::Map::new();
-                data_map.insert("url".into(), "/data".into());
-                data_map.insert("index-file".into(), "_index.json".into());
-                config.data_source.local = Some(DeployLocalDataSourceConfig {
-                    mode: "custom-url".to_string(),
-                    data: toml::Value::Table(data_map),
-                });
+    let config = toml::from_str::<Config>(&config_text).unwrap();
+    if let Some(build) = config.build {
+        // for static generator
+        if let Some(sg) = build.static_gen {
+            let from = PathBuf::from(sg.source);
+            let to = PathBuf::from("public").join(sg.target);
+            if to.exists() {
+                fs::remove_dir_all(&to).unwrap();
             }
-            let new_config_text = toml::to_string_pretty::<Config>(&config).unwrap();
-            fs::write(PathBuf::from("public").join("karaty.toml"), new_config_text).unwrap();
+            copy_dir(&from, &to);
         }
     }
+    fs::copy(&config_file, PathBuf::from("public").join("karaty.toml")).unwrap();
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

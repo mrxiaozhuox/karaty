@@ -14,8 +14,8 @@ data = "data"
 
 [data-source.local]
 # `embedded-public` will auto migrate `source` folder to public, and auto generate `_index.json`
-mode ="embedded-public"
-data = { source = "data" }
+mode = "custom-url"
+data = { url = "/data", index-file = "_index.json" }
 
 
 [[routing]]
@@ -82,3 +82,7 @@ content = [
     ],
     [{ text = "Powered by Karaty" }],
 ]
+
+[build.static-generator]
+source = "data"
+target = "data"

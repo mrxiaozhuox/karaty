@@ -1,5 +1,8 @@
 - [Summary](@summary)
-- [Routing](@routing)
-- [Data Source](@data-source)
-- [Navigation](@navigation)
-- [Icons](@icons)
+- Configure
+    - [Routing](@routing)
+    - [Data Source](@data-source)
+    - [Navigation](@navigation)
+    - [Build](@build)
+- Markdown
+    - [Icons](@icons)

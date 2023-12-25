@@ -5,6 +5,11 @@ date: 2023-04-30
 released: true
 ---
 
+## 0.1.2 (Developing)
+
+- Feature: Add `build` config for `build.rs`
+- Feature: Add custom templates (by rhai or handlebars)
+
 ## 0.1.1 (Preview Version)
 
 - Fixed: Use `build.rs` for local server data migrate

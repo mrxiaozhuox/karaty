@@ -558,7 +558,7 @@ pub fn DocsSideBar(
         if let mdast::Node::ListItem(_) = node {
             return rsx! {
                  li {
-                    class: "text-sky-500 hover:text-blue-700 dark:text-sky-100 dark:hover:text-blue-300 font-semibold",
+                    class: "text-black hover:text-blue-700 dark:text-sky-100 dark:hover:text-blue-300 font-semibold",
                     embedd
                 }   
             }
@@ -574,7 +574,7 @@ pub fn DocsSideBar(
                 embedd
             }
         } else if let mdast::Node::Link(link) = node {
-            let class = "underline";
+            let class = "";
             if &link.url[0..1] == "@" {
                 let mut groups = link.url[1..].split(".").collect::<Vec<&str>>();
                 let url = if groups.len() == 1 {
