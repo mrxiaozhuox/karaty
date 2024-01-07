@@ -13,4 +13,4 @@ jobs:
         uses: DioxusLabs/deploy-action@v1
         with:
           rootPath: "karaty"
-          toolSource: "DioxusLabs/dioxus dioxus-cli"
+          toolSource: "mrxiaozhuox/dioxus-cli"
