@@ -34,5 +34,5 @@ jobs:
       
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "dist/assets/dioxus/karaty_bg.wasm,karaty.zip"
+          artifacts: "karaty/dist/assets/dioxus/karaty_bg.wasm,karaty.zip"
           generateReleaseNotes: true
