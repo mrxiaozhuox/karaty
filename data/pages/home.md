@@ -1,5 +1,5 @@
 <div align="center">
-<img src="/karaty.png" width="150">
+<img src="/assets/karaty.png" width="150">
 </div>
 
 ***"A static website & blog generator made by Dioxus"***
