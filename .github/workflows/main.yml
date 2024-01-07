@@ -8,6 +8,9 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./karaty
     steps:
       - name: "Dioxus Deploy"
         uses: DioxusLabs/deploy-action@v1
