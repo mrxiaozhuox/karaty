@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./karaty
     permissions:
       contents: write
     steps:
@@ -26,7 +23,7 @@ jobs:
         run: cargo install --git https://github.com/mrxiaozhuox/dioxus-cli
       - name: Build Karaty
         shell: bash
-        run: dioxus build --release
+        run: cd karaty && dioxus build --release
       - name: Clean Data
         shell: bash
         run: cd dist && rm CNAME && rm -rf source
