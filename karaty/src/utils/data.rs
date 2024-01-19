@@ -1,14 +1,18 @@
 use std::collections::HashMap;
 
 use anyhow::anyhow;
+use async_recursion::async_recursion;
+use karaty_blueprint::TemplateData;
+use serde::Deserialize;
 
-use crate::config::{Config, RoutingInfo};
+use crate::config::{Config, RoutingInfo, TemplateConfig};
 
 #[derive(Debug, Clone)]
 pub struct GlobalData {
     pub config: Config,
-    pub pages: HashMap<String, String>,
+    pub data: HashMap<String, TemplateData>,
     pub routing: Vec<RoutingInfo>,
+    pub template_config: TemplateConfig,
 }
 
 pub fn get_raw_data_url(service: &str, name: &str, branch: &str) -> Option<String> {
@@ -35,7 +39,7 @@ pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result
     let mut source_mode = config.data_source.mode.clone();
     let mut source_data = config.data_source.data.clone();
     if let Some(local) = config.data_source.local.clone() {
-        if host.as_str() == "localhost" || host.as_str() == "127.0.0.1" {
+        if host.as_str() == "localhost" || host.as_str() == "127.0.0.1" || host.starts_with("192.168") {
             source_mode = local.mode;
             source_data = local.data;
         }
@@ -100,7 +104,7 @@ pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<(String, 
     let mut source_mode = config.data_source.mode.clone();
     let mut source_data = config.data_source.data.clone();
     if let Some(local) = config.data_source.local.clone() {
-        if host.as_str() == "localhost" || host.as_str() == "127.0.0.1" {
+        if host.as_str() == "localhost" || host.as_str() == "127.0.0.1" || host.starts_with("192.168") {
             source_mode = local.mode;
             source_data = local.data;
         }
@@ -159,15 +163,21 @@ pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<(String, 
     result
 }
 
-pub async fn load_pages(config: &Config) -> HashMap<String, String> {
+pub async fn load_all_data(config: &Config) -> HashMap<String, TemplateData> {
     let mut result = HashMap::new();
-    let contents = load_content_list(config, "pages").await;
+    let contents = load_content_list(config, "./").await;
     for (tp, name) in contents {
-        let path = format!("/pages/{name}");
+        let path = format!("/{name}");
         let content = if tp == "file" {
-            load_from_source(config, &path).await
+            let content = load_from_source(config, &path).await;
+            content.map(|v| TemplateData::File(v))
         } else {
-            load_page_from_dir(load_content_list(config, &path).await).await
+            let dirs = load_content_list(config, &path).await;
+            let dirs = dirs.iter().map(|v| {
+                (v.0.clone(), format!("{name}/{}", v.1))
+            }).collect();
+            let dir = load_page_from_dir(config, dirs).await;
+            dir
         };
         if let Ok(content) = content {
             result.insert(name.to_string(), content);
@@ -176,15 +186,43 @@ pub async fn load_pages(config: &Config) -> HashMap<String, String> {
     result
 }
 
-// TODO! This part should load data from a directory
-pub async fn load_page_from_dir(_contents: Vec<(String, String)>) -> anyhow::Result<String> {
-    Ok(String::new())
+#[async_recursion(?Send)]
+pub async fn load_page_from_dir(config: &Config, contents: Vec<(String, String)>) -> anyhow::Result<TemplateData> {
+    let mut result = HashMap::new();
+    for (tp, url) in contents {
+        let part_name = url.split('/').last().unwrap_or("").to_string(); 
+        if tp == "file" {
+            let content = load_from_source(config, &url).await?;
+            result.insert(part_name, TemplateData::File(content));
+        } else {
+            let items = load_content_list(config, &url).await;
+            let items: Vec<(String, String)> = items.iter().map(|(t, i)| (t.clone(), format!("{url}/{i}"))).collect();
+            let content = load_page_from_dir(config, items).await?;
+            result.insert(part_name, content);
+        }
+    }
+    Ok(TemplateData::Directory(result))
 }
 
-pub async fn load_routing_file(url: String) -> anyhow::Result<Vec<RoutingInfo>> {
-    Ok(gloo::net::http::Request::get(&url)
+#[derive(Deserialize)]
+struct RoutingWrap {
+    routing: Vec<RoutingInfo>
+}
+
+pub async fn load_routing_file(url: &str) -> anyhow::Result<Vec<RoutingInfo>> {
+    let content = gloo::net::http::Request::get(url)
         .send()
         .await?
-        .json::<Vec<RoutingInfo>>()
-        .await?)
+        .text()
+        .await?;
+    Ok(toml::from_str::<RoutingWrap>(&content)?.routing)
+}
+
+pub async fn load_template_file(url: &str) -> anyhow::Result<TemplateConfig> {
+    let content = gloo::net::http::Request::get(url)
+        .send()
+        .await?
+        .text()
+        .await?;
+    Ok(toml::from_str(&content)?)
 }

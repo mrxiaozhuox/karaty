@@ -1,12 +1,12 @@
 use dioxus::prelude::*;
+use karaty_blueprint::RendererProps;
 use markdown::{mdast::Node, ParseOptions};
 
 use crate::components::icon::Icon;
 
-#[component]
-pub fn Markdown(cx: Scope, content: String) -> Element {
-    let mdast = markdown::to_mdast(&content, &ParseOptions::gfm());
-    use_effect(&cx, (content,), |_| async {
+pub fn Markdown(cx: Scope<RendererProps>) -> Element {
+    let mdast = markdown::to_mdast(&cx.props.content, &ParseOptions::gfm());
+    use_effect(&cx, (&cx.props.content,), |_| async {
         let _ = js_sys::eval(&indoc::formatdoc! {"
             var list = document.getElementsByClassName('code-raw');
             for (var i = 0; i < list.length; i++) {{

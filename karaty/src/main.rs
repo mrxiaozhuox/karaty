@@ -1,6 +1,7 @@
 #![allow(non_snake_case)]
 
-use config::RoutingType;
+use std::collections::HashMap;
+
 use dioxus::prelude::*;
 use dioxus_retrouter::{Route, Router};
 use dioxus_toast::{ToastFrame, ToastManager};
@@ -13,16 +14,12 @@ mod components;
 mod hooks;
 mod pages;
 
-use pages::*;
 use setup::{setup_config, setup_root_app};
-use utils::data::{load_pages, load_routing_file, GlobalData};
+use utils::data::{load_all_data, load_routing_file, GlobalData, load_template_file};
 
 use crate::{
     config::RoutingInfo,
-    pages::{
-        preset::{BlogContentPreset, BlogListPreset, DocsPreset},
-        template::DynamicTemplate,
-    },
+    pages::template::DynamicTemplate,
 };
 
 static TOAST_MANAGER: fermi::AtomRef<ToastManager> = fermi::AtomRef(|_| ToastManager::default());
@@ -33,19 +30,23 @@ fn main() {
 }
 
 fn App(cx: Scope) -> Element {
+    
     // init karaty root app
     let setup_config: &UseFuture<anyhow::Result<GlobalData, anyhow::Error>> =
         use_future(&cx, (), |_| async move {
             let config = setup_config().await?;
-            let routing = &config.routing;
-            let routing = match routing {
-                RoutingType::Remote { remote } => load_routing_file(remote.to_string()).await?,
-                RoutingType::Config(list) => list.to_vec(),
-            };
+            let mut routing = config.routing.clone();
+            
+            // load content from config directory
+            let routing_ext = load_routing_file("/config/routing.toml").await.unwrap_or_default();
+            routing.extend(routing_ext);
+            let template_config = load_template_file("/config/template.toml").await.unwrap_or_default();
+
             Ok(GlobalData {
                 config: config.clone(),
-                pages: load_pages(&config).await,
+                data: load_all_data(&config).await,
                 routing,
+                template_config
             })
         });
 
@@ -63,82 +64,34 @@ fn App(cx: Scope) -> Element {
 
                     data.routing.iter().map(|v| {
                         match v {
-                            RoutingInfo::FileBind { path, file, template } => {
-                                let content = data.pages.get(file);
-                                if let Some(content) = content {
+                            RoutingInfo::FileBind { path, file, template, config } => {
+                                    let config = {
+                                        if config.is_none() {
+                                            HashMap::new()
+                                        } else {
+                                            let config = config.clone().unwrap();
+                                            let config = config.as_table();
+                                            config.map(|v| {
+                                                let mut t = HashMap::new();
+                                                for i in v {
+                                                   t.insert(i.0.clone(), i.1.clone()); 
+                                                }
+                                                t
+                                            }).unwrap_or_default()
+                                        }
+                                    };
                                     rsx! {
                                         Route {
                                             to: "{path}",
                                             DynamicTemplate {
+                                                path: path.to_string(),
                                                 name: file.to_string(),
                                                 template: template.clone(),
-                                                content: content.to_string(),
+                                                file: file.clone(),
+                                                config: config,
                                             }
                                         }
                                     }
-                                } else {
-                                    rsx! {
-                                        Route {
-                                            to: "{path}",
-                                            _404::NotFound {}
-                                        }
-                                    }
-                                }
-                            }
-                            RoutingInfo::PresetBind { path, preset, setting, template } => {
-                                match preset.as_str() {
-                                    "post-list" => {
-                                        rsx! {
-                                            Route {
-                                                to: "{path}",
-                                                BlogListPreset {
-                                                    path: path.to_string(),
-                                                    setting: setting.clone(),
-                                                }
-                                            }
-                                        }
-                                    }
-                                    "post-content" => {
-                                        let mut using_template = "blog".to_string();
-                                        if let Some(toml::Value::Table(t)) = template {
-                                            if let Some(toml::Value::String(str)) = t.get("using") {
-                                                using_template = str.to_string();
-                                            }
-                                        }
-                                        match using_template.as_str() {
-                                            "docs" => {
-                                                rsx! {
-                                                    Route {
-                                                        to: "{path}",
-                                                        DocsPreset {
-                                                            path: path.to_string(),
-                                                            setting: setting.clone(),
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            "blog" | _ => {
-                                                rsx! {
-                                                    Route {
-                                                        to: "{path}",
-                                                        BlogContentPreset {
-                                                            path: path.to_string(),
-                                                            setting: setting.clone(),
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    _ => {
-                                        rsx! {
-                                            Route {
-                                                to: "{path}",
-                                                _404::NotFound {}
-                                            }
-                                        }
-                                    }
-                                }
                             }
                             RoutingInfo::RedirectBind { path, redirect } => {
                                 rsx! {
@@ -165,11 +118,12 @@ fn App(cx: Scope) -> Element {
                         div {
                             crate::components::markdown::Markdown {
                                 content: "hello **dioxus**!".to_string(),
+                                config: Default::default(),
                             }
                         }
                     }
 
-                    Route { to: "", _404::NotFound {} }
+                    Route { to: "", pages::error::PageNotFound {} }
                 }
             })
         }

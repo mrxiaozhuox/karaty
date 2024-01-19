@@ -26,6 +26,7 @@ watch_path = [
     "public", 
     "Dioxus.toml",
     "data",
+    "config",
     "karaty.toml",
 ]
 

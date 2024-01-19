@@ -1,214 +1,158 @@
-use std::collections::HashMap;
-
-use dioxus::prelude::*;
-use serde::Deserialize;
-
 use crate::{
     components::{footer::Footer, markdown::Markdown, nav::Navbar},
-    utils::markdown::parse_markdown,
+    utils::{self, data::GlobalData},
 };
+use dioxus::{prelude::*, rsx::Segment};
+use dioxus_retrouter::use_route;
+use karaty_blueprint::{SharedUtility, TemplateData, TemplateDataType, TemplatePathData, Value};
+use regex::Regex;
+use std::{collections::HashMap, path::PathBuf};
+
+use super::error::{Error, PageNotFound};
 
 #[derive(Props, PartialEq)]
 pub struct DynamicTemplateProps {
+    path: String,
     name: String,
-    content: String,
-    #[props(!optional)]
-    template: Option<toml::Value>,
+    file: String,
+    config: HashMap<String, Value>,
+    # [props (!optional)]
+    template: String,
 }
 
 pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
-    let suffix = cx.props.name.split(".").last().unwrap();
+    let global = cx.consume_context::<GlobalData>().unwrap();
+    let route = use_route(&cx);
+
+    let bind_path = cx.props.path.clone();
+    let access_path = route.url().path();
+
+    let mut file_path: Vec<&str> = cx.props.file.split('/').collect();
+    let mut data: Option<&TemplateData> = global.data.get(file_path.remove(0));
+    for i in file_path {
+        let mut name = i.to_string();
+        let re = Regex::new(r"\{([^}]*)\}").unwrap();
+        for value in re.captures_iter(i) {
+            let sign = &value[1];
+            let seg = route.segment(&sign);
+            if let Some(seg) = seg {
+                name = name.replace(&format!("{{{sign}}}"), seg);
+            }
+        }
+
+        if data.is_none() {
+            break;
+        }
+        let temp = data.unwrap();
+        if let TemplateData::Directory(d) = temp {
+            data = d.get(&name);
+        }
+    }
+
+    if data.is_none() {
+        return cx.render(rsx! { crate::pages::error::PageNotFound { } });
+    }
+    let data = data.unwrap().clone();
+
+    let global = cx.consume_context::<GlobalData>().unwrap();
+    let template_config = global.template_config;
+
+    let suffix = {
+        let name = &cx.props.name;
+        if PathBuf::from(name).extension().is_some() {
+            cx.props.name.split(".").last().unwrap()
+        } else {
+            "#dir"
+        }
+    };
     let template = cx.props.template.clone();
-    let template = template.unwrap_or_else(|| {
-        let mut res = toml::map::Map::new();
-        res.insert("using".to_string(), toml::Value::String(String::new()));
-        toml::Value::Table(res)
-    });
-    let template = template.as_table().unwrap();
-    let using = template.get("using");
-    let mut using = if using.is_none() {
-        ""
+
+    let file_type_default = template_config.default.file_type;
+    let default_template = file_type_default
+        .get(suffix)
+        .unwrap_or(&String::new())
+        .clone();
+
+    let template = if template.is_empty() {
+        default_template
     } else {
-        using.unwrap().as_str().unwrap_or_default()
+        template
     };
 
-    cx.render(rsx! {
-        div {
-            match suffix {
-                "md" => {
-                    if using.is_empty() {
-                        using = "center";
-                    }
-                    match using {
-                        "center" | _ => {
-                            rsx! { CenterMarkdown {
-                                content: cx.props.content.to_string(),
-                                config: template.clone(),
-                            } }
-                        }
-                    }
-                },
-                "json" => {
-                    let content = cx.props.content.to_string();
-                    if using.is_empty() {
-                        using = "cards";
-                    }
-                    match using {
-                        "cards" | _ => {
-                            rsx! {
-                                JsonCardList {
-                                    content: content,
-                                }
-                            }
-                        }
-                    }
-                }
-                _ => { rsx! { "Content Not Found" } }
-            }
-        }
-    })
-}
+    let templates = cx.use_hook(|| utils::template_loader::loader());
 
-#[inline_props]
-pub fn CenterMarkdown(
-    cx: Scope,
-    content: String,
-    config: toml::map::Map<String, toml::Value>,
-) -> Element {
-    let class = if let Some(toml::Value::Table(t)) = config.get("style") {
-        generate_prose_class(t.clone())
-    } else {
-        "prose prose-sm sm:prose-base dark:prose-invert".to_string()
-    };
-
-    let hide_navbar = if let Some(toml::Value::Boolean(b)) = config.get("hide-navbar") {
-        *b
-    } else {
-        false
-    };
-
-    let hide_footer = if let Some(toml::Value::Boolean(b)) = config.get("hide-footer") {
-        *b
-    } else {
-        false
-    };
-
-    cx.render(rsx! {
-        section { class: "bg-cover bg-white dark:bg-gray-900",
-            if !hide_navbar {
-                rsx! { Navbar {} }
-            }
-            div { class: "flex w-full items-center justify-center container mx-auto px-8",
-                div { class: "text-center",
-                    div { class: "{class}", Markdown { content: content.clone() } }
-                    if !hide_footer {
-                        rsx! { Footer {} }
-                    }
-                }
-            }
-        }
-    })
-}
-
-#[derive(Clone, Deserialize)]
-pub struct CardInfo {
-    pub title: String,
-    pub url: String,
-    pub content: String,
-    pub footnote: String,
-}
-
-#[inline_props]
-pub fn JsonCardList(cx: Scope, content: String) -> Element {
-    let data = serde_json::from_str::<HashMap<String, Vec<CardInfo>>>(&content);
-
-    if let Err(e) = data {
-        return cx.render(rsx! {crate::pages::error::Error { title: "JSON Parse failed".into(), content: format!("{e}") }});
-    }
-    let data = data.unwrap();
-
-    let displayer = data.iter().map(|(group, value)| {
-        rsx! {
-            h2 { class: "text-xl font-bold", "# {group}" }
-            div { class: "mt-4 grid md:grid-cols-2 gap-2 mb-8",
-                value.iter().map(|p| {
-                    rsx! {
-                        a {
-                            class: "block p-4 rounded-lg shadow-lg bg-white w-full sm:w-72 dark:bg-gray-700 hover:bg-gray-200",
-                            href: "{p.url}",
-                            target: "_blank",
-                            h5 {
-                                class: "text-gray-900 dark:text-white text-xl leading-tight font-semibold mb-2",
-                                "{p.title}"
-                            }
-                            p {
-                                class: "text-gray-700 dark:text-gray-200 text-base mb-2",
-                                "{p.content}"
-                            }
-                            p {
-                                class: "text-gray-400 dark:text-gray-500 text-base",
-                                "{p.footnote}"
-                            }
-                        }
-                    }
-                })
-            }
-        }
-    });
-
-    cx.render(rsx! {
-        section { class: "bg-cover bg-white dark:bg-gray-900 dark:text-white",
-            Navbar {}
-            div { class: "flex h-full w-full items-center justify-center container mx-auto px-8",
-                div { class: "max-w-5xl text-center",
-                    displayer,
-                    Footer {}
-                }
-            }
-        }
-    })
-}
-
-const AVAILABLE_STYLE_SETTINGS: [&'static str; 26] = [
-    "headings",
-    "lead",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "p",
-    "a",
-    "blockquote",
-    "figure",
-    "figcaption",
-    "strong",
-    "em",
-    "code",
-    "pre",
-    "ol",
-    "ul",
-    "li",
-    "table",
-    "thead",
-    "tr",
-    "th",
-    "td",
-    "img",
-    "video",
-    "hr",
-];
-
-pub fn generate_prose_class(config: toml::map::Map<String, toml::Value>) -> String {
-    let mut res = String::from("prose prose-sm sm:prose-base dark:prose-invert");
-    for i in AVAILABLE_STYLE_SETTINGS {
-        if let Some(toml::Value::String(v)) = config.get(i) {
-            let list = v.split(" ").collect::<Vec<&str>>();
-            if list.len() >= 1 {
-                res.push_str(&format!(" prose-{i}:{}", list.get(0).unwrap()))
+    let using_component = {
+        let mut namespace: Vec<&str> = template.split("::").collect();
+        let module = if namespace.len() == 1 {
+            templates.get("karaty_template").unwrap()
+        } else {
+            let module = namespace.remove(0);
+            let temp = templates.get(module);
+            if temp.is_some() {
+                temp.unwrap()
             } else {
-                res.push_str(&format!("{} ", list.join(&format!(" prose-{i}:"))));
+                namespace.insert(0, module);
+                templates.get("karaty_template").unwrap()
+            }
+        };
+        let name = format!("{}", namespace.join("::"));
+        let mut value = module.load(&name, TemplateDataType::from_string(suffix));
+        if value.is_none() {
+            value = module.load(&name, TemplateDataType::Any);
+        }
+        value
+    };
+
+    if let Some(using_component) = using_component {
+        let using_component = using_component.clone();
+
+        let mut renderers: HashMap<String, fn(Scope<karaty_blueprint::RendererProps>) -> Element> =
+            HashMap::new();
+        renderers.insert("markdown".to_string(), Markdown);
+
+        let utility = SharedUtility {
+            navbar: Navbar,
+            footer: Footer,
+            _404: PageNotFound,
+            error: Error,
+            renderers,
+            app_config: global.config.clone(),
+        };
+
+        let index_list = bind_path
+            .to_string()
+            .trim_start_matches('/')
+            .split('/')
+            .filter(|segment| segment.starts_with(':'))
+            .map(|segment| segment[1..].to_string())
+            .collect::<Vec<String>>();
+        let mut segments = HashMap::new();
+        for i in index_list {
+            let value = route.segment(&i);
+            if let Some(value) = value {
+                segments.insert(i, value.to_string());
             }
         }
+
+        let path = TemplatePathData {
+            bind: bind_path.to_string(),
+            access: access_path.to_string(),
+            segments,
+        };
+
+        cx.render(rsx! {
+            div {
+                using_component {
+                    path: path,
+                    data: data,
+                    utility: utility,
+                    config: cx.props.config.clone(),
+                }
+            }
+        })
+    } else {
+        cx.render(rsx! {
+            crate::pages::error::PageNotFound {}
+        })
     }
-    res
 }

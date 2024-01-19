@@ -60,7 +60,7 @@ pub fn Navbar(cx: Scope) -> Element {
     })
 }
 
-#[inline_props]
+#[component]
 pub fn NavItemMiddle(cx: Scope, value: NavigationInfo) -> Element {
     let link_class = "text-gray-800 dark:text-gray-200 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium";
     let dark_mode = crate::hooks::mode::is_dark(&cx);
@@ -151,6 +151,7 @@ pub fn NavItemMiddle(cx: Scope, value: NavigationInfo) -> Element {
                 }
             }
         }
+        #[allow(unreachable_patterns)]
         _ => {
             rsx! { span { class: "hidden", "unknown" } }
         }
@@ -158,7 +159,7 @@ pub fn NavItemMiddle(cx: Scope, value: NavigationInfo) -> Element {
     cx.render(display)
 }
 
-#[inline_props]
+#[component]
 pub fn NavItemDropdown(cx: Scope, text: String, list: Vec<NavigationInfo>) -> Element {
     let dropdown = use_state(&cx, || false);
     let li = list
@@ -196,7 +197,7 @@ pub fn NavItemDropdown(cx: Scope, text: String, list: Vec<NavigationInfo>) -> El
     })
 }
 
-#[inline_props]
+#[component]
 pub fn NavItemMobile(cx: Scope, value: NavigationInfo) -> Element {
     let link_class = "m-2 font-semibold dark:text-gray-200 flex justify-center";
     let dark_mode = crate::hooks::mode::is_dark(&cx);
@@ -287,6 +288,7 @@ pub fn NavItemMobile(cx: Scope, value: NavigationInfo) -> Element {
                 }
             }
         }
+        #[allow(unreachable_patterns)]
         _ => {
             rsx! { "unknown" }
         }
@@ -294,7 +296,7 @@ pub fn NavItemMobile(cx: Scope, value: NavigationInfo) -> Element {
     cx.render(display)
 }
 
-#[inline_props]
+#[component]
 pub fn NavItemDropdownMobile(cx: Scope, text: String, list: Vec<NavigationInfo>) -> Element {
     let dropdown = use_state(&cx, || false);
     let ls = list.iter().map(|v| {
