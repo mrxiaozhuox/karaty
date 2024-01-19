@@ -21,6 +21,7 @@ pub struct TemplateRouteData {
     pub bound_path: String,
     pub access_path: String,
     pub segments: HashMap<String, String>,
+    pub queries: HashMap<String, String>,
 }
 
 #[derive(Debug, PartialEq)]

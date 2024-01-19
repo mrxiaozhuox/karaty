@@ -134,10 +134,15 @@ pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
             }
         }
 
+        let queries = route.url().query_pairs().map(|v| {
+            (v.0.to_string(), v.1.to_string())
+        }).collect::<HashMap<String, String>>();
+        
         let path = TemplateRouteData {
             bound_path: bind_path.to_string(),
             access_path: access_path.to_string(),
             segments,
+            queries,
         };
 
         cx.render(rsx! {
