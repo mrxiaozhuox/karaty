@@ -10,16 +10,16 @@ pub mod config;
 
 #[derive(Debug, Props, PartialEq)]
 pub struct TemplateProps {
-    pub path: TemplatePathData,
+    pub route: TemplateRouteData,
     pub data: TemplateData,
     pub utility: SharedUtility,
     pub config: HashMap<String, Value>,
 }
 
 #[derive(Debug, Props, PartialEq)]
-pub struct TemplatePathData {
-    pub bind: String,
-    pub access: String,
+pub struct TemplateRouteData {
+    pub bound_path: String,
+    pub access_path: String,
     pub segments: HashMap<String, String>,
 }
 

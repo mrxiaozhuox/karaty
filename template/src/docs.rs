@@ -14,34 +14,7 @@ pub fn DocsPreset(cx: Scope<TemplateProps>) -> Element {
     let Navbar = cx.props.utility.navbar;
     let Footer = cx.props.utility.footer;
     let Markdown = cx.props.utility.renderers.get("markdown").unwrap().clone();
-
-    // let data = use_future(&cx, (&file_name, ), |(file_name,)| async move {
-    //     let info_group = format!("{}/{}", group, content_group);
-    //     let data = get_info(&list_config, &file_name, info_group).await;
-    //     let sub_path = if group.is_empty() {
-    //         format!("posts/_index.md")
-    //     } else {
-    //         format!("posts/{group}/_index.md")
-    //     };
-    //     let index = load_from_source(&list_config, &sub_path).await;
-    //     let index = if index.is_err() {
-    //         String::new()
-    //     } else {
-    //         index.unwrap()
-    //     };
-    //     let index = markdown::to_mdast(&index, &markdown::ParseOptions::default() ff).ok();
-    //     if index.is_none() {
-    //         (data, vec![])
-    //     } else {
-    //         let index = index.unwrap();
-    //         let mut index_nodes = vec![];
-    //         if let mdast::Node::Root(root) = index {
-    //             index_nodes = root.clone().children;
-    //         }
-    //         (data, index_nodes)
-    //     }
-    // });
-
+ 
     let data = &cx.props.data;
     let config = cx.props.config.clone();
 
@@ -52,7 +25,7 @@ pub fn DocsPreset(cx: Scope<TemplateProps>) -> Element {
         "path".to_string()
     };
 
-    let file = cx.props.path.segments.get(&segment_name);
+    let file = cx.props.route.segments.get(&segment_name);
     if file.is_none() {
         return cx.render(rsx! {
             _404 {}
@@ -112,7 +85,7 @@ pub fn DocsPreset(cx: Scope<TemplateProps>) -> Element {
                                     class: "px-3 py-2",
                                     DocsSideBar {
                                         index: index.clone(),
-                                        path: cx.props.path.bind.clone(),
+                                        path: cx.props.route.bound_path.clone(),
                                         file_sign: segment_name.clone(),
                                     }
                                 }
@@ -202,14 +175,6 @@ pub fn DocsSideBar(cx: Scope<SideBarProps>) -> Element {
         } else if let mdast::Node::Link(link) = node {
             let class = "";
             if &link.url[0..1] == "@" {
-                // let mut groups = link.url[1..].split(".").collect::<Vec<&str>>();
-                // let url = if groups.len() == 1 {
-                //     cx.props.path.replace(&cx.props.file_sign, groups.get(0).unwrap())
-                // } else {
-                //     let url = cx.props.path.replace(&cx.props.file_sign, groups.get(groups.len() - 1).unwrap());
-                //     groups.remove(groups.len() - 1);
-                //     format!("{url}?group={0}", groups.join("."))
-                // };
                 let url = cx.props.path.replace(&format!(":{}", cx.props.file_sign), &link.url[1..]);
                 return rsx! {
                     Link {

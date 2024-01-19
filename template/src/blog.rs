@@ -23,9 +23,9 @@ pub fn BlogListPreset(cx: Scope<TemplateProps>) -> Element {
             .props
             .config
             .get("content-link")
-            .unwrap_or(&Value::String(cx.props.path.bind.clone()))
+            .unwrap_or(&Value::String(cx.props.route.bound_path.clone()))
             .as_str()
-            .unwrap_or(&cx.props.path.bind)
+            .unwrap_or(&cx.props.route.bound_path)
             .to_string();
         let site_title = cx.props.utility.app_config.site.name.clone();
         let v = to_info(data.clone());

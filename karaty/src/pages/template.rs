@@ -2,9 +2,9 @@ use crate::{
     components::{footer::Footer, markdown::Markdown, nav::Navbar},
     utils::{self, data::GlobalData},
 };
-use dioxus::{prelude::*, rsx::Segment};
+use dioxus::prelude::*;
 use dioxus_retrouter::use_route;
-use karaty_blueprint::{SharedUtility, TemplateData, TemplateDataType, TemplatePathData, Value};
+use karaty_blueprint::{SharedUtility, TemplateData, TemplateDataType, TemplateRouteData, Value};
 use regex::Regex;
 use std::{collections::HashMap, path::PathBuf};
 
@@ -134,16 +134,16 @@ pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
             }
         }
 
-        let path = TemplatePathData {
-            bind: bind_path.to_string(),
-            access: access_path.to_string(),
+        let path = TemplateRouteData {
+            bound_path: bind_path.to_string(),
+            access_path: access_path.to_string(),
             segments,
         };
 
         cx.render(rsx! {
             div {
                 using_component {
-                    path: path,
+                    route: path,
                     data: data,
                     utility: utility,
                     config: cx.props.config.clone(),
