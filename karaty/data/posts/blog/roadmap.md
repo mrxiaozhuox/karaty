@@ -9,7 +9,9 @@ released: true
 
 - Feature: Add `build` config for `build.rs`
 - Feature: Add support for use dioxus write custom template
+- Feautre: Provide `blueprint` crate for template development
 - Fixed: `192.168.X.X` for local dev environment
+- Docs: changed documents for new version
 
 ## 0.1.1 (Preview Version)
 

@@ -6,3 +6,6 @@
     - [Build](@build)
 - Markdown
     - [Icons](@icons)
+
+- Templates
+  - [Default](@templates.default)
