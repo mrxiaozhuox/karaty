@@ -167,7 +167,7 @@ pub async fn load_all_data(config: &Config) -> HashMap<String, TemplateData> {
     let mut result = HashMap::new();
     let contents = load_content_list(config, "./").await;
     for (tp, name) in contents {
-        let path = format!("/{name}");
+        let path = format!("{name}");
         let content = if tp == "file" {
             let content = load_from_source(config, &path).await;
             content.map(|v| TemplateData::File(v))
