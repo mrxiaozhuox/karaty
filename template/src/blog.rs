@@ -29,6 +29,7 @@ pub fn BlogListPreset(cx: Scope<TemplateProps>) -> Element {
             .to_string();
         let site_title = cx.props.utility.app_config.site.name.clone();
         let v = to_info(data.clone());
+        let v = sort_by_date(v);
         let list = v.iter().map(|v| {
                 let category = v.category.clone().unwrap_or("Default".to_string()); 
                 let tags = v.tags.iter().map(|tag| {
@@ -221,6 +222,18 @@ fn to_info(data: HashMap<String, TemplateData>) -> Vec<PostInfo> {
         }
     }
     result
+}
+
+fn sort_by_date(mut data: Vec<PostInfo>) -> Vec<PostInfo> {
+    data.sort_by(|a, b| {
+        let a_date = chrono::NaiveDate::parse_from_str(&a.date, "%Y-%m-%d");
+        let b_date = chrono::NaiveDate::parse_from_str(&b.date, "%Y-%m-%d");
+        if a_date.is_ok() && b_date.is_ok() {
+            return b_date.unwrap().cmp(&a_date.unwrap());
+        }
+        std::cmp::Ordering::Equal
+    });
+    data
 }
 
 pub fn export() -> Templates {
