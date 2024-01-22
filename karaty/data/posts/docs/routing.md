@@ -55,4 +55,11 @@ karaty-template = { path = "../template/", template = true }
 
 ## Remote Routing Configure
 
-TODO!
+You can crate a `routing.toml` config at `/config` directory.
+
+```toml
+[[routing]]
+path = "/"
+file = "pages/main.md"
+```
+
