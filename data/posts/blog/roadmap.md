@@ -5,10 +5,14 @@ date: 2023-04-30
 released: true
 ---
 
-## 0.1.2 (Developing)
+## 0.2.0 (Developing)
 
 - Feature: Add `build` config for `build.rs`
-- Feature: Add custom templates (by rhai or handlebars)
+- Feature: Add support for use dioxus write custom template
+- Feautre: Provide `blueprint` crate for template development
+- Fixed: `192.168.X.X` for local dev environment
+- Fixed: Markdown display code block format problem
+- Docs: changed documents for new version
 
 ## 0.1.1 (Preview Version)
 

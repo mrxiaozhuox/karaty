@@ -16,45 +16,6 @@ data = "karaty/data"
 mode = "custom-url"
 data = { url = "/data", index-file = "_index.json" }
 
-
-[[routing]]
-path = "/"
-file = "home.md"
-
-[[routing]]
-path = "/author"
-file = "author.md"
-
-[routing.template.style]
-
-img = "rounded-full"
-
-[[routing]]
-path = "/dependencies"
-file = "dependencies.json"
-
-[[routing]]
-path = "/blog"
-preset = "post-list"
-setting = { group = "blog" }
-
-[[routing]]
-path = "/blog/:path"
-preset = "post-content"
-setting = { group = "blog", file = ":path" }
-
-[[routing]]
-path = "/docs"
-redirect = "/docs/summary"
-
-[[routing]]
-path = "/docs/:path"
-preset = "post-content"
-setting = { group = "docs", file = ":path" }
-
-[routing.template]
-using = "docs"
-
 [navigation]
 
 content = [
@@ -63,7 +24,6 @@ content = [
     { text = "Docs", page = "/docs" },
     { text = "Roadmap", page = "/blog/roadmap" },
     { text = "About", list = [
-        { text = "Dependencies", page = "/dependencies" },
         { text = "Author", page = "/author" },
     ] },
     { feature = "mode-switch" },
