@@ -1,6 +1,3 @@
-<div align="center">
-  <img alt="karaty" src="https://karaty.mrxzx.info/assets/karaty.png" width="150"></img>
-</div>
 
 # Karaty
 
