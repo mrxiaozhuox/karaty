@@ -6,15 +6,7 @@
 
 > A powerful blog & docs framework, powered by [Dioxus][dioxus].
 
-[![Static Badge](https://img.shields.io/badge/dioxus-0.4.3-green?logo=Rust)](https://github.com/DioxusLabs/dioxus/releases/tag/v0.4.3)
-
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mrxiaozhuox/karaty/main.yml?logo=GitHub)](https://github.com/mrxiaozhuox/karaty/actions)
-
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/y/mrxiaozhuox/karaty?logo=Git)](https://github.com/mrxiaozhuox/karaty/commits/main/)
-
-[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/mrxiaozhuox/karaty/total?logo=superuser)](https://github.com/mrxiaozhuox/karaty/releases)
-
-[![GitHub repo size](https://img.shields.io/github/repo-size/mrxiaozhuox/karaty?logo=Git)](#)
+[![Static Badge](https://img.shields.io/badge/dioxus-0.4.3-green?logo=Rust)](https://github.com/DioxusLabs/dioxus/releases/tag/v0.4.3)[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mrxiaozhuox/karaty/main.yml?logo=GitHub)](https://github.com/mrxiaozhuox/karaty/actions)[![GitHub commit activity](https://img.shields.io/github/commit-activity/y/mrxiaozhuox/karaty?logo=Git)](https://github.com/mrxiaozhuox/karaty/commits/main/)[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/mrxiaozhuox/karaty/total?logo=superuser)](https://github.com/mrxiaozhuox/karaty/releases)[![GitHub repo size](https://img.shields.io/github/repo-size/mrxiaozhuox/karaty?logo=Git)](#)
 
 ## Features
 
