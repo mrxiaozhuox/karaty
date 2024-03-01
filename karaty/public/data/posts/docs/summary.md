@@ -36,10 +36,8 @@ released: true
 
 #### Install Dioxus CLI
 
-> We are using a new feature `Plugin System`, so maybe you need install dioxus from `mrxiaozhuox` folk version.
-
 ```shell
-cargo install --git https://github.com/mrxiaozhuox/dioxus-cli
+cargo install --git https://github.com/DioxusLabs/dioxus dioxus-cli
 ```
 
 
@@ -57,6 +55,6 @@ cd karaty
 #### Startup local development server
 
 ```shell
-dioxus serve
+dx serve --hot-reload
 ```
 

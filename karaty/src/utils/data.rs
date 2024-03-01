@@ -169,6 +169,7 @@ pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<(String, 
     result
 }
 
+#[allow(dead_code)]
 pub async fn load_all_data(config: &Config) -> HashMap<String, TemplateData> {
     let mut result = HashMap::new();
     let contents = load_content_list(config, "./").await;
