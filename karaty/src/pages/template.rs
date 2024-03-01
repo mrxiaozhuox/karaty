@@ -53,7 +53,7 @@ pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
             let dirs = crate::utils::data::load_content_list(&application_config, &file_path).await;
             let dirs = dirs
                 .iter()
-                .map(|v| (v.0.clone(), format!("{file_path}/{}", v.1)))
+                .map(|v| (v.0.clone(), format!("{file_path}{}", v.1)))
                 .collect();
             let dir = crate::utils::data::load_page_from_dir(&application_config, dirs).await;
             dir
