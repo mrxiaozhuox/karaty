@@ -10,6 +10,7 @@ released: true
 - Feature: Add `build` config for `build.rs`
 - Feature: Add support for use dioxus write custom template
 - Feautre: Provide `blueprint` crate for template development
+- Feature: Changed to lazy load page & docs, not one-time load
 - Fixed: `192.168.X.X` for local dev environment
 - Fixed: Markdown display code block format problem
 - Docs: changed documents for new version
