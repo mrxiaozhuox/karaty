@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-use karaty_blueprint::{Templates, TemplateProps, TemplateDataType};
+use karaty_blueprint::{TemplateDataType, TemplateProps, Templates};
 
 mod blog;
 mod docs;
@@ -50,7 +50,6 @@ pub fn generate_prose_class(config: toml::map::Map<String, toml::Value>) -> Stri
 
 #[allow(non_snake_case)]
 pub fn centered_display(cx: Scope<TemplateProps>) -> Element {
-    
     let config = &cx.props.config;
 
     let Navbar = cx.props.utility.navbar;
@@ -95,12 +94,15 @@ pub fn centered_display(cx: Scope<TemplateProps>) -> Element {
 }
 
 pub fn export() -> Templates {
-
     let mut list = Templates::new();
 
-    list.insert("center", vec![TemplateDataType::Markdown], centered_display);
+    list.template("center", vec![TemplateDataType::Markdown], centered_display);
 
-    list.insert("docs", vec![TemplateDataType::DirectoryData], docs::DocsPreset);
+    list.template(
+        "docs",
+        vec![TemplateDataType::DirectoryData],
+        docs::DocsPreset,
+    );
     list.sub_module("blog", blog::export());
 
     list

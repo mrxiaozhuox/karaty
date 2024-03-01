@@ -48,7 +48,7 @@
 //             let v = sort_by_date(v);
 //             let list = v.iter().map(|v| {
 //
-//                 let category = v.category.clone().unwrap_or("Default".to_string()); 
+//                 let category = v.category.clone().unwrap_or("Default".to_string());
 //
 //                 let tags = v.tags.iter().map(|tag| {
 //                     rsx! {
@@ -116,7 +116,7 @@
 //
 // #[async_recursion(?Send)]
 // async fn get_post_list(
-//     config: &Config, 
+//     config: &Config,
 //     group: String
 // ) -> Option<HashMap<String, PostListInfo>> {
 //     let sub_path = if group.is_empty() {
@@ -134,7 +134,7 @@
 //
 //         if tp == "dir" {
 //             let list = get_post_list(
-//                 config, 
+//                 config,
 //                 format!("{group}/{file_name}")
 //             ).await;
 //             if let Some(list) = list {
@@ -142,11 +142,11 @@
 //             }
 //             continue;
 //         }
-//         
+//
 //         if file_name == "_template.md" {
 //             continue;
 //         }
-//     
+//
 //         let meta_info = load_from_source(config, &format!("{sub_path}/{file_name}")).await;
 //         if meta_info.is_err() {
 //             continue;
@@ -417,7 +417,7 @@
 //     } else {
 //         file.to_string()
 //     };
-//     
+//
 //     let list_config = config.clone();
 //     let group_query = route.query_param("group");
 //     let content_group = if let Some(q) = group_query {
@@ -437,7 +437,7 @@
 //         let index = if index.is_err() {
 //             String::new()
 //         } else {
-//             index.unwrap()    
+//             index.unwrap()
 //         };
 //         let index = markdown::to_mdast(&index, &markdown::ParseOptions::default()).ok();
 //         if index.is_none() {
@@ -451,7 +451,7 @@
 //             (data, index_nodes)
 //         }
 //     });
-//   
+//
 //     match data.value() {
 //         Some((data, index)) => {
 //             if data.is_none() {
@@ -460,7 +460,7 @@
 //                 });
 //             }
 //             let data = data.clone().unwrap();
-//             
+//
 //             let date = if data.date.is_empty() {
 //                 "Unknown".to_string()
 //             } else {
@@ -560,7 +560,7 @@
 //                  li {
 //                     class: "text-black hover:text-blue-700 dark:text-sky-100 dark:hover:text-blue-300 font-semibold",
 //                     embedd
-//                 }   
+//                 }
 //             }
 //         } else if let mdast::Node::List(_) = node {
 //             return rsx! {
@@ -607,7 +607,7 @@
 //         }
 //         rsx! { div { "{node:?}" } }
 //     });
-//     
+//
 //     cx.render(rsx! {
 //         display
 //     })

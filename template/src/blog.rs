@@ -31,27 +31,28 @@ pub fn BlogListPreset(cx: Scope<TemplateProps>) -> Element {
         let v = to_info(data.clone());
         let v = sort_by_date(v);
         let list = v.iter().map(|v| {
-                let category = v.category.clone().unwrap_or("Default".to_string()); 
-                let tags = v.tags.iter().map(|tag| {
-                    rsx! {
-                        span { class: "text-xs mr-1 inline-block py-1 px-2.5 \
-                        leading-none text-center whitespace-nowrap align-baseline \
-                        font-bold bg-gray-700 text-white rounded",
-                            "{tag}"
-                        }
-                    }
-                });
-                let link = format!("{link}/{}", &v.path); 
+            let category = v.category.clone().unwrap_or("Default".to_string());
+            let tags = v.tags.iter().map(|tag| {
                 rsx! {
-                    dioxus_retrouter::Link { to: "{link}",
-                        h1 { class: "text-3xl font-bold text-gray-500 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white",
-                            "{v.title}"
-                        }
-                        p { class: "text-gray-400 dark:text-gray-100", "{v.date} & {category}" }
-                        p { class: "mt-2", tags }
-                        hr { class: "mt-2 mb-4" }
+                    span { class: "text-xs mr-1 inline-block py-1 px-2.5 \
+                    leading-none text-center whitespace-nowrap align-baseline \
+                    font-bold bg-gray-700 text-white rounded",
+                        "{tag}"
                     }
                 }
+            });
+            let link = format!("{link}/{}", &v.path);
+            rsx! {
+                dioxus_retrouter::Link { to: "{link}",
+                    h1 { class: "text-3xl font-bold text-gray-500 hover:text-gray-900 \
+                    dark:text-gray-100 dark:hover:text-white",
+                        "{v.title}"
+                    }
+                    p { class: "text-gray-400 dark:text-gray-100", "{v.date} & {category}" }
+                    p { class: "mt-2", tags }
+                    hr { class: "mt-2 mb-4" }
+                }
+            }
         });
         let Navbar = cx.props.utility.navbar;
         let Footer = cx.props.utility.footer;
@@ -98,7 +99,7 @@ pub fn BlogContentPreset(cx: Scope<TemplateProps>) -> Element {
 
             let tags = info.tags.iter().map(|tag| {
                 rsx! {
-                    span { 
+                    span {
                         class: "text-xs mr-1 inline-block py-1 px-2.5 \
                             leading-none text-center whitespace-nowrap align-baseline \
                             font-bold bg-gray-700 text-white rounded",
@@ -131,7 +132,7 @@ pub fn BlogContentPreset(cx: Scope<TemplateProps>) -> Element {
                     }
                 }
             })
-        },
+        }
         None => cx.render(rsx! {
             Error {
                 title: "content not found".to_string(),
@@ -239,12 +240,16 @@ fn sort_by_date(mut data: Vec<PostInfo>) -> Vec<PostInfo> {
 pub fn export() -> Templates {
     let mut templates = Templates::new();
 
-    templates.insert(
+    templates.template(
         "list",
         vec![TemplateDataType::DirectoryData],
         BlogListPreset,
     );
-    templates.insert("content", vec![TemplateDataType::Markdown], BlogContentPreset);
+    templates.template(
+        "content",
+        vec![TemplateDataType::Markdown],
+        BlogContentPreset,
+    );
 
     templates
 }

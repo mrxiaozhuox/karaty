@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use anyhow::anyhow;
 use async_recursion::async_recursion;
-use karaty_blueprint::TemplateData;
+use karaty_blueprint::{TemplateData, Templates};
 use serde::Deserialize;
 
 use crate::config::{Config, RoutingInfo, TemplateConfig};
@@ -10,9 +10,9 @@ use crate::config::{Config, RoutingInfo, TemplateConfig};
 #[derive(Debug, Clone)]
 pub struct GlobalData {
     pub config: Config,
-    pub data: HashMap<String, TemplateData>,
     pub routing: Vec<RoutingInfo>,
     pub template_config: TemplateConfig,
+    pub templates: HashMap<String, Templates>,
 }
 
 pub fn get_raw_data_url(service: &str, name: &str, branch: &str) -> Option<String> {
@@ -39,7 +39,10 @@ pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result
     let mut source_mode = config.data_source.mode.clone();
     let mut source_data = config.data_source.data.clone();
     if let Some(local) = config.data_source.local.clone() {
-        if host.as_str() == "localhost" || host.as_str() == "127.0.0.1" || host.starts_with("192.168") {
+        if host.as_str() == "localhost"
+            || host.as_str() == "127.0.0.1"
+            || host.starts_with("192.168")
+        {
             source_mode = local.mode;
             source_data = local.data;
         }
@@ -104,7 +107,10 @@ pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<(String, 
     let mut source_mode = config.data_source.mode.clone();
     let mut source_data = config.data_source.data.clone();
     if let Some(local) = config.data_source.local.clone() {
-        if host.as_str() == "localhost" || host.as_str() == "127.0.0.1" || host.starts_with("192.168") {
+        if host.as_str() == "localhost"
+            || host.as_str() == "127.0.0.1"
+            || host.starts_with("192.168")
+        {
             source_mode = local.mode;
             source_data = local.data;
         }
@@ -173,9 +179,10 @@ pub async fn load_all_data(config: &Config) -> HashMap<String, TemplateData> {
             content.map(|v| TemplateData::File(v))
         } else {
             let dirs = load_content_list(config, &path).await;
-            let dirs = dirs.iter().map(|v| {
-                (v.0.clone(), format!("{name}/{}", v.1))
-            }).collect();
+            let dirs = dirs
+                .iter()
+                .map(|v| (v.0.clone(), format!("{name}/{}", v.1)))
+                .collect();
             let dir = load_page_from_dir(config, dirs).await;
             dir
         };
@@ -187,16 +194,22 @@ pub async fn load_all_data(config: &Config) -> HashMap<String, TemplateData> {
 }
 
 #[async_recursion(?Send)]
-pub async fn load_page_from_dir(config: &Config, contents: Vec<(String, String)>) -> anyhow::Result<TemplateData> {
+pub async fn load_page_from_dir(
+    config: &Config,
+    contents: Vec<(String, String)>,
+) -> anyhow::Result<TemplateData> {
     let mut result = HashMap::new();
     for (tp, url) in contents {
-        let part_name = url.split('/').last().unwrap_or("").to_string(); 
+        let part_name = url.split('/').last().unwrap_or("").to_string();
         if tp == "file" {
             let content = load_from_source(config, &url).await?;
             result.insert(part_name, TemplateData::File(content));
         } else {
             let items = load_content_list(config, &url).await;
-            let items: Vec<(String, String)> = items.iter().map(|(t, i)| (t.clone(), format!("{url}/{i}"))).collect();
+            let items: Vec<(String, String)> = items
+                .iter()
+                .map(|(t, i)| (t.clone(), format!("{url}/{i}")))
+                .collect();
             let content = load_page_from_dir(config, items).await?;
             result.insert(part_name, content);
         }
@@ -206,7 +219,7 @@ pub async fn load_page_from_dir(config: &Config, contents: Vec<(String, String)>
 
 #[derive(Deserialize)]
 struct RoutingWrap {
-    routing: Vec<RoutingInfo>
+    routing: Vec<RoutingInfo>,
 }
 
 pub async fn load_routing_file(url: &str) -> anyhow::Result<Vec<RoutingInfo>> {

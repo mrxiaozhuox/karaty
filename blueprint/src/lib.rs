@@ -5,6 +5,7 @@ use dioxus::{
     core_macro::Props,
 };
 
+use reqwasm::http::Request;
 pub use toml::Value;
 pub mod config;
 
@@ -26,11 +27,17 @@ pub struct TemplateRouteData {
 
 #[derive(Debug, PartialEq)]
 pub struct SharedUtility {
+    /// footer template
     pub footer: fn(Scope) -> Element,
+    /// navbar template
     pub navbar: fn(Scope) -> Element,
+    /// 404 not found template
     pub _404: fn(Scope) -> Element,
+    /// error template
     pub error: fn(Scope<ErrorProps>) -> Element,
+    // preset renderers
     pub renderers: HashMap<String, fn(Scope<RendererProps>) -> Element>,
+    /// `karaty.toml` content
     pub app_config: config::Config,
 }
 
@@ -95,14 +102,14 @@ pub type Component = fn(Scope<TemplateProps>) -> Element;
 
 type TemplatesData = HashMap<TemplateDataType, HashMap<String, Component>>;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Templates(TemplatesData);
 impl Templates {
     pub fn new() -> Self {
         Self(Default::default())
     }
 
-    pub fn insert(&mut self, name: &str, data_type: Vec<TemplateDataType>, template: Component) {
+    pub fn template(&mut self, name: &str, data_type: Vec<TemplateDataType>, template: Component) {
         for i in data_type {
             if self.0.contains_key(&i) {
                 let t = self.0.get_mut(&i).unwrap();
@@ -118,7 +125,7 @@ impl Templates {
     pub fn sub_module(&mut self, name: &str, templates: Self) {
         for (k, i) in templates.0 {
             for j in i {
-                self.insert(&format!("{name}::{}", j.0), vec![k.clone()], j.1);
+                self.template(&format!("{name}::{}", j.0), vec![k.clone()], j.1);
             }
         }
     }
@@ -161,6 +168,23 @@ impl TemplateDataType {
             "#dir" => TemplateDataType::DirectoryData,
             "*" => TemplateDataType::Any,
             _ => Self::Other(s.to_string()),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct LazyLoader(String);
+impl LazyLoader {
+    pub async fn load(self) -> Result<String, ErrorProps> {
+        let url = self.0;
+        let resp = Request::get(&url).send().await;
+        if resp.is_err() {
+            return Err(ErrorProps {
+                title: "content load failed".to_string(),
+                content: format!("lazy loader load content `{}` failed.", url),
+            });
+        } else {
+            return Ok(resp.unwrap().text().await.unwrap());
         }
     }
 }

@@ -1,6 +1,6 @@
+use crate::components::{footer::Footer, nav::Navbar};
 use dioxus::prelude::*;
 use karaty_blueprint::ErrorProps;
-use crate::components::{footer::Footer, nav::Navbar};
 
 pub fn Error(cx: Scope<ErrorProps>) -> Element {
     let title = &cx.props.title;
@@ -12,7 +12,6 @@ pub fn Error(cx: Scope<ErrorProps>) -> Element {
         }
     });
 }
-
 
 pub fn PageNotFound(cx: Scope) -> Element {
     cx.render(rsx! {

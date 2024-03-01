@@ -9,12 +9,11 @@ use crate::blog::PostInfo;
 
 #[allow(non_snake_case)]
 pub fn DocsPreset(cx: Scope<TemplateProps>) -> Element {
-
     let _404 = cx.props.utility._404;
     let Navbar = cx.props.utility.navbar;
     let Footer = cx.props.utility.footer;
     let Markdown = cx.props.utility.renderers.get("markdown").unwrap().clone();
- 
+
     let data = &cx.props.data;
     let config = cx.props.config.clone();
 
@@ -33,10 +32,7 @@ pub fn DocsPreset(cx: Scope<TemplateProps>) -> Element {
     }
     let file = file.unwrap();
 
-    let mut file_path = file
-        .split(".")
-        .map(String::from)
-        .collect::<Vec<String>>();
+    let mut file_path = file.split(".").map(String::from).collect::<Vec<String>>();
     file_path.last_mut().map(|v| *v = format!("{v}.md"));
     let index = data.get(vec!["_index.md".to_string()]);
     let index = {
@@ -123,7 +119,7 @@ pub fn DocsPreset(cx: Scope<TemplateProps>) -> Element {
                     }
                 }
             })
-        },
+        }
         _ => cx.render(rsx! {
             _404 {}
         }),

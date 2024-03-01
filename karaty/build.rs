@@ -1,6 +1,12 @@
-use std::{path::{PathBuf, Path}, fs::{File, self}, io::Read, collections::HashMap, process::Command};
-use quote::{quote, format_ident};
+use quote::{format_ident, quote};
 use serde::{Deserialize, Serialize};
+use std::{
+    collections::HashMap,
+    fs::{self, File},
+    io::Read,
+    path::{Path, PathBuf},
+    process::Command,
+};
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 struct Config {
@@ -28,7 +34,6 @@ struct CargoConfig {
     pub dependencies: HashMap<String, toml::Value>,
 }
 
-
 fn main() {
     let config_file = PathBuf::from("karaty.toml");
     let mut file = File::open(&config_file).expect("`karaty.toml` file not found.");
@@ -50,7 +55,10 @@ fn main() {
         }
     }
     fs::copy(&config_file, PathBuf::from("public").join("karaty.toml")).unwrap();
-    let _ = copy_dir(&PathBuf::from("config"), &PathBuf::from("public").join("config"));
+    let _ = copy_dir(
+        &PathBuf::from("config"),
+        &PathBuf::from("public").join("config"),
+    );
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -71,7 +79,12 @@ fn copy_dir(from: &Path, to: &Path) {
     let mut index: Vec<IndexStruct> = Vec::new();
     for i in list {
         let value = i.unwrap().path().display().to_string();
-        let file_name = PathBuf::from(&value).file_name().unwrap().to_str().unwrap().to_string();
+        let file_name = PathBuf::from(&value)
+            .file_name()
+            .unwrap()
+            .to_str()
+            .unwrap()
+            .to_string();
         let child_from = from.join(&file_name);
         let child_to = to.join(&file_name);
         if PathBuf::from(&value).is_dir() {
@@ -91,7 +104,11 @@ fn copy_dir(from: &Path, to: &Path) {
             })
         }
     }
-    fs::write(to.join("_index.json"), serde_json::to_string(&index).unwrap()).unwrap();
+    fs::write(
+        to.join("_index.json"),
+        serde_json::to_string(&index).unwrap(),
+    )
+    .unwrap();
 }
 
 #[allow(dead_code)]
@@ -102,34 +119,36 @@ fn load_extension_template() -> Vec<String> {
     let mut config_text = String::new();
     file.read_to_string(&mut config_text).unwrap();
     let config = toml::from_str::<CargoConfig>(&config_text).unwrap();
-   
+
     let dep = config.dependencies;
     let mut templates = vec![];
     for (name, value) in dep {
-       if let toml::Value::Table(tab) = value {
+        if let toml::Value::Table(tab) = value {
             if tab.contains_key("template") {
                 let enable = tab.get("template").unwrap().as_bool().unwrap();
                 if enable {
                     templates.push(name);
                 }
             }
-        } 
+        }
     }
     templates
 }
 
 #[allow(dead_code)]
 fn generate_template_rs() {
-
     let templates = load_extension_template();
 
-    let quoted_items: Vec<_> = templates.iter().map(|template| {
-        let template = template.replace("-", "_");
-        let template_module = format_ident!("{}", template);
-        quote! {
-            templates.insert(#template.to_string(), #template_module::export());
-        }
-    }).collect();
+    let quoted_items: Vec<_> = templates
+        .iter()
+        .map(|template| {
+            let template = template.replace("-", "_");
+            let template_module = format_ident!("{}", template);
+            quote! {
+                templates.insert(#template.to_string(), #template_module::export());
+            }
+        })
+        .collect();
 
     let template_rs = quote! {
         use std::collections::HashMap;
@@ -139,8 +158,13 @@ fn generate_template_rs() {
             templates
         }
     };
-    let template_rs_file = PathBuf::from("src").join("utils").join("template_loader.rs");
+    let template_rs_file = PathBuf::from("src")
+        .join("utils")
+        .join("template_loader.rs");
     fs::write(&template_rs_file, template_rs.to_string()).unwrap();
 
-    Command::new("rustfmt").arg(template_rs_file.to_str().unwrap().to_string()).status().expect("Failed to format the file.");
+    Command::new("rustfmt")
+        .arg(template_rs_file.to_str().unwrap().to_string())
+        .status()
+        .expect("Failed to format the file.");
 }
