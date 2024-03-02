@@ -46,6 +46,12 @@ pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
         path
     };
     let data = use_future(&cx, (), |_| async move {
+        let mut file_path = file_path.clone();
+        if file_path.starts_with('/') {
+            let mut bp = file_path.into_bytes();
+            bp.remove(0);
+            file_path = String::from_utf8(bp).unwrap();
+        }
         if PathBuf::from(&file_path).extension().is_some() {
             let v = crate::utils::data::load_from_source(&application_config, &file_path).await;
             v.map(|v| TemplateData::File(v))
@@ -53,7 +59,7 @@ pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
             let dirs = crate::utils::data::load_content_list(&application_config, &file_path).await;
             let dirs = dirs
                 .iter()
-                .map(|v| (v.0.clone(), format!("{file_path}{}", v.1)))
+                .map(|v| (v.0.clone(), format!("{file_path}/{}", v.1)))
                 .collect();
             let dir = crate::utils::data::load_page_from_dir(&application_config, dirs).await;
             dir
