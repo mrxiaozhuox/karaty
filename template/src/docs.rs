@@ -155,15 +155,15 @@ pub fn DocsSideBar(cx: Scope<SideBarProps>) -> Element {
         };
         if let mdast::Node::ListItem(_) = node {
             return rsx! {
-                 li {
-                    class: "text-black hover:text-blue-700 dark:text-sky-100 dark:hover:text-blue-300 font-semibold",
+                li {
+                    class: "text-sm font-mono dark:text-white",
                     embedd
                 }   
             }
         } else if let mdast::Node::List(_) = node {
             return rsx! {
                 ul {
-                    class: "px-5 py-1 list-disc",
+                    class: "px-5 py-1",
                     embedd
                 }
             }
@@ -172,7 +172,7 @@ pub fn DocsSideBar(cx: Scope<SideBarProps>) -> Element {
                 embedd
             }
         } else if let mdast::Node::Link(link) = node {
-            let class = "";
+            let class = "text-gray-600 dark:text-gray-200 hover:text-blue-700 dark:hover:text-blue-300";
             if &link.url[0..1] == "@" {
                 let url = cx.props.path.replace(&format!(":{}", cx.props.file_sign), &link.url[1..]);
                 return rsx! {
