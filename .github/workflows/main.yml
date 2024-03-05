@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Dioxus Deploy"
-        uses: DioxusLabs/deploy-action@0.1.1
+        uses: DioxusLabs/deploy-action
         with:
           rootPath: "karaty"
-          toolSource: "mrxiaozhuox/dioxus-cli"
