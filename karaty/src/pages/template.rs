@@ -179,6 +179,16 @@ pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
             }
         },
         Some(Err(err)) => cx.render(rsx! { format!("{:?}", err) }),
-        None => None,
+        None => {
+            return cx.render(rsx! {
+                div {
+                    class: "h-screen flex justify-center items-center",
+                    h1 {
+                        class: "text-gray-500 text-3xl font-semibold",
+                        "Loading ..."
+                    }
+                }
+            });
+        },
     }
 }
