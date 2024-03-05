@@ -45,3 +45,9 @@ content = [
 [build.static-generator]
 source = "data"
 target = "data"
+
+[giscus]
+repo = "mrxiaozhuox/karaty"
+repo-id = "R_kgDOJHFKvQ"
+category = "Announcements"
+category-id = "DIC_kwDOJHFKvc4Cdo4Q"
