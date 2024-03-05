@@ -84,6 +84,7 @@ pub fn BlogContentPreset(cx: Scope<TemplateProps>) -> Element {
     let Markdown = cx.props.utility.renderers.get("markdown").unwrap().clone();
     let Footer = cx.props.utility.footer;
     let Navbar = cx.props.utility.navbar;
+    let Giscus = cx.props.utility.giscus;
     let Error = cx.props.utility.error;
 
     let data = &cx.props.data;
@@ -127,6 +128,8 @@ pub fn BlogContentPreset(cx: Scope<TemplateProps>) -> Element {
                             }
                             hr { class: "mt-4" }
                             p { class: "mt-4", tags }
+                            Giscus {}
+                            div { class: "giscus flex justify-center container mx-auto my-12" }
                             Footer {}
                         }
                     }
