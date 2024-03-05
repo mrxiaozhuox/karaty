@@ -31,6 +31,8 @@ pub struct SharedUtility {
     pub footer: fn(Scope) -> Element,
     /// navbar template
     pub navbar: fn(Scope) -> Element,
+    /// giscus Component
+    pub giscus: fn(Scope) -> Element,
     /// 404 not found template
     pub _404: fn(Scope) -> Element,
     /// error template

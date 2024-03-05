@@ -1,5 +1,5 @@
 use crate::{
-    components::{footer::Footer, markdown::Markdown, nav::Navbar},
+    components::{footer::Footer, giscus::GiscusWithConfig, markdown::Markdown, nav::Navbar},
     utils::data::GlobalData,
 };
 use dioxus::prelude::*;
@@ -129,6 +129,7 @@ pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
                 let utility = SharedUtility {
                     navbar: Navbar,
                     footer: Footer,
+                    giscus: GiscusWithConfig,
                     _404: PageNotFound,
                     error: Error,
                     renderers,

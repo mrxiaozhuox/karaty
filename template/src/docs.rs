@@ -13,6 +13,7 @@ pub fn DocsPreset(cx: Scope<TemplateProps>) -> Element {
     let Navbar = cx.props.utility.navbar;
     let Footer = cx.props.utility.footer;
     let Markdown = cx.props.utility.renderers.get("markdown").unwrap().clone();
+    let Giscus = cx.props.utility.giscus;
 
     let data = &cx.props.data;
     let config = cx.props.config.clone();
@@ -104,7 +105,7 @@ pub fn DocsPreset(cx: Scope<TemplateProps>) -> Element {
                             div {
                                 class:"row-span-2 col-span-12 sm:col-span-8",
                                 div {
-                                    class: "prose prose-sm sm:prose-base  mt-4 dark:text-white dark:prose-invert",
+                                    class: "prose prose-sm sm:prose-base mt-4 dark:text-white dark:prose-invert",
                                     Markdown {
                                         content: data.content.clone(),
                                         config: Default::default(),
@@ -113,8 +114,10 @@ pub fn DocsPreset(cx: Scope<TemplateProps>) -> Element {
                             }
                         }
                     }
+                    Giscus {}
+                    div { class: "giscus flex justify-center container mx-auto my-12" }
                     div {
-                        class: "flex justify-center container mx-auto my-12",
+                        class: "flex justify-center container mx-auto my-14",
                         Footer {}
                     }
                 }

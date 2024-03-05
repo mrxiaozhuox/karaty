@@ -12,7 +12,7 @@ dioxus-retrouter = { git = "https://github.com/mrxiaozhuox/dioxus-retrouter", fe
 fermi = "0.4.3"
 
 js-sys = "0.3.58"
-web-sys = { version = "0.3.58", features = ["Storage"] }
+web-sys = { version = "0.3.58", features = ["Storage", "HtmlIFrameElement"] }
 dioxus-free-icons = { version = "0.7.0", features = ["font-awesome-brands", "font-awesome-solid"] }
 dioxus-toast = { version = "0.3.0", default-features = false, features = ["web"] }
 gloo = "0.11.0"

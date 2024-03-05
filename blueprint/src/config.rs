@@ -17,6 +17,8 @@ pub struct Config {
     pub navigation: NavigationConfig,
 
     pub footer: FooterConfig,
+
+    pub giscus: Option<GiscusConfig>,
 }
 
 #[derive(Debug, Serialize, PartialEq, Deserialize, Clone)]
@@ -126,4 +128,63 @@ pub struct TemplateConfig {
 pub struct TemplateDefaultConfig {
     #[serde(rename = "file-type")]
     pub file_type: HashMap<String, String>,
+}
+
+#[derive(Debug, Serialize, PartialEq, Deserialize, Clone)]
+pub struct GiscusConfig {
+    
+    pub repo: String,
+    #[serde(rename = "repo-id")]
+    pub repo_id: String,
+    pub category: String,
+    #[serde(rename = "category-id")]
+    pub category_id: String,
+    #[serde(rename = "data-mapping")]
+    #[serde(default = "giscus_default_mapping")]
+    pub mapping: String,
+    #[serde(rename = "data-strict")]
+    #[serde(default = "default_true")]
+    pub strict: bool,
+    #[serde(default = "default_true")]
+    pub reactions: bool,
+    #[serde(rename = "emit-metadata")]
+    #[serde(default = "default_false")]
+    pub emit_metadata: bool,
+    #[serde(rename = "input-position")]
+    #[serde(default = "giscus_default_position")]
+    pub input_position: String,
+    #[serde(default = "giscus_default_theme")]
+    pub theme: String,
+    #[serde(default = "giscus_default_lang")]
+    pub lang: String,
+    #[serde(default = "giscus_default_crossorigin")]
+    pub crossorigin: String,
+}
+
+fn giscus_default_mapping() -> String {
+    String::from("pathname")
+}
+
+fn giscus_default_position() -> String {
+    String::from("top")
+}
+
+fn giscus_default_theme() -> String {
+    String::from("preferred_color_scheme")
+}
+
+fn giscus_default_lang() -> String {
+    String::from("en")
+}
+
+fn giscus_default_crossorigin() -> String {
+    String::from("anonymous")
+}
+
+fn default_true() -> bool {
+    true
+}
+
+fn default_false() -> bool {
+    false
 }

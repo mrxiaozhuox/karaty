@@ -19,15 +19,16 @@ pub async fn setup_config() -> anyhow::Result<Config> {
 
 pub fn setup_root_app(cx: &Scope, data: GlobalData) -> anyhow::Result<()> {
     cx.provide_context(data.clone());
+
     let _ = js_sys::eval(&format!(
         "document.title = 'Home{}'",
         data.config.site.title_suffix
     ));
 
+    use_init_atom_root(&cx);
     if data.config.site.dark_mode {
         init_mode_info(&cx);
     }
-    use_init_atom_root(&cx);
 
     // Print framework & project information to console
     cx.use_hook(|| {
