@@ -9,23 +9,25 @@ pub fn Markdown(cx: Scope<RendererProps>) -> Element {
     use_effect(&cx, (&cx.props.content,), |_| async {
         let _ = js_sys::eval(&indoc::formatdoc! {"
             var list = document.getElementsByClassName('code-raw');
-            for (var i = 0; i < list.length; i++) {{
-                let generated = list[i].parentElement.getElementsByTagName('pre');
-                for (var j = 0; j < generated.length; j++) {{
-                    generated[j].remove();
+            setTimeout(() => {{
+                for (var i = 0; i < list.length; i++) {{
+                    let generated = list[i].parentElement.getElementsByTagName('pre');
+                    for (var j = 0; j < generated.length; j++) {{
+                        generated[j].remove();
+                    }}
+                    var code = list[i].getElementsByTagName('code')[0].innerText;
+                    var language = list[i].getElementsByTagName('span')[0].innerText;
+                    var pre_el = document.createElement('pre');
+                    var code_el = document.createElement('code');
+                    code_el.classList = 'language-' + language;
+                    code_el.appendChild(document.createTextNode(
+                        code
+                    ));
+                    pre_el.appendChild(code_el);
+                    list[i].parentElement.appendChild(pre_el);
+                    hljs.highlightElement(code_el);
                 }}
-                var code = list[i].getElementsByTagName('code')[0].innerText;
-                var language = list[i].getElementsByTagName('span')[0].innerText;
-                var pre_el = document.createElement('pre');
-                var code_el = document.createElement('code');
-                code_el.classList = 'language-' + language;
-                code_el.appendChild(document.createTextNode(
-                    code
-                ));
-                pre_el.appendChild(code_el);
-                list[i].parentElement.appendChild(pre_el);
-                hljs.highlightElement(code_el);
-            }}
+            }}, 1);
         "});
     });
     if let Ok(Node::Root(root)) = mdast {
