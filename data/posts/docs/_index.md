@@ -4,6 +4,7 @@
     - [Data Source](@data-source)
     - [Navigation](@navigation)
     - [Build](@build)
+    - [Giscus Comment](@giscus)
 - Markdown
     - [Icons](@icons)
 

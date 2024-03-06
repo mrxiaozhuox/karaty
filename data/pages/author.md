@@ -5,7 +5,7 @@
 Hello, I'm the author of `Karaty`. I'm a full-stack developer, my favorite programming language is **Rust**.
 Currently I'm maintaining `Dioxus CLI`.
 
-I'm living *San Jose, CA*, and I'm completing my undergraduate degree. My native language is *Chinese (Mandarin)*, I'm learning English.
+I'm living *Irvine, CA*, and I'm completing my undergraduate degree. My native language is *Chinese (Mandarin)*, I'm learning English.
 
 ### Tech Stack
 
