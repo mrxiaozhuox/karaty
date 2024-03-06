@@ -36,7 +36,7 @@ karaty-blueprint = "0.2.0"
 
 # you can add your extension template in here
 # you need add a template=true field for dependencies, that can help builder find this part.
-karaty-template = { path = "../template/", template = true }
+karaty-template = { version = "0.2.0", template = true }
 
 [build-dependencies]
 serde = { version = "1.0", features = ["derive"] }
