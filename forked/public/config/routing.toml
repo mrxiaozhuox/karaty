@@ -1,27 +1,3 @@
 [[routing]]
 path = "/"
 file = "pages/home.md"
-
-[[routing]]
-path = "/author"
-file = "pages/author.md"
-
-[[routing]]
-path = "/blog"
-file = "posts/blog"
-template = "blog::list"
-
-[[routing]]
-path = "/blog/:path"
-file = "posts/blog/{path}.md"
-template = "blog::content"
-
-[[routing]]
-path = "/docs"
-redirect = "/docs/summary"
-
-[[routing]]
-path = "/docs/:path"
-file = "posts/docs"
-template = "docs"
-config = { file-segment = "path" }
