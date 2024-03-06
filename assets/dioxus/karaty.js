@@ -1545,7 +1545,7 @@ imports.wbg.__wbindgen_closure_wrapper4803 = function() { return logError(functi
     const ret = makeMutClosure(arg0, arg1, 2755, __wbg_adapter_63);
     return addHeapObject(ret);
 }, arguments) };
-imports.wbg.__wbindgen_closure_wrapper4983 = function() { return logError(function (arg0, arg1, arg2) {
+imports.wbg.__wbindgen_closure_wrapper4982 = function() { return logError(function (arg0, arg1, arg2) {
     const ret = makeMutClosure(arg0, arg1, 2849, __wbg_adapter_66);
     return addHeapObject(ret);
 }, arguments) };
