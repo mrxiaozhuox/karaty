@@ -1,0 +1,64 @@
+[application]
+
+# dioxus project name
+name = "karaty"
+
+# default platfrom
+# you can also use `dioxus serve/build --platform XXX` to use other platform
+# value: web | desktop
+default_platform = "web"
+
+# Web `build` & `serve` dist path
+out_dir = "dist"
+
+# resource (static) file folder
+asset_dir = "public"
+
+[web.app]
+
+# HTML title tag content
+title = "Karaty | Static Personal Profile & Blog Generator"
+
+[web.watcher]
+
+watch_path = [
+    "src", 
+    "public", 
+    "Dioxus.toml",
+    "data",
+    "config",
+    "karaty.toml",
+]
+
+index_on_404 = true
+
+# include `assets` in web platform
+[web.resource]
+
+# CSS style file
+style = [
+    "/assets/highlight/styles/dracula.css",
+]
+
+# Javascript code file
+script = [
+    "/assets/tailwind/tailwind.min.js",
+    "/assets/tailwind/tailwind.config.js",
+    "/assets/highlight/highlight.min.js",
+]
+
+[web.resource.dev]
+
+# Javascript code file
+# serve: [dev-server] only
+script = []
+
+[plugin]
+
+available = true
+
+loader = []
+
+[plugin.karaty]
+
+local-source = { dir = "data", on-build = true }

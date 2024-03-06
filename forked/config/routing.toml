@@ -1,0 +1,3 @@
+[[routing]]
+path = "/"
+file = "pages/home.md"
