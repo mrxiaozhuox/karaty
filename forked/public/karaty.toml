@@ -6,15 +6,13 @@ dark-mode = true
 
 [repository]
 service = "GitHub"
-name = "<github_user>/<github_repo>"
+name = "mrxiaozhuox/karaty"
 
 [data-source]
-# get more information from document: https://karaty.mrxzx.info/docs/data-source
-mode = "<data-source-mode>"
-data = "<data-source-config>"
+mode = "embedded-repository"
+data = "docsite/data"
 
 [data-source.local]
-# get more information from document: https://karaty.mrxzx.info/docs/data-source
 mode = "custom-url"
 data = { url = "/data", index-file = "_index.json" }
 
@@ -22,7 +20,12 @@ data = { url = "/data", index-file = "_index.json" }
 
 content = [
     { text = "Home", page = "/" },
-    { text = "Docs", link = "https://karaty.mrxzx.info/docs/" },
+    { text = "Blog", page = "/blog" },
+    { text = "Docs", page = "/docs" },
+    { text = "Roadmap", page = "/blog/roadmap" },
+    { text = "About", list = [
+        { text = "Author", page = "/author" },
+    ] },
     { feature = "mode-switch" },
 ]
 
@@ -33,7 +36,8 @@ content = [
 content = [
     [
         { icon = "brand.github", link = "https://github.com/mrxiaozhuox/karaty" },
-        { icon = "solid.table", link = "https://karaty.mrxzx.info/blog/roadmap" },
+        { icon = "brand.zhihu", link = "https://www.zhihu.com/people/mrxiao-zhuo-x" },
+        { icon = "brand.instagram", link = "https://www.instagram.com/mrxiaozhuox/" },
     ],
     [{ text = "Powered by Karaty" }],
 ]
@@ -41,3 +45,9 @@ content = [
 [build.static-generator]
 source = "data"
 target = "data"
+
+[giscus]
+repo = "mrxiaozhuox/karaty"
+repo-id = "R_kgDOJHFKvQ"
+category = "Announcements"
+category-id = "DIC_kwDOJHFKvc4Cdo4Q"

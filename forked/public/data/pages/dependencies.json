@@ -1,0 +1,74 @@
+{
+  "Web Development": [
+    {
+      "title": "Dioxus Framework",
+      "url": "https://dioxuslabs.com",
+      "content": "Web & CLI & Router & Fermi",
+      "footnote": "DioxusLabs"
+    },
+    {
+      "title": "Gloo Tools",
+      "url": "https://gloo-rs.web.app/",
+      "content": "Using for network request",
+      "footnote": "RustWasm"
+    },
+    {
+      "title": "WASM Bindgen",
+      "url": "https://github.com/rustwasm/wasm-bindgen",
+      "content": "web-sys & js-sys using for wasm development",
+      "footnote": "RustWasm"
+    },
+    {
+      "title": "WASM Logger",
+      "url": "https://crates.io/crates/wasm-logger",
+      "content": "Using for display log info in console",
+      "footnote": "limira"
+    }
+  ],
+  "UI Design": [
+    {
+      "title": "Tailwind CSS",
+      "url": "https://tailwindcss.com/",
+      "content": "Rapidly build modern websites without ever leaving your HTML",
+      "footnote": "Tailwind"
+    },
+    {
+      "title": "Dioxus Free Icons",
+      "url": "https://crates.io/crates/dioxus-free-icons",
+      "content": "Use free svg icons in your Dioxus projects easily with dioxus-free-icons",
+      "footnote": "Daiki Nishikawa"
+    }
+  ],
+  "Data Convert": [
+    {
+      "title": "Pulldown Cmark",
+      "url": "https://github.com/raphlinus/pulldown-cmark",
+      "content": "Using for conver markdown content to HTML",
+      "footnote": "Raph Levien"
+    },
+    {
+      "title": "Markdown Meta Parser",
+      "url": "https://github.com/mrxiaozhuox/markdown-meta-parser",
+      "content": "Parse Markdown meta table to Json",
+      "footnote": "YuKun Liu"
+    },
+    {
+      "title": "Serde",
+      "url": "https://serde.rs/",
+      "content": "Serialization framework for Rust",
+      "footnote": "Serde-RS"
+    },
+    {
+      "title": "Serde Json",
+      "url": "https://serde.rs/",
+      "content": "Serialization framework for Rust",
+      "footnote": "Serde-RS"
+    },
+    {
+      "title": "Serde Toml",
+      "url": "https://serde.rs/",
+      "content": "Serialization framework for Rust",
+      "footnote": "Serde-RS"
+    }
+  ]
+}
