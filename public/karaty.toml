@@ -1,0 +1,53 @@
+[site]
+
+name = "Karaty Offical"
+title-suffix = " | Karaty Site"
+dark-mode = true
+
+[repository]
+service = "GitHub"
+name = "mrxiaozhuox/karaty"
+
+[data-source]
+mode = "embedded-repository"
+data = "karaty/data"
+
+[data-source.local]
+mode = "custom-url"
+data = { url = "/data", index-file = "_index.json" }
+
+[navigation]
+
+content = [
+    { text = "Home", page = "/" },
+    { text = "Blog", page = "/blog" },
+    { text = "Docs", page = "/docs" },
+    { text = "Roadmap", page = "/blog/roadmap" },
+    { text = "About", list = [
+        { text = "Author", page = "/author" },
+    ] },
+    { feature = "mode-switch" },
+]
+
+[footer]
+
+# enable = false
+
+content = [
+    [
+        { icon = "brand.github", link = "https://github.com/mrxiaozhuox/karaty" },
+        { icon = "brand.zhihu", link = "https://www.zhihu.com/people/mrxiao-zhuo-x" },
+        { icon = "brand.instagram", link = "https://www.instagram.com/mrxiaozhuox/" },
+    ],
+    [{ text = "Powered by Karaty" }],
+]
+
+[build.static-generator]
+source = "data"
+target = "data"
+
+[giscus]
+repo = "mrxiaozhuox/karaty"
+repo-id = "R_kgDOJHFKvQ"
+category = "Announcements"
+category-id = "DIC_kwDOJHFKvc4Cdo4Q"
