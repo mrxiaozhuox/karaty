@@ -32,7 +32,7 @@ indoc = "2.0.1"
 
 regex = "1.10.2"
 
-karaty-blueprint = { path = "../blueprint/" }
+karaty-blueprint = { git = "https://github.com/mrxiaozhuox/karaty" }
 
 # you can add your extension template in here
 # you need add a template=true field for dependencies, that can help builder find this part.

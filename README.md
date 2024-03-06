@@ -56,5 +56,8 @@ You can download [karaty.zip](https://github.com/mrxiaozhuox/karaty/releases) fi
 - Open GitHub pags in repository and bind domain.
 
 
+## Contribute
+
+You should make change at `docsite` directory, `forked` will auto generate.
 
 [dioxus]: https://dioxuslabs.com/	"DioxusLabs"
