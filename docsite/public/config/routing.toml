@@ -1,7 +1,6 @@
 [[routing]]
 path = "/"
 file = "pages/home.md"
-template = "karaty_docsite_template::main"
 
 [[routing]]
 path = "/author"
