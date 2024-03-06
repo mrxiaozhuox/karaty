@@ -43,6 +43,10 @@ def main():
     karaty_toml = dir_path / "karaty.toml"
     karaty_toml.write_text(karaty_toml_content())
 
+    # write README.md
+    readme_md = dir_path / "README.md"
+    readme_md.write_text(readme_md_content())
+
 def clean_template_deps(config: str) -> str:
     new = ""
     for line in config.splitlines():
@@ -137,6 +141,16 @@ content = [
 [build.static-generator]
 source = "data"
 target = "data"
+'''
+
+def readme_md_content() -> str:
+    return '''## New Karaty project 
+
+> you can use dioxus cli to start a local server
+
+``shell
+dx serve
+``
 '''
 
 if __name__ == "__main__":

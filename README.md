@@ -35,7 +35,7 @@ git clone https://github.com/mrxiaozhuox/karaty --branch new
 Start Development server
 
 ```shell
-cd karaty && dx serve
+dx serve
 ```
 
 ### Startup with compiled file
