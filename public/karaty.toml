@@ -10,7 +10,7 @@ name = "mrxiaozhuox/karaty"
 
 [data-source]
 mode = "embedded-repository"
-data = "karaty/data"
+data = "docsite/data"
 
 [data-source.local]
 mode = "custom-url"
