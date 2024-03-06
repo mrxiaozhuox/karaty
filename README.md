@@ -29,7 +29,7 @@ cargo install dioxus-cli --git https://github.com/mrxiaozhuox/dioxus-cli
 Clone project from Github
 
 ```shell
-git clone https://github.com/mrxiaozhuox/karaty
+git clone https://github.com/mrxiaozhuox/karaty --branch new
 ```
 
 Start Development server
