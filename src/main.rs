@@ -20,7 +20,7 @@ use utils::{
     template_loader,
 };
 
-use crate::{config::RoutingInfo, pages::template::DynamicTemplate};
+use crate::{components::loading::Loading, config::RoutingInfo, pages::template::DynamicTemplate};
 
 static TOAST_MANAGER: fermi::AtomRef<ToastManager> = fermi::AtomRef(|_| ToastManager::default());
 
@@ -146,13 +146,7 @@ fn App(cx: Scope) -> Element {
         }
         None => {
             return cx.render(rsx! {
-                div {
-                    class: "h-screen flex justify-center items-center",
-                    h1 {
-                        class: "text-gray-500 text-3xl font-semibold",
-                        "Loading ..."
-                    }
-                }
+                Loading {}
             });
         }
     }
