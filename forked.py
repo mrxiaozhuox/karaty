@@ -14,7 +14,7 @@ def main():
     dir_path = Path(".") / DIR
     if dir_path.exists():
         shutil.rmtree(dir_path)
-    shutil.copytree("./docsite", dir_path)
+    shutil.copytree("./karaty", dir_path)
     
     # re-genenate Cargo.toml file
     cargo_toml = dir_path / "Cargo.toml"
