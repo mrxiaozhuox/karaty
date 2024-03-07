@@ -1,3 +1,0 @@
-tailwind.config = {
-    darkMode: "class"
-}

@@ -12,4 +12,4 @@ jobs:
       - name: "Dioxus Deploy"
         uses: DioxusLabs/deploy-action@997e38cab19fc6e0be6f5be7049407b5d1f3ba0c
         with:
-          rootPath: "docsite"
+          rootPath: "karaty"

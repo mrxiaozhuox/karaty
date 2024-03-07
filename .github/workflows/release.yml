@@ -20,7 +20,7 @@ jobs:
           override: true
       - name: Install CLI
         shell: bash
-        run: cargo install --git https://github.com/mrxiaozhuox/dioxus-cli
+        run: cargo install --git https://github.com/Dioxuslabs/dioxus dioxus-cli
       - name: Build Karaty
         shell: bash
         run: cd karaty && dioxus build --release

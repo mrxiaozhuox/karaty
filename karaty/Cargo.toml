@@ -1,5 +1,5 @@
 [package]
-name = "karaty-website"
+name = "karaty"
 version = "0.1.1"
 edition = "2021"
 
