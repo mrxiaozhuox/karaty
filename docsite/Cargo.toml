@@ -1,5 +1,5 @@
 [package]
-name = "karaty-docsite-template"
+name = "karaty-docsite"
 version = "0.2.0"
 edition = "2021"
 

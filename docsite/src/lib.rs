@@ -1,109 +1,75 @@
 use dioxus::prelude::*;
+use dioxus_retrouter::Link;
 use karaty_blueprint::{TemplateDataType, TemplateProps, Templates};
 
-mod blog;
-mod docs;
-
-const AVAILABLE_STYLE_SETTINGS: [&'static str; 26] = [
-    "headings",
-    "lead",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "p",
-    "a",
-    "blockquote",
-    "figure",
-    "figcaption",
-    "strong",
-    "em",
-    "code",
-    "pre",
-    "ol",
-    "ul",
-    "li",
-    "table",
-    "thead",
-    "tr",
-    "th",
-    "td",
-    "img",
-    "video",
-    "hr",
-];
-
-pub fn generate_prose_class(config: toml::map::Map<String, toml::Value>) -> String {
-    let mut res = String::from("prose prose-sm sm:prose-base dark:prose-invert");
-    for i in AVAILABLE_STYLE_SETTINGS {
-        if let Some(toml::Value::String(v)) = config.get(i) {
-            let list = v.split(" ").collect::<Vec<&str>>();
-            if list.len() >= 1 {
-                res.push_str(&format!(" prose-{i}:{}", list.get(0).unwrap()))
-            } else {
-                res.push_str(&format!("{} ", list.join(&format!(" prose-{i}:"))));
-            }
-        }
-    }
-    res
-}
-
 #[allow(non_snake_case)]
-pub fn centered_display(cx: Scope<TemplateProps>) -> Element {
-    let config = &cx.props.config;
-
+pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
     let Navbar = cx.props.utility.navbar;
     let Footer = cx.props.utility.footer;
-    let Markdown = cx.props.utility.renderers.get("markdown").unwrap().clone();
-
-    let content = cx.props.data.text();
-
-    let class = if let Some(toml::Value::Table(t)) = config.get("style") {
-        generate_prose_class(t.clone())
-    } else {
-        "prose prose-sm sm:prose-base dark:prose-invert".to_string()
-    };
-
-    let hide_navbar = if let Some(toml::Value::Boolean(b)) = config.get("hide-navbar") {
-        *b
-    } else {
-        false
-    };
-
-    let hide_footer = if let Some(toml::Value::Boolean(b)) = config.get("hide-footer") {
-        *b
-    } else {
-        false
-    };
 
     cx.render(rsx! {
-        section { class: "bg-cover bg-white dark:bg-gray-900",
-            if !hide_navbar {
-                rsx! { Navbar {} }
+        Navbar {}
+
+        main {
+            class: "flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:mt-28 mt-20",
+            a {
+                class: "border rounded-2xl py-1 px-4 text-slate-500 text-sm mb-5 hover:scale-105 \
+                    transition duration-300 ease-in-out",
+                href: "#",
+                rel: "noreferrer",
+                target: "_blank",
+                "If you enjoy this project please give us a star ⭐"
             }
-            div { class: "flex w-full items-center justify-center container mx-auto px-8",
-                div { class: "text-center",
-                    div { class: "{class}", Markdown { content: content, config: Default::default() } }
-                    if !hide_footer {
-                        rsx! { Footer {} }
+            h1 {
+                class: "mx-auto max-w-4xl font-display text-5xl font-bold tracking-normal text-slate-900 sm:text-7xl",
+                span {
+                    class: "relative whitespace-nowrap text-blue-600",
+                    svg {
+                        class: "absolute top-2/3 left-0 h-[0.58em] w-full fill-blue-300/70",
+                        "aria-hidden": "true",
+                        "viewBox": "0 0 418 42",
+                        "preserveAspectRatio": "none",
+                        path {
+                            d: "M203.371.916c-26.013-2.078-76.686 1.963-124.73 \
+                                9.946L67.3 12.749C35.421 18.062 18.2 21.766 6.004 25.934 1.244 27.561.828 \
+                                27.778.874 28.61c.07 1.214.828 1.121 9.595-1.176 9.072-2.377 \
+                                17.15-3.92 39.246-7.496C123.565 7.986 157.869 4.492 195.942 5.046c7.461.108 \
+                                19.25 1.696 19.17 2.582-.107 1.183-7.874 4.31-25.75 10.366-21.992 7.45-35.43 \
+                                12.534-36.701 13.884-2.173 2.308-.202 4.407 4.442 4.734 2.654.187 3.263.157 \
+                                15.593-.78 35.401-2.686 57.944-3.488 88.365-3.143 46.327.526 75.721 2.23 130.788 \
+                                7.584 19.787 1.924 20.814 1.98 24.557 1.332l.066-.011c1.201-.203 \
+                                1.53-1.825.399-2.335-2.911-1.31-4.893-1.604-22.048-3.261-57.509-5\
+                                .556-87.871-7.36-132.059-7.842-23.239-.254-33.617-.116-50.627.674-11\
+                                .629.54-42.371 2.494-46.696 2.967-2.359.259 8.133-3.625 26.504-9.81 \
+                                23.239-7.825 27.934-10.149 28.304-14.005.417-4.348-3.529-6-16.878-7.066Z"    
+                        }
+                    }
+                    span {
+                        class: "relative",
+                        "Karaty.rs"
                     }
                 }
             }
+            p {
+                class: "mx-auto mt-12 max-w-xl text-lg text-slate-700 leading-7",
+                "Karaty is a open-source static website generator. \
+                With its amazing flexibility, and support embedded Dioxus components."
+            }
+            // Link {
+            //     class: "bg-black rounded-xl text-white font-medium px-4 py-3 sm:mt-10 mt-8 hover:bg-black/80",
+            //     to: "docs",
+            //     "Quick Start →"
+            // }
         }
+
+        Footer {}
     })
 }
 
 pub fn export() -> Templates {
     let mut list = Templates::new();
-
-    list.template("center", vec![TemplateDataType::Markdown], centered_display);
-
-    list.template(
-        "docs",
-        vec![TemplateDataType::DirectoryData],
-        docs::DocsPreset,
-    );
-    list.sub_module("blog", blog::export());
+    
+    list.template("home", vec![TemplateDataType::Any], HomePage);
 
     list
 }

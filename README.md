@@ -58,6 +58,6 @@ You can download [karaty.zip](https://github.com/mrxiaozhuox/karaty/releases) fi
 
 ## Contribute
 
-You should make change at `docsite` directory, `forked` will auto generate.
+You should make change at `karaty` directory.
 
 [dioxus]: https://dioxuslabs.com/	"DioxusLabs"
