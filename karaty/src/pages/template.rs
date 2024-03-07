@@ -1,5 +1,5 @@
 use crate::{
-    components::{footer::Footer, giscus::GiscusWithConfig, markdown::Markdown, nav::Navbar},
+    components::{footer::Footer, giscus::GiscusWithConfig, loading::Loading, markdown::Markdown, nav::Navbar},
     utils::data::GlobalData,
 };
 use dioxus::prelude::*;
@@ -181,13 +181,7 @@ pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
         Some(Err(err)) => cx.render(rsx! { format!("{:?}", err) }),
         None => {
             return cx.render(rsx! {
-                div {
-                    class: "h-screen flex justify-center items-center",
-                    h1 {
-                        class: "text-gray-500 text-3xl font-semibold",
-                        "Loading ..."
-                    }
-                }
+                Loading {}
             });
         },
     }

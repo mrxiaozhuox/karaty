@@ -11,7 +11,7 @@ pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
         Navbar {}
 
         main {
-            class: "flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:mt-14 mt-12",
+            class: "flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:mt-14 mt-12 sm:mb-12 mb-10",
             a {
                 class: "border rounded-2xl py-1 px-4 text-slate-500 dark:text-slate-300 text-sm mb-5 hover:scale-105 \
                     transition duration-300 ease-in-out",
@@ -56,15 +56,22 @@ pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
                 "Karaty is a open-source static website generator. \
                 With its amazing flexibility, and support embedded Dioxus components."
             }
+            div {
+            class: "sm:mt-10 mt-8",
             Link {
-                class: "bg-black dark:bg-white rounded-xl text-white dark:text-black font-medium px-4 py-3 sm:mt-10 mt-8 \
+                class: "bg-blue-600 dark:bg-blue-600 rounded-xl text-white dark:text-white font-medium px-4 py-3 \
+                hover:bg-blue-600/80 dark:hover:bg-blue-600/90",
+                to: "docs",
+                "Download"
+            }
+            Link {
+                class: "bg-black dark:bg-white rounded-xl text-white dark:text-black font-medium ml-2 px-4 py-3 \
                 hover:bg-black/80 dark:hover:bg-white/90",
                 to: "docs",
                 "Quick Start →"
             }
-        }
-        
-        br {}
+            }
+        }        
 
         div {
             class: "container mx-auto",
@@ -75,10 +82,12 @@ pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
                 div {
                     class: "w-full px-4 md:w-1/2 lg:w-1/3",
                     div {
-                        class: "mb-5 rounded-xl h-52 py-8 px-7 shadow-md transition-all hover:shadow-lg sm:p-9 lg:px-6 xl:px-9",
+                        class: "mb-5 rounded-xl h-52 py-8 px-7 dark:bg-gray-800 shadow-md \
+                                transition-all hover:shadow-lg sm:p-9 lg:px-6 xl:px-9",
                         div {
+                            class: "dark:text-white",
                             h3 {
-                                class: "mb-4 text-xl font-bold text-black sm:text-2xl lg:text-xl xl:text-2xl",
+                                class: "mb-4 text-xl font-bold sm:text-2xl lg:text-xl xl:text-2xl",
                                 "Multi-File Support"
                             }
                             p {
@@ -92,10 +101,12 @@ pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
                 div {
                     class: "w-full px-4 md:w-1/2 lg:w-1/3",
                     div {
-                        class: "mb-5 rounded-xl h-52 py-8 px-7 shadow-md transition-all hover:shadow-lg sm:p-9 lg:px-6 xl:px-9",
+                        class: "mb-5 rounded-xl h-52 py-8 px-7 dark:bg-gray-800 shadow-md \
+                                transition-all hover:shadow-lg sm:p-9 lg:px-6 xl:px-9",
                         div {
+                            class: "dark:text-white",
                             h3 {
-                                class: "mb-4 text-xl font-bold text-black sm:text-2xl lg:text-xl xl:text-2xl",
+                                class: "mb-4 text-xl font-bold sm:text-2xl lg:text-xl xl:text-2xl",
                                 "Dioxus Components"
                             }
                             p {
@@ -109,10 +120,12 @@ pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
                 div {
                     class: "w-full px-4 md:w-1/2 lg:w-1/3",
                     div {
-                        class: "mb-5 rounded-xl h-52 py-8 px-7 shadow-md transition-all hover:shadow-lg sm:p-9 lg:px-6 xl:px-9",
+                        class: "mb-5 rounded-xl h-52 py-8 px-7 dark:bg-gray-800 shadow-md 
+                                \transition-all hover:shadow-lg sm:p-9 lg:px-6 xl:px-9",
                         div {
+                            class: "dark:text-white",
                             h3 {
-                                class: "mb-4 text-xl font-bold text-black sm:text-2xl lg:text-xl xl:text-2xl",
+                                class: "mb-4 text-xl font-bold sm:text-2xl lg:text-xl xl:text-2xl",
                                 "Based on GitHub"
                             }
                             p {
