@@ -11,21 +11,22 @@ pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
         Navbar {}
 
         main {
-            class: "flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:mt-28 mt-20",
+            class: "flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:mt-14 mt-12",
             a {
-                class: "border rounded-2xl py-1 px-4 text-slate-500 text-sm mb-5 hover:scale-105 \
+                class: "border rounded-2xl py-1 px-4 text-slate-500 dark:text-slate-300 text-sm mb-5 hover:scale-105 \
                     transition duration-300 ease-in-out",
-                href: "#",
+                href: "https://github.com/mrxiaozhuox/karaty",
                 rel: "noreferrer",
                 target: "_blank",
                 "If you enjoy this project please give us a star ⭐"
             }
             h1 {
-                class: "mx-auto max-w-4xl font-display text-5xl font-bold tracking-normal text-slate-900 sm:text-7xl",
+                class: "mx-auto max-w-4xl font-display text-5xl font-bold tracking-normal \
+                        text-slate-900 dark:text-slate-200 sm:text-7xl",
                 span {
-                    class: "relative whitespace-nowrap text-blue-600",
+                    class: "relative whitespace-nowrap text-blue-600 dark:text-blue-400",
                     svg {
-                        class: "absolute top-2/3 left-0 h-[0.58em] w-full fill-blue-300/70",
+                        class: "absolute top-2/3 left-0 h-[0.58em] w-full fill-blue-300/70 dark:fill-blue-800/90",
                         "aria-hidden": "true",
                         "viewBox": "0 0 418 42",
                         "preserveAspectRatio": "none",
@@ -51,15 +52,79 @@ pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
                 }
             }
             p {
-                class: "mx-auto mt-12 max-w-xl text-lg text-slate-700 leading-7",
+                class: "mx-auto mt-12 max-w-xl text-lg text-slate-700 dark:text-slate-200 leading-7",
                 "Karaty is a open-source static website generator. \
                 With its amazing flexibility, and support embedded Dioxus components."
             }
-            // Link {
-            //     class: "bg-black rounded-xl text-white font-medium px-4 py-3 sm:mt-10 mt-8 hover:bg-black/80",
-            //     to: "docs",
-            //     "Quick Start →"
-            // }
+            Link {
+                class: "bg-black dark:bg-white rounded-xl text-white dark:text-black font-medium px-4 py-3 sm:mt-10 mt-8 \
+                hover:bg-black/80 dark:hover:bg-white/90",
+                to: "docs",
+                "Quick Start →"
+            }
+        }
+        
+        br {}
+
+        div {
+            class: "container mx-auto",
+            hr {}
+
+            div {
+                class: "-mx-4 flex flex-wrap p-8",
+                div {
+                    class: "w-full px-4 md:w-1/2 lg:w-1/3",
+                    div {
+                        class: "mb-5 rounded-xl h-52 py-8 px-7 shadow-md transition-all hover:shadow-lg sm:p-9 lg:px-6 xl:px-9",
+                        div {
+                            h3 {
+                                class: "mb-4 text-xl font-bold text-black sm:text-2xl lg:text-xl xl:text-2xl",
+                                "Multi-File Support"
+                            }
+                            p {
+                                class: "text-base font-medium text-body-color",
+                                "You can use different templates to support different file types of rendering\
+                                , such as Markdown, JSON or HTML."
+                            }
+                        }
+                    }
+                }
+                div {
+                    class: "w-full px-4 md:w-1/2 lg:w-1/3",
+                    div {
+                        class: "mb-5 rounded-xl h-52 py-8 px-7 shadow-md transition-all hover:shadow-lg sm:p-9 lg:px-6 xl:px-9",
+                        div {
+                            h3 {
+                                class: "mb-4 text-xl font-bold text-black sm:text-2xl lg:text-xl xl:text-2xl",
+                                "Dioxus Components"
+                            }
+                            p {
+                                class: "text-base font-medium text-body-color",
+                                "Karaty allows you use Dioxus build your personal template, \
+                                and you can import it into your website. (before build wasm file)"
+                            }
+                        }
+                    }
+                }
+                div {
+                    class: "w-full px-4 md:w-1/2 lg:w-1/3",
+                    div {
+                        class: "mb-5 rounded-xl h-52 py-8 px-7 shadow-md transition-all hover:shadow-lg sm:p-9 lg:px-6 xl:px-9",
+                        div {
+                            h3 {
+                                class: "mb-4 text-xl font-bold text-black sm:text-2xl lg:text-xl xl:text-2xl",
+                                "Based on GitHub"
+                            }
+                            p {
+                                class: "text-base font-medium text-body-color",
+                                "With the deployment of GitHub Pages, Karaty will be able to give \
+                                full play to all the performance."
+                            }
+                        }
+                    }
+                }
+            }
+
         }
 
         Footer {}
