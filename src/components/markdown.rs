@@ -99,8 +99,7 @@ pub fn MdastNode(cx: Scope, nodes: Vec<Node>) -> Element {
             let url = link.url.clone();
             let title = link.title.clone().unwrap_or_default();
             if &link.url[0..1] == "@" {
-                let groups = link.url[1..].split(".").collect::<Vec<&str>>();
-                let url = groups.join("/");
+                let url = &link.url[1..];
                 return rsx! {
                     dioxus_retrouter::Link {
                         to: "{url}",
