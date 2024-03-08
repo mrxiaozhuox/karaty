@@ -156,7 +156,7 @@ pub fn DocsSideBar(cx: Scope<SideBarProps>) -> Element {
         if let mdast::Node::ListItem(_) = node {
             return rsx! {
                 li {
-                    class: "text-sm font-mono dark:text-white",
+                    class: "text-xs font-mono dark:text-white",
                     embedd
                 }   
             }

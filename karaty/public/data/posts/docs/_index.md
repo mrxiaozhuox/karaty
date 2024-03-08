@@ -4,9 +4,9 @@
     - [Data Source](@data-source)
     - [Navigation](@navigation)
     - [Build](@build)
-    - [Giscus Comment](@giscus)
+    - [Comment](@giscus)
 - Markdown
     - [Icons](@icons)
 
-- Templates
+- [Templates](@templates.main)
   - [Default](@templates.default)
