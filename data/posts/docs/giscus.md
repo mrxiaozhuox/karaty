@@ -1,5 +1,5 @@
 ---
-title: Giscus Comment
+title: Comment
 date: 2024-03-05
 released: true
 ---
