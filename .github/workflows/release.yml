@@ -26,10 +26,10 @@ jobs:
         run: cd karaty && dx build --release
       - name: Clean Data
         shell: bash
-        run: cd dist && rm CNAME && rm -rf source
+        run: cd karaty cd dist && rm CNAME && rm -rf source
       - uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r karaty.zip dist
+          args: cd karaty && zip -qq -r karaty.zip dist
       - uses: montudor/action-zip@v1
       
       - uses: ncipollo/release-action@v1
