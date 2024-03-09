@@ -23,7 +23,7 @@ jobs:
         run: cargo install --git https://github.com/Dioxuslabs/dioxus dioxus-cli --tag=v0.4.3
       - name: Build Karaty
         shell: bash
-        run: cd karaty && dioxus build --release
+        run: cd karaty && dx build --release
       - name: Clean Data
         shell: bash
         run: cd dist && rm CNAME && rm -rf source
