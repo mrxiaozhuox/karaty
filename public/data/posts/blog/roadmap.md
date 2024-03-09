@@ -5,7 +5,7 @@ date: 2023-04-30
 released: true
 ---
 
-## 0.2.0 (Developing)
+## 0.2.0 (Preview Version)
 
 - Feature: Add `build` config for `build.rs`
 - Feature: Add support for use dioxus write custom template
