@@ -11,7 +11,7 @@ pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
         Navbar {}
 
         main {
-            class: "flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:mt-14 mt-12 sm:mb-12 mb-10",
+            class: "flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:mt-14 mt-12 sm:mb-12 mb-8",
             a {
                 class: "border rounded-2xl py-1 px-4 text-slate-500 dark:text-slate-300 text-sm mb-5 hover:scale-105 \
                     transition duration-300 ease-in-out",

@@ -10,3 +10,4 @@
 
 - [Templates](@templates.main)
   - [Default](@templates.default)
+  - [Development](@templates.develop)
