@@ -18,6 +18,7 @@ pub fn Markdown(cx: Scope<RendererProps>) -> Element {
                     var code = list[i].getElementsByTagName('code')[0].innerText;
                     var language = list[i].getElementsByTagName('span')[0].innerText;
                     var pre_el = document.createElement('pre');
+                    pre_el.className = 'text-sm';
                     var code_el = document.createElement('code');
                     code_el.classList = 'language-' + language;
                     code_el.appendChild(document.createTextNode(
