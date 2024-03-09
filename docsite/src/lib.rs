@@ -75,7 +75,9 @@ pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
 
         div {
             class: "container mx-auto",
-            hr {}
+            hr {
+                class: "w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"
+            }
 
             div {
                 class: "-mx-4 flex flex-wrap p-8",
