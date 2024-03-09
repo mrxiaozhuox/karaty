@@ -27,8 +27,11 @@ jobs:
       - name: Clean Data
         shell: bash
         run: cd karaty && cd dist && rm CNAME && rm -rf data
-      - uses: montudor/action-zip@v1
-          args: zip -qq -r karaty.zip ./karaty/dist
+      - name: Install zip
+        uses: montudor/action-zip@v1
+      - name: Zip output
+        run: zip -qq -r karaty.zip dist
+        working-directory: ./karaty
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "karaty/dist/assets/dioxus/karaty_bg.wasm,karaty.zip"
