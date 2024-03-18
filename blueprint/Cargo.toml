@@ -6,6 +6,7 @@ edition = "2021"
 description = "Karaty template develop blueprint"
 
 license = "MIT OR Apache-2.0"
+repository = "https://github.com/mrxiaozhuox/karaty"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
