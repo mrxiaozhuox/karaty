@@ -146,6 +146,9 @@ impl Templates {
 pub enum TemplateDataType {
     Markdown,
     HTML,
+    Json,
+
+    None,
     DirectoryData,
     Any,
     Other(String),
@@ -156,6 +159,9 @@ impl TemplateDataType {
         match self {
             TemplateDataType::Markdown => "md",
             TemplateDataType::HTML => "html",
+            TemplateDataType::Json => "json",
+
+            TemplateDataType::None => "",
             TemplateDataType::DirectoryData => "#dir",
             TemplateDataType::Any => "*",
             TemplateDataType::Other(s) => s,
@@ -167,6 +173,9 @@ impl TemplateDataType {
         match s {
             "md" => TemplateDataType::Markdown,
             "html" => TemplateDataType::HTML,
+            "json" => TemplateDataType::Json,
+
+            "" => TemplateDataType::None,
             "#dir" => TemplateDataType::DirectoryData,
             "*" => TemplateDataType::Any,
             _ => Self::Other(s.to_string()),

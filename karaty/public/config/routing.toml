@@ -1,6 +1,5 @@
 [[routing]]
 path = "/"
-file = "pages/empty.md"
 template = "karaty_docsite::home"
 
 [[routing]]

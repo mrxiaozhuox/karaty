@@ -75,7 +75,9 @@ pub fn DynamicTemplate(cx: Scope<DynamicTemplateProps>) -> Element {
 
             let suffix = {
                 let name = &cx.props.name;
-                if PathBuf::from(name).extension().is_some() {
+                if name.is_empty() {
+                    ""
+                } else if PathBuf::from(name).extension().is_some() {
                     cx.props.name.split(".").last().unwrap()
                 } else {
                     "#dir"
