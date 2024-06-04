@@ -17,10 +17,12 @@ pub struct GlobalData {
 
 pub fn get_raw_data_url(service: &str, name: &str, branch: &str) -> Option<String> {
     match service.to_lowercase().as_str() {
-        "github" => Some(format!(
-            "https://raw.githubusercontent.com/{}/{}",
-            name, branch,
-        )),
+        "github" => {
+            Some(format!(
+                "https://raw.githubusercontent.com/{}/{}",
+                name, branch,
+            ))
+        },
         "gitee" => Some(format!("https://gitee.com/{}/raw/{}", name, branch)),
         _ => None,
     }
@@ -58,7 +60,7 @@ pub async fn load_from_source(config: &Config, sub_path: &str) -> anyhow::Result
 
             let raw_url = get_raw_data_url(service, name, branch).expect("service not found");
 
-            let response = gloo::net::http::Request::get(&format!("{}{}", raw_url, sub_path))
+            let response = gloo::net::http::Request::get(&format!("{}/{}", raw_url, sub_path))
                 .send()
                 .await?;
 
@@ -147,7 +149,7 @@ pub async fn load_content_list(config: &Config, sub_path: &str) -> Vec<(String, 
             format!("{}/{}/{}", url, sub_path, index)
         }
         _ => {
-            panic!("Not Found");
+            panic!("source mode not found");
         }
     };
 

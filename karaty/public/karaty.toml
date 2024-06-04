@@ -13,8 +13,10 @@ mode = "embedded-repository"
 data = "karaty/data"
 
 [data-source.local]
-mode = "custom-url"
-data = { url = "/data", index-file = "_index.json" }
+mode = "embedded-repository"
+data = "karaty/data"
+# mode = "custom-url"
+# data = { url = "/data", index-file = "_index.json" }
 
 [navigation]
 

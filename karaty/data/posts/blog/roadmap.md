@@ -1,9 +1,16 @@
 ---
 title: Karaty Roadmap
 tags: [roadmap]
-date: 2023-04-30
+date: 2024-05-28
 released: true
 ---
+
+## 0.2.1 (Preview Version)
+
+- Feature: Add `template-only` bind support.
+- Fixed: `independent-repository` connection.
+
+
 
 ## 0.2.0 (Preview Version)
 
