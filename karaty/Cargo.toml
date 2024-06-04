@@ -37,8 +37,9 @@ karaty-blueprint = "0.2.1"
 
 # you can add your extension template in here
 # you need add a template=true field for dependencies, that can help builder find this part.
-# karaty-template = { version = "0.2.0", template = true }
-karaty-template = { path = "../template/", template = true }
+# karaty-template = { path = "../template/", template = true }
+
+karaty-template = { version = "0.2.0", template = true }
 karaty-docsite = { path = "../docsite/", template = true }
 
 [build-dependencies]
