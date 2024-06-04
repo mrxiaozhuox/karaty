@@ -57,26 +57,41 @@ pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
                 With its amazing flexibility, and support embedded Dioxus components."
             }
             div {
-            class: "sm:mt-10 mt-8",
-            Link {
-                class: "bg-blue-600 dark:bg-blue-600 rounded-xl text-white dark:text-white font-medium px-4 py-3 \
-                hover:bg-blue-600/80 dark:hover:bg-blue-600/90",
-                to: "docs",
-                "Download"
-            }
-            Link {
-                class: "bg-black dark:bg-white rounded-xl text-white dark:text-black font-medium ml-2 px-4 py-3 \
-                hover:bg-black/80 dark:hover:bg-white/90",
-                to: "docs",
-                "Quick Start →"
-            }
+                class: "sm:mt-10 mt-8",
+                a {
+                    class: "bg-blue-600 dark:bg-blue-600 rounded-xl text-white dark:text-white font-medium px-4 py-3 \
+                    hover:bg-blue-600/80 dark:hover:bg-blue-600/90",
+                    href: "https://github.com/mrxiaozhuox/karaty/releases",
+                    "Download"
+                }
+                Link {
+                    class: "bg-black dark:bg-white rounded-xl text-white dark:text-black font-medium ml-2 px-4 py-3 \
+                    hover:bg-black/80 dark:hover:bg-white/90",
+                    to: "docs",
+                    "Quick Start →"
+                }
             }
         }        
 
         div {
             class: "container mx-auto",
             hr {
-                class: "w-1/2 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"
+                class: "w-1/2 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-6 dark:bg-gray-700"
+            }
+            div {
+                class: "flex justify-center mb-2 md:mb-4 space-x-2",
+                img {
+                    class: "w-36 h-auto",
+                    src: "https://img.shields.io/github/v/release/mrxiaozhuox/karaty?style=for-the-badge&label=Latest%20Version"
+                }
+                img {
+                    class: "w-36 h-auto",
+                    src: "https://img.shields.io/github/actions/workflow/status/mrxiaozhuox/karaty/main.yml?style=for-the-badge&label=Workflow"
+                }
+                img {
+                    class: "w-36 h-auto",
+                    src: "https://img.shields.io/github/commit-activity/y/mrxiaozhuox/karaty?style=for-the-badge"
+                }
             }
 
             div {
