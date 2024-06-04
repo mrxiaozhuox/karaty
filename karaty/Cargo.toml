@@ -25,8 +25,6 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 toml = "0.8.8"
 
-url = "2.5"
-
 markdown = "1.0.0-alpha.16"
 async-recursion = "1.0.4"
 chrono = { version = "0.4.24", default-features = false, features = ["wasmbind"] }
