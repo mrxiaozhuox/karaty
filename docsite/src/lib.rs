@@ -81,15 +81,15 @@ pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
             div {
                 class: "flex justify-center mb-2 md:mb-4 space-x-2",
                 img {
-                    class: "w-36 h-auto",
+                    class: "w-24 md:w-36 h-auto",
                     src: "https://img.shields.io/github/v/release/mrxiaozhuox/karaty?style=for-the-badge&label=Latest%20Version"
                 }
                 img {
-                    class: "w-36 h-auto",
+                    class: "w-24 md:w-36 h-auto",
                     src: "https://img.shields.io/github/actions/workflow/status/mrxiaozhuox/karaty/main.yml?style=for-the-badge&label=Workflow"
                 }
                 img {
-                    class: "w-36 h-auto",
+                    class: "w-24 md:w-36 h-auto",
                     src: "https://img.shields.io/github/commit-activity/y/mrxiaozhuox/karaty?style=for-the-badge"
                 }
             }
