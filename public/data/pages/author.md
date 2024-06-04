@@ -24,4 +24,8 @@ I'm living *Irvine, CA*, and I'm completing my undergraduate degree. My native l
       <img src="https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white" class="m-0" alt="heroku"/>
 </div>
 
-Contact me - [**mrxzx.info@gmail.com**](mailto:mrxzx.info@gmail.com)
+### Contact Me
+
+[**mrxzx.info@gmail.com**](mailto:mrxzx.info@gmail.com)
+
+**WeChat - mrxiaozhuox**
