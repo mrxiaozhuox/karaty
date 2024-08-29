@@ -1,6 +1,7 @@
 # -----------------------
 # release.py use for generate a empty karaty project
 # execute this script before push new change to repository
+# currently using for github-action
 # -----------------------
 
 import shutil
