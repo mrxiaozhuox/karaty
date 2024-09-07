@@ -23,5 +23,6 @@ markdown-meta-parser = "0.1.3"
 reqwasm = "0.5"
 log = "0.4"
 chrono = "0.4"
+web-sys = { version = "0.3.70", features = ["Navigator", "Window", "Clipboard", "TextEncoder", "TextDecoder"] }
 
 dioxus-free-icons = { version = "0.7.0", features = ["hero-icons-solid"] }

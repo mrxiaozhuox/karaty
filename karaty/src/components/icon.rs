@@ -32,6 +32,9 @@ pub fn Icon(cx: Scope<IconProps>) -> Element {
             "gitlab" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaGitlab } }
             }
+            "linux" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaLinux } }
+            }
             "apple" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaApple } }
             }
@@ -71,6 +74,9 @@ pub fn Icon(cx: Scope<IconProps>) -> Element {
             "steam" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaSteam } }
             }
+            "quora" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaQuora } }
+            }
             "vimeo" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaVimeo } }
             }
@@ -83,11 +89,17 @@ pub fn Icon(cx: Scope<IconProps>) -> Element {
             "amazon" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaAmazon } }
             }
+            "ebay" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaEbay } }
+            }
             "zhihu" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaZhihu } }
             }
             "bilibili" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaBilibili } }
+            }
+            "qq" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaQq } }
             }
             _ => {
                 rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaX } }
@@ -138,6 +150,9 @@ pub fn Icon(cx: Scope<IconProps>) -> Element {
             }
             "javascript" => {
                 rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaJs } }
+            }
+            "npm" => {
+                rsx! { FIcon { class: "{class}", icon: fa_brands_icons::FaNpm } }
             }
             _ => {
                 rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaX } }
@@ -236,6 +251,9 @@ pub fn Icon(cx: Scope<IconProps>) -> Element {
             }
             "shield" => {
                 rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaShield } }
+            }
+            "server" => {
+                rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaServer } }
             }
             _ => {
                 rsx! { FIcon { class: "{class}", icon: fa_solid_icons::FaX } }

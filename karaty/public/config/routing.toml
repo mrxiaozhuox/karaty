@@ -21,6 +21,10 @@ path = "/docs"
 redirect = "/docs/summary"
 
 [[routing]]
+path = "/icons"
+template = "karaty_docsite::icons"
+
+[[routing]]
 path = "/docs/:path"
 file = "posts/docs"
 template = "docs"

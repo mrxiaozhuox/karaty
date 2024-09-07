@@ -22,6 +22,7 @@ content = [
     { text = "Home", page = "/" },
     { text = "Blog", page = "/blog" },
     { text = "Docs", page = "/docs" },
+    { text = "Icons", page = "/icons" },
     { text = "Roadmap", page = "/blog/roadmap" },
     { text = "About", list = [
         { text = "Author", page = "/author" },

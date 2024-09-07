@@ -1,6 +1,7 @@
 use dioxus::prelude::*;
 use dioxus_retrouter::Link;
 use karaty_blueprint::{TemplateDataType, TemplateProps, Templates};
+use web_sys::{wasm_bindgen::JsValue, Blob};
 
 #[allow(non_snake_case)]
 pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
@@ -161,10 +162,209 @@ pub fn HomePage(cx: Scope<TemplateProps>) -> Element {
     })
 }
 
+#[allow(non_snake_case)]
+pub fn IconsPage(cx: Scope<TemplateProps>) -> Element {
+    let Navbar = cx.props.utility.navbar;
+    let Footer = cx.props.utility.footer;
+    let Markdown = cx.props.utility.renderers.get("markdown").unwrap().clone();
+
+    let solid = [
+        "house",
+        "user",
+        "music",
+        "heart",
+        "cloud",
+        "bell",
+        "globe",
+        "bug",
+        "sun",
+        "moon",
+        "shop",
+        "car",
+        "wallet",
+        "book",
+        "language",
+        "tag",
+        "tags",
+        "play",
+        "pause",
+        "gear",
+        "gears",
+        "code",
+        "comment",
+        "comments",
+        "spin",
+        "info",
+        "upload",
+        "square",
+        "table",
+        "flag",
+        "shield",
+        "server"
+    ];
+
+    let brand = [
+        "github",
+        "gitlab",
+        "linux",
+        "apple",
+        "android",
+        "google",
+        "paypal",
+        "twitter",
+        "instagram",
+        "facebook",
+        "linkedin",
+        "twitch",
+        "discord",
+        "telegram",
+        "tiktok",
+        "steam",
+        "amazon",
+        "vimeo",
+        "ebay",
+        "apple-pay",
+        "google-pay",
+        "zhihu",
+        "bilibili",
+        "qq",
+    ];
+
+    let programming = [
+        "rust",
+        "python",
+        "java",
+        "golang",
+        "php",
+        "swift",
+        "node-js",
+        "css",
+        "bootstrap",
+        "docker",
+        "react",
+        "vue",
+        "angular",
+        "html",
+        "javascript",
+        "npm",
+    ];
+
+    let solid_rendered = solid.iter().map(|name| {
+        let icon = format!(":{name}:");
+        let icon_name = name.to_string();
+        rsx! {
+            a {
+                class: "h-8 px-3 w-max flex gap-2 items-center \
+                        rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 hover:bg-opacity-75 focus:bg-gray-300 \
+                        focus:text-blue-900 active:text-primary active:bg-blue-100 disabled:bg-gray-100 disabled:text-gray-400 \
+                        dark:bg-gray-700 dark:text-gray-300 dark:active:text-primary text-xs",
+                title: "{name}",
+                onclick: move |_| {
+                        let nav = web_sys::window().unwrap().navigator();
+                        let cp = nav.clipboard();
+                        let _r = cp.write_text(&format!(":{}:", icon_name));
+                },
+                Markdown { content: icon, config: Default::default() }
+            }
+
+        }
+    });
+
+    let brand_rendered = brand.iter().map(|name| {
+        let icon = format!(":brand.{name}:");
+        let icon_name = name.to_string();
+        rsx! {
+            a {
+                class: "h-8 px-3 w-max flex gap-2 items-center \
+                        rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 hover:bg-opacity-75 focus:bg-gray-300 \
+                        focus:text-blue-900 active:text-primary active:bg-blue-100 disabled:bg-gray-100 disabled:text-gray-400 \
+                        dark:bg-gray-700 dark:text-gray-300 dark:active:text-primary text-xs",
+                title: "{name}",
+                onclick: move |_| {
+                        let nav = web_sys::window().unwrap().navigator();
+                        let cp = nav.clipboard();
+                        let _r = cp.write_text(&format!(":brand.{}:", icon_name));
+                },
+                Markdown { content: icon, config: Default::default() }
+            }
+
+        }
+    });
+
+
+    let programming_rendered = programming.iter().map(|name| {
+        let icon = format!(":programming.{name}:");
+        let icon_name = name.to_string();
+        rsx! {
+            a {
+                class: "h-8 px-3 w-max flex gap-2 items-center \
+                        rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 hover:bg-opacity-75 focus:bg-gray-300 \
+                        focus:text-blue-900 active:text-primary active:bg-blue-100 disabled:bg-gray-100 disabled:text-gray-400 \
+                        dark:bg-gray-700 dark:text-gray-300 dark:active:text-primary text-xs",
+                title: "{name}",
+                onclick: move |_| {
+                        let nav = web_sys::window().unwrap().navigator();
+                        let cp = nav.clipboard();
+                        let _r = cp.write_text(&format!(":programming.{}:", icon_name));
+                },
+                Markdown { content: icon, config: Default::default() }
+            }
+
+        }
+    });
+
+    cx.render(rsx! {
+        Navbar {}
+
+        div {
+            class: "container mx-auto",
+            div {
+                class: "my-4",
+                h2 {
+                    class: "text-2xl font-mono font-bold dark:text-gray-200",
+                    "Solid Icon"
+                }
+                hr { class: "h-px bg-gray-200 border-0 dark:bg-gray-700" }
+            }
+            div {
+                class: "grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-4",
+                solid_rendered
+            }
+            div {
+                class: "mt-8 mb-4",
+                h2 {
+                    class: "text-2xl font-mono font-bold dark:text-gray-200",
+                    "Brand Icon"
+                }
+                hr { class: "h-px bg-gray-200 border-0 dark:bg-gray-700" }
+            }
+            div {
+                class: "grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-4",
+                brand_rendered
+            }
+            div {
+                class: "mt-8 mb-4",
+                h2 {
+                    class: "text-2xl font-mono font-bold dark:text-gray-200",
+                    "Programming Icon"
+                }
+                hr { class: "h-px bg-gray-200 border-0 dark:bg-gray-700" }
+            }
+            div {
+                class: "grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-4",
+                programming_rendered
+            }
+        }
+
+        Footer {}
+    })
+}
+
 pub fn export() -> Templates {
     let mut list = Templates::new();
     
     list.template("home", vec![TemplateDataType::Any], HomePage);
+    list.template("icons", vec![TemplateDataType::Any], IconsPage);
 
     list
 }

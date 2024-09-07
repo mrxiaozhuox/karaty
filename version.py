@@ -1,6 +1,7 @@
 # --------------------------------
 # this script for change all workshop's version info
-# include: Cargo.toml and dependency
+# include: Cargo.toml dependency
+# usage: python3 version.py [version | null]
 # --------------------------------
 
 import sys
