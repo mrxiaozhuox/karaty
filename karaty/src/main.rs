@@ -1,4 +1,5 @@
 #![allow(non_snake_case)]
+#![allow(elided_named_lifetimes)]
 
 use std::collections::HashMap;
 
@@ -32,7 +33,7 @@ fn main() {
 fn App(cx: Scope) -> Element {
     // init karaty root app
     let setup_config: &UseFuture<anyhow::Result<GlobalData, anyhow::Error>> =
-        use_future(&cx, (), |_| async move {
+        use_future(cx, (), |_| async move {
             let config = setup_config().await?;
             let mut routing = config.routing.clone();
 
@@ -63,7 +64,7 @@ fn App(cx: Scope) -> Element {
             cx.render(rsx! {
                 // dioxus toast manager init
                 ToastFrame {
-                    manager: fermi::use_atom_ref(&cx, &TOAST_MANAGER),
+                    manager: fermi::use_atom_ref(cx, &TOAST_MANAGER),
                 }
                 // dioxus router info
                 Router {
@@ -133,21 +134,17 @@ fn App(cx: Scope) -> Element {
                 }
             })
         }
-        Some(Err(e)) => {
-            return cx.render(rsx! {
-                div {
-                    class: "h-screen flex justify-center items-center",
-                    p {
-                        class: "text-gray-400 text-xl font-semibold",
-                        "{e}"
-                    }
+        Some(Err(e)) => cx.render(rsx! {
+            div {
+                class: "h-screen flex justify-center items-center",
+                p {
+                    class: "text-gray-400 text-xl font-semibold",
+                    "{e}"
                 }
-            });
-        }
-        None => {
-            return cx.render(rsx! {
-                Loading {}
-            });
-        }
+            }
+        }),
+        None => cx.render(rsx! {
+            Loading {}
+        }),
     }
 }
