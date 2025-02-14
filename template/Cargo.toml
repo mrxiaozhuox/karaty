@@ -1,6 +1,6 @@
 [package]
 name = "karaty-template"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 
 description = "default karaty template"
@@ -12,11 +12,11 @@ license = "MIT OR Apache-2.0"
 dioxus = "0.4.3"
 dioxus-retrouter = { version = "0.4.0", features = ["web"] }
 
-karaty-blueprint = "0.2.2"
+karaty-blueprint = {path = "../blueprint"}
 
 serde = { version = "1", features = ["derive"] }
 toml = "0.8"
-markdown = "1.0.0-alpha.16" 
+markdown = "1.0.0-alpha.16"
 markdown-meta-parser = "0.1.3"
 reqwasm = "0.5"
 log = "0.4"

@@ -1,6 +1,6 @@
 [package]
 name = "karaty"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -13,8 +13,13 @@ fermi = "0.4.3"
 
 js-sys = "0.3.58"
 web-sys = { version = "0.3.58", features = ["Storage", "HtmlIFrameElement"] }
-dioxus-free-icons = { version = "0.7.0", features = ["font-awesome-brands", "font-awesome-solid"] }
-dioxus-toast = { version = "0.3.0", default-features = false, features = ["web"] }
+dioxus-free-icons = { version = "0.7.0", features = [
+  "font-awesome-brands",
+  "font-awesome-solid",
+] }
+dioxus-toast = { version = "0.3.0", default-features = false, features = [
+  "web",
+] }
 gloo = "0.11.0"
 log = "0.4.6"
 wasm-logger = "0.2.0"
@@ -27,18 +32,20 @@ toml = "0.8.8"
 
 markdown = "1.0.0-alpha.16"
 async-recursion = "1.0.4"
-chrono = { version = "0.4.24", default-features = false, features = ["wasmbind"] }
+chrono = { version = "0.4.24", default-features = false, features = [
+  "wasmbind",
+] }
 indoc = "2.0.5"
 
 regex = "1.10.2"
 
-karaty-blueprint = "0.2.2"
+karaty-blueprint = {path = "../blueprint"}
 
 # you can add your extension template in here
 # you need add a template=true field for dependencies, that can help builder find this part.
 # karaty-template = { path = "../template/", template = true }
 
-karaty-template = {version = "0.2.2", template = true}
+karaty-template = {path = "../template", template = true}
 karaty-docsite = { path = "../docsite/", template = true }
 
 [build-dependencies]
