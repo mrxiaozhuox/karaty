@@ -12,7 +12,7 @@ license = "MIT OR Apache-2.0"
 dioxus = "0.4.3"
 dioxus-retrouter = { version = "0.4.0", features = ["web"] }
 
-karaty-blueprint = "0.2.1"
+karaty-blueprint = "0.2.2"
 
 serde = { version = "1", features = ["derive"] }
 toml = "0.8"

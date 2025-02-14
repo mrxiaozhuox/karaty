@@ -1,4 +1,5 @@
 /target/
 /pytool/
+/venv/
 Cargo.lock
 .DS_Store
