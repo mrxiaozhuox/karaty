@@ -5,12 +5,15 @@ date: 2024-05-28
 released: true
 ---
 
+## 0.2.2 (Preview Version)
+
+- Fixed: Markdown `Blockquote` handler error.
+- Fixed: Add metadata filter for default page template.
+
 ## 0.2.1 (Preview Version)
 
 - Feature: Add `template-only` bind support.
 - Fixed: `independent-repository` connection.
-
-
 
 ## 0.2.0 (Preview Version)
 
