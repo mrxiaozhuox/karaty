@@ -4,7 +4,7 @@ use karaty_blueprint::{TemplateDataType, TemplateProps, Templates};
 mod blog;
 mod docs;
 
-const AVAILABLE_STYLE_SETTINGS: [&'static str; 26] = [
+const AVAILABLE_STYLE_SETTINGS: [&str; 26] = [
     "headings",
     "lead",
     "h1",
@@ -38,8 +38,8 @@ pub fn generate_prose_class(config: toml::map::Map<String, toml::Value>) -> Stri
     for i in AVAILABLE_STYLE_SETTINGS {
         if let Some(toml::Value::String(v)) = config.get(i) {
             let list = v.split(" ").collect::<Vec<&str>>();
-            if list.len() >= 1 {
-                res.push_str(&format!(" prose-{i}:{}", list.get(0).unwrap()))
+            if !list.is_empty() {
+                res.push_str(&format!(" prose-{i}:{}", list.first().unwrap()))
             } else {
                 res.push_str(&format!("{} ", list.join(&format!(" prose-{i}:"))));
             }
@@ -54,9 +54,16 @@ pub fn centered_display(cx: Scope<TemplateProps>) -> Element {
 
     let Navbar = cx.props.utility.navbar;
     let Footer = cx.props.utility.footer;
-    let Markdown = cx.props.utility.renderers.get("markdown").unwrap().clone();
+    let Markdown = *cx.props.utility.renderers.get("markdown").unwrap();
 
     let content = cx.props.data.text();
+
+    let metadata = markdown_meta_parser::MetaData::new(&content);
+    let content = if let Ok(v) = metadata.parse() {
+        v.1
+    } else {
+        content
+    };
 
     let class = if let Some(toml::Value::Table(t)) = config.get("style") {
         generate_prose_class(t.clone())

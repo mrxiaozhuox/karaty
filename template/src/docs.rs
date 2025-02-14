@@ -12,7 +12,7 @@ pub fn DocsPreset(cx: Scope<TemplateProps>) -> Element {
     let _404 = cx.props.utility._404;
     let Navbar = cx.props.utility.navbar;
     let Footer = cx.props.utility.footer;
-    let Markdown = cx.props.utility.renderers.get("markdown").unwrap().clone();
+    let Markdown = *cx.props.utility.renderers.get("markdown").unwrap();
     let Giscus = cx.props.utility.giscus;
 
     let data = &cx.props.data;
@@ -158,30 +158,34 @@ pub fn DocsSideBar(cx: Scope<SideBarProps>) -> Element {
                 li {
                     class: "text-xs font-mono dark:text-white",
                     embedd
-                }   
-            }
+                }
+            };
         } else if let mdast::Node::List(_) = node {
             return rsx! {
                 ul {
                     class: "px-5 py-1",
                     embedd
                 }
-            }
+            };
         } else if let mdast::Node::Paragraph(_) = node {
             return rsx! {
                 embedd
-            }
+            };
         } else if let mdast::Node::Link(link) = node {
-            let class = "text-gray-600 dark:text-gray-200 hover:text-blue-700 dark:hover:text-blue-300";
+            let class =
+                "text-gray-600 dark:text-gray-200 hover:text-blue-700 dark:hover:text-blue-300";
             if &link.url[0..1] == "@" {
-                let url = cx.props.path.replace(&format!(":{}", cx.props.file_sign), &link.url[1..]);
+                let url = cx
+                    .props
+                    .path
+                    .replace(&format!(":{}", cx.props.file_sign), &link.url[1..]);
                 return rsx! {
                     Link {
                         class: "{class}",
                         to: "{url}",
                         embedd
                     }
-                }
+                };
             } else {
                 return rsx! {
                     a {
@@ -189,12 +193,12 @@ pub fn DocsSideBar(cx: Scope<SideBarProps>) -> Element {
                         href: "{link.url}",
                         embedd
                     }
-                }
+                };
             }
         } else if let mdast::Node::Text(text) = node {
             return rsx! {
                 "{text.value}"
-            }
+            };
         }
         rsx! { div { "{node:?}" } }
     });
@@ -221,19 +225,16 @@ fn to_info(meta_info: String) -> Option<PostInfo> {
     .parse()
     .ok();
 
-    if temp.is_none() {
-        return None;
-    }
+    temp.as_ref()?;
     let (meta_info, content) = temp.unwrap();
 
-    if meta_info.get("released").is_some()
-        && meta_info
+    if meta_info.contains_key("released")
+        && !meta_info
             .get("released")
             .unwrap()
             .clone()
             .as_bool()
             .unwrap()
-            == false
     {
         return None;
     }
@@ -272,5 +273,5 @@ fn to_info(meta_info: String) -> Option<PostInfo> {
         content,
         sub_group: Default::default(),
     };
-    return Some(blog_info);
+    Some(blog_info)
 }
