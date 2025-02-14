@@ -1,15 +1,43 @@
-name: github-pages
+name: Dioxus Deploy
 
 on:
   push:
     branches:
-      - main
+      - main  # 或者你希望触发部署的其他分支
 
 jobs:
-  build-deploy:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: "Dioxus Deploy"
-        uses: DioxusLabs/deploy-action@997e38cab19fc6e0be6f5be7049407b5d1f3ba0c
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Rust toolchain
+        uses: actions-rs/toolchain@v1.0.6
         with:
-          rootPath: "karaty"
+          toolchain: stable
+          profile: minimal
+          target: wasm32-unknown-unknown
+          override: true
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install Dioxus-CLI
+        shell: bash
+        run: cargo install dioxus-cli --version 0.4.3
+
+      - name: Build Project 🎁
+        shell: bash
+        run: |
+          cd karaty  # 这里可以替换为具体的源代码路径
+          dx build --release  # 使用默认的构建模式
+          cp ./dist/index.html ./dist/404.html  # 根据 Dioxus.toml 配置的输出目录
+
+      - name: Deploy Project 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          branch: gh-pages
+          folder: ./dist  # 根据 Dioxus.toml 配置的输出目录
+          clean: false
