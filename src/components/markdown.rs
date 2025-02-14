@@ -135,7 +135,7 @@ pub fn MdastNode(cx: Scope, nodes: Vec<Node>) -> Element {
                     language: language.clone().unwrap_or_default(),
                 }
             }
-        } else if let Node::BlockQuote(_) = node {
+        } else if let Node::Blockquote(_) = node {
             rsx! {
                 blockquote {
                     embedded
@@ -153,7 +153,7 @@ pub fn MdastNode(cx: Scope, nodes: Vec<Node>) -> Element {
                 }
             }
         } else if let Node::List(list) = node {
-            let ordered = list.ordered.clone();
+            let ordered = list.ordered;
             if ordered {
                 rsx! {
                     ol {
@@ -242,7 +242,7 @@ pub fn Text(cx: Scope, value: String) -> Element {
     while let Some(v) = re.exec(value) {
         let last_index = re.last_index() as usize;
         let arr = v.to_vec();
-        let full = arr.get(0).unwrap();
+        let full = arr.first().unwrap();
         let icon = arr.get(1).unwrap();
         let start_index = last_index - full.as_string().unwrap().len();
         contents.push(TextFlag::Text(
