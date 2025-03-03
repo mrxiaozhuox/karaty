@@ -1,4 +1,3 @@
-
 # Karaty
 
 > A powerful blog & docs framework, powered by [Dioxus][dioxus].
@@ -13,8 +12,6 @@
 - Easy to deploy to **Github Pages** and **Static File Server**.
 - Support custom template by [Dioxus][dioxus] UI framework.
 - Support Dark Mode and compatible Mobile visitor
-
-
 
 ## Quick Start
 
@@ -55,9 +52,8 @@ You can download [karaty.zip](https://github.com/mrxiaozhuox/karaty/releases) fi
 - Push compiled package.
 - Open GitHub pags in repository and bind domain.
 
-
 ## Contribute
 
 You should make change at `karaty` directory.
 
-[dioxus]: https://dioxuslabs.com/	"DioxusLabs"
+[dioxus]: https://dioxuslabs.com/ "DioxusLabs"
